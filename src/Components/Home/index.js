@@ -1,8 +1,8 @@
 import React from 'react'
 import "./style.scss"
 
-export const Home = () => {
-    return (
-        <div>Home</div>
+export default function Home(){
+    return(
+        <div>Hola</div>
     )
 }

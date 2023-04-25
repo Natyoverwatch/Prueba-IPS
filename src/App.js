@@ -1,6 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Login } from './Components/Login';
-import { Home } from './Components/Home';
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Login from './Components/Login'
+import Home from './Components/Home';
 import { Navbar } from './Components/Navbar';
 
 
@@ -9,8 +9,8 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         
       </Routes>
     </BrowserRouter>
