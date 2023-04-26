@@ -2,7 +2,7 @@ import React from 'react'
 import "./style.scss"
 import { NavbarAdmin } from './../NavbarAdmin';
 import { useState } from 'react';
-import { Form, Input, Row, Col, Button} from 'antd';
+import { Form, Input, Row, Col, Button } from 'antd';
 
 
 const ToDoList = () => {
@@ -16,7 +16,7 @@ const ToDoList = () => {
         setCounter(counter + value);
     };
 
-    const agregar =() =>{
+    const agregar = () => {
         const newNote = {
             name: datos,
             id: counter,
@@ -25,7 +25,7 @@ const ToDoList = () => {
         setDatos('') //para que no siga anotando el ultimo valor
     };
 
-    const remover =(id) =>{
+    const remover = (id) => {
         const newNote = notes.filter((nota) => nota.id !== id)
         setNotes(newNote)
     };
@@ -34,34 +34,34 @@ const ToDoList = () => {
         form.resetFields();
     };
 
-    return(
+    return (
         <>
             <Row
                 className='styledRow'
             >
-                <Col className='styledCol' xs={{span:20, offset:2 }} md={{span:10, offset:3 }} lg={{span:6, offset:2 }} style={{}}>
-                <h1>Citologia y colposcopia </h1>
+                <Col className='styledCol' xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }} style={{}}>
+                    <h1>Citologia y colposcopia </h1>
                 </Col>
-                <Col className='styledCol' xs={{span:20, offset:2 }} md={{span:10, offset:3 }} lg={{span:6, offset:2 }} style={{}}>
-                <h1>Desnutricion </h1>
+                <Col className='styledCol' xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }} style={{}}>
+                    <h1>Desnutricion </h1>
                 </Col>
                 {notes.map((nota, index) => (
-                    <Col key={index} onClick={()=> remover(index)} className='boxAdd'>
+                    <Col key={index} onClick={() => remover(index)} className='boxAdd'>
                         <p>{nota.name}</p>
                     </Col>
                 ))}
             </Row>
-            
+
         </>
     )
 }
 
-export default function GruRiesgo(){
-    return(
+export default function GruRiesgo() {
+    return (
         <div>
-            <NavbarAdmin/>
+            <NavbarAdmin />
             <div className='container'>
-                <ToDoList/>
+                <ToDoList />
             </div>
         </div>
     )
