@@ -1,0 +1,49 @@
+.container{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../../Images/fondo2.jpg');
+    background-size: cover;
+    }
+
+    .styledRow{
+    display:flex;
+    justify-content:center;
+    padding: '0 1em';
+    
+    .boxAdd{
+        background-color: rgba(255, 255, 255, 0.33);
+        box-shadow: 0px 8px 32px 0 rgba(195, 0, 255, 0.3);
+        backdrop-filter: blur(3px);
+        padding: 16px;
+        border-radius: 16px;
+        margin: 0 10px;
+        }
+    .styledCol{
+        background-color: rgba(255, 255, 255, 0.33);
+        box-shadow: 0px 8px 32px 0 rgba(195, 0, 255, 0.3);
+        backdrop-filter: blur(3px);
+        padding: 16px;
+        border-radius: 16px;
+        width: 100em;
+        margin:0 2em;
+        .estilobotoningresar{
+            background-image: linear-gradient(#252525,#54575a);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            color:aliceblue;
+            width: 100%;
+            margin:1em 0
+            }
+    }
+    }
+
+    h1{
+    color: 'black';
+    display:'flex';
+    align-items:'center';
+    justify-content:'center';
+    font-family: 'Gochi Hand', cursive;
+    }

@@ -3,13 +3,13 @@ import { Form, Input, Button, Row, Col } from 'antd';
 import logo from '../../Images/logo.png'
 import './style.scss'
 import { FiLock, FiUser } from "react-icons/fi";
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const Datos = (value) => {
         console.log(value)
     };
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     return (
         <div className='container'>
             <div style={{ width: '100%' }}>
@@ -48,13 +48,14 @@ function Login() {
                                         htmlType="submit"
                                         className='estilobotoningresar'
                                         style={{ margin: '1em 0' }}
-                                    // onClick={() => navigate('/home')}
+                                        onClick={() => navigate('/home')}
                                     >
                                         Ingresar
                                     </Button>
                                     <Button
                                         type='default'
                                         className='estilobotoncancelar'
+                                        onClick={() => navigate('/')}
                                     >
                                         Cancelar
                                     </Button>
