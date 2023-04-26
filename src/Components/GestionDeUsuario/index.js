@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "../GestionDeUsuario/style.scss"
 import { Table, Button, Modal, Input } from 'antd';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { NavbarAdmin } from './../NavbarAdmin';
 
 export default function GestUser() {
     const [isEditing, setisEditing] = useState(false)
@@ -102,6 +103,8 @@ export default function GestUser() {
     }
 
     return (
+        <div>
+        <NavbarAdmin/>
         <div className='containeruser'>
             <div style={{ width: '100%' }}>
                 <Button style={{ marginBottom: '2rem' }} onClick={onAddUser}>Agregar un nuevo usuario</Button>
@@ -124,6 +127,7 @@ export default function GestUser() {
                         });
                     }}
                 >
+                    <label>Nombre:</label>
                     <Input value={isUserEditing?.nameuser}
                         onChange={(e) => {
                             setisUserEditing(pre => {
@@ -131,8 +135,9 @@ export default function GestUser() {
                             }
                             )
                         }}
-
+                        
                     ></Input>
+                    <label>Contraseña:</label>
                     <Input value={isUserEditing?.password}
                         onChange={(e) => {
                             setisUserEditing(pre => {
@@ -142,6 +147,7 @@ export default function GestUser() {
                         }}
 
                     ></Input>
+                    <label>Usuario:</label>
                     <Input value={isUserEditing?.user}
                         onChange={(e) => {
                             setisUserEditing(pre => {
@@ -150,6 +156,7 @@ export default function GestUser() {
                             )
                         }}
                     ></Input>
+                    <label>Roll:</label>
                     <Input value={isUserEditing?.roll}
                         onChange={(e) => {
                             setisUserEditing(pre => {
@@ -160,6 +167,6 @@ export default function GestUser() {
                 </Modal>
             </div >
         </div >
-
+        </div>
     )
 }

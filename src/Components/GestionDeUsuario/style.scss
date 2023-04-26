@@ -3,6 +3,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: aqua;
+    background: url('../../Images/fondo2.jpg');
     background-size: cover;
+    .Cancelar {
+        background-color: transparent;
+        border: 2px solid rgb(0, 118, 193);
+        border-radius: 10px;
+        font-weight: 700;
+        color: rgb(0, 118, 193);
+        width: 100%;
+
+        &:hover {
+            background-image: linear-gradient(rgb(0, 118, 193), rgb(60, 181, 221));
+            color: #fff !important;
+            cursor: pointer;
+        }
+    }
 }

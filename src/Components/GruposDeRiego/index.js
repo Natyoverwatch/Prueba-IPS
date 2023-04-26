@@ -17,45 +17,45 @@ const data = [
         id:0,
         icon: mamografia,
         Informacion:"Mamografía",
-        urlnavigate:"/",
+        urlnavigate:"/mamografia",
     },
     {
         id:1,
         icon:sifilis, 
         Informacion:"Sifilis gestacional y congenita",
-        urlnavigate:"/",
+        urlnavigate:"/sifilis",
         
     },
     {
         id:2,
         icon:citologia, 
         Informacion:"Citologia y colposcopia",
-        urlnavigate:"/",
+        urlnavigate:"/citologia",
         
     },
     {
         id:3,
         icon:desnutricion, 
         Informacion:"Desnutricion",
-        urlnavigate:"/",
+        urlnavigate:"/desnutricion",
     },
     {
         id:4,
         icon:eda, 
         Informacion:"EDA",
-        urlnavigate:"/",
+        urlnavigate:"/eda",
     },
     {
         id:5,
         icon:ira, 
         Informacion:"IRA",
-        urlnavigate:"/",
+        urlnavigate:"/ira",
     },
     {
         id:6,
         icon: mme, 
         Informacion:"MME",
-        urlnavigate:"/",
+        urlnavigate:"/mme",
     },
     {
         id:7,
