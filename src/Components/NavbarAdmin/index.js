@@ -13,15 +13,15 @@ export const NavbarAdmin = () => {
                 <img src={logo} alt="logo" style={{ marginLeft: '4em' }} onClick={() => navigate('/')} />
                 <p className='stylep'>SISALUD</p>
             </div>
-            <div className='stylelink'>
+            <div className='stylelinkAdm'>
                 <Link to='/usuarios'>
                     <h2>Gestion de usuario</h2>
                 </Link>
                 <Link to='/griesgo'>
-                    <h2>Grupos de riesgo</h2>
+                    <h2 className='styleh2Adm'>Grupos de riesgo</h2>
                 </Link>
                 <Link to='/reportes'>
-                    <h2>Reportes</h2>
+                    <h2 className='styleh2Adm'>Reportes</h2>
                 </Link>
             </div>
             <div style={{ display: 'flex', marginRight: '4em', color: 'white' }}>

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,600;0,700;1,600&display=swap');
 
-.NavbarContainerComponent {
+.NavbarContainerComponentAdm {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,8 +18,8 @@
         img {
             height: 3.5rem;
         }
-    
-        .stylep{
+
+        .stylepAdm {
             text-align: center;
             font-family: 'Poppins', sans-serif;
             font-weight: bold;
@@ -43,6 +43,10 @@
             font-size: 1rem;
             color: #197B8D;
             margin-left: 1rem;
+        }
+
+        a:-webkit-any-link {
+            text-decoration: none;
         }
     }
 }

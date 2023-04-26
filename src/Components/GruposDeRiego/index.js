@@ -30,9 +30,7 @@ const ToDoList = () => {
         setNotes(newNote)
     };
 
-    const onReset = () => {
-        form.resetFields();
-    };
+    const navigate = useNavigate();
 
     return (
         <>
@@ -66,4 +64,4 @@ export default function GruRiesgo() {
         </div>
     )
 }
-
+* /
