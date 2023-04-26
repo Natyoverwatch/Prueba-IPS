@@ -2,10 +2,12 @@ import React from 'react'
 import "./style.scss"
 import { NavbarAdmin } from './../NavbarAdmin';
 import { useState } from 'react';
-import { Form, Input, Row, Col, Button} from 'antd';
+import { Form, Row, Col, Button} from 'antd';
 
 
-const ToDoList = () => {
+
+export default function GruRiesgo(){
+
     const [datos, setDatos] = useState([]);
     const [notes, setNotes] = useState([]);
     let [counter, setCounter] = React.useState(0);
@@ -35,33 +37,24 @@ const ToDoList = () => {
     };
 
     return(
-        <>
-            <Row
-                className='styledRow'
-            >
-                <Col className='styledCol' xs={{span:20, offset:2 }} md={{span:10, offset:3 }} lg={{span:6, offset:2 }} style={{}}>
-                <h1>Citologia y colposcopia </h1>
-                </Col>
-                <Col className='styledCol' xs={{span:20, offset:2 }} md={{span:10, offset:3 }} lg={{span:6, offset:2 }} style={{}}>
-                <h1>Desnutricion </h1>
-                </Col>
-                {notes.map((nota, index) => (
-                    <Col key={index} onClick={()=> remover(index)} className='boxAdd'>
-                        <p>{nota.name}</p>
-                    </Col>
-                ))}
-            </Row>
-            
-        </>
-    )
-}
-
-export default function GruRiesgo(){
-    return(
         <div>
             <NavbarAdmin/>
             <div className='container'>
-                <ToDoList/>
+                <Row
+                    className='styledRow'
+                >
+                    <Col className='styledCol' xs={{span:20, offset:2 }} md={{span:10, offset:3 }} lg={{span:6, offset:2 }} style={{}}>
+                    <h1>Citologia y colposcopia </h1>
+                    </Col>
+                    <Col className='styledCol' xs={{span:20, offset:2 }} md={{span:10, offset:3 }} lg={{span:6, offset:2 }} style={{}}>
+                    <h1>Desnutricion </h1>
+                    </Col>
+                    {notes.map((nota, index) => (
+                        <Col key={index} onClick={()=> remover(index)} className='boxAdd'>
+                            <p>{nota.name}</p>
+                        </Col>
+                    ))}
+                </Row>
             </div>
         </div>
     )

@@ -44,5 +44,8 @@
             color: #197B8D;
             margin-left: 1rem;
         }
+        a:-webkit-any-link {
+            text-decoration: none;
+        }
     }
 }
