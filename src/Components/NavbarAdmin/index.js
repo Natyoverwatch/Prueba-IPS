@@ -8,14 +8,14 @@ export const NavbarAdmin = () => {
     const navigate = useNavigate();
 
     return (
-        <div className='NavbarContainerComponent'>
-            <div className='stylelogo'>
+        <div className='NavbarContainerComponentAdm'>
+            <div className='stylelogoAdm'>
                 <img src={logo} alt="logo" style={{ marginLeft: '4em' }} onClick={() => navigate('/')} />
-                <p className='stylep'>SISALUD</p>
+                <p className='stylepAdm'>SISALUD</p>
             </div>
             <div className='stylelinkAdm'>
                 <Link to='/usuarios'>
-                    <h2>Gestion de usuario</h2>
+                    <h2 className='styleh2Adm'>Gestion de usuario</h2>
                 </Link>
                 <Link to='/griesgo'>
                     <h2 className='styleh2Adm'>Grupos de riesgo</h2>
