@@ -1,4 +1,6 @@
-.container{
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,600;0,700;1,600&display=swap');
+
+.containerGR{
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -8,35 +10,25 @@
     }
 
     .styledRow{
-    display:flex;
     justify-content:center;
-    padding: '0 1em';
+    padding: 2em;
     
-    .boxAdd{
-        background-color: rgba(255, 255, 255, 0.33);
-        box-shadow: 0px 8px 32px 0 rgba(195, 0, 255, 0.3);
-        backdrop-filter: blur(3px);
-        padding: 16px;
-        border-radius: 16px;
-        margin: 0 10px;
-        }
     .styledCol{
-        background-color: rgba(255, 255, 255, 0.33);
-        box-shadow: 0px 8px 32px 0 rgba(195, 0, 255, 0.3);
-        backdrop-filter: blur(3px);
+        background-color: rgba(255, 255, 255, 0.801);
+        box-shadow: 0px 8px 32px 0 rgba(0, 162, 255, 0.3);
         padding: 16px;
         border-radius: 16px;
-        width: 100em;
-        margin:0 2em;
-        .estilobotoningresar{
-            background-image: linear-gradient(#252525,#54575a);
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            color:aliceblue;
-            width: 100%;
-            margin:1em 0
-            }
+        width: 7rem;
+        height: 20rem;
+        margin:1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        img{
+            padding-top: 2rem;
+            width: 10em;
+        }
     }
     }
 
@@ -45,5 +37,6 @@
     display:'flex';
     align-items:'center';
     justify-content:'center';
-    font-family: 'Gochi Hand', cursive;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
     }
