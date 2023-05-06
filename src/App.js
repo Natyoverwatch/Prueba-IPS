@@ -14,7 +14,6 @@ import GRSifilis from './Components/GruposDeRiego/Sifilis';
 import GRCitologia from './Components/GruposDeRiego/Citologia';
 
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -34,7 +33,7 @@ function App() {
         <Route path="/ira" element={<GRIra/>}/>
         <Route path="/mme" element={<GRMme/>}/>
       </Routes>
-    </BrowserRouter>
+  </BrowserRouter>
   );
 }
 

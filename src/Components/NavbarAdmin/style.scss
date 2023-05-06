@@ -30,6 +30,28 @@
         }
     }
 
+    .navbar-toggle {
+        display: none;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        
+        .navbar-toggle-bar {
+            display: block;
+            width: 24px;
+            height: 2px;
+            margin-bottom: 6px;
+            background-color: #076470;
+            transition: transform 0.2s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            display: block;
+            z-index: 1;
+        }
+    }
+
     .stylelinkAdm {
         display: flex;
         justify-content: space-between;
@@ -49,5 +71,31 @@
         a:-webkit-any-link {
             text-decoration: none;
         }
+
+        @media (max-width: 768px) {
+            position: fixed;
+            flex-direction: column;
+            justify-content: start;
+            top: 70px;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            //padding: 24px;
+            box-sizing: border-box;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-out;
+            z-index: 1;
+        
+            
+        }
+
+        
+        
     }
+
+    .stylelinkAdm.open {
+        transform: translateX(0);
+        }
+
+    
 }
