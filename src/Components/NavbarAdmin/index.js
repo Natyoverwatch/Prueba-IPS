@@ -20,11 +20,6 @@ export const NavbarAdmin = () => {
                 <img src={logo} alt="logo" style={{ marginLeft: '4em' }} onClick={() => navigate('/')} />
                 <p className='stylepAdm'>SISALUD</p>
             </div>
-            <button className="navbar-toggle" onClick={toggleMenu}>
-                <span className="navbar-toggle-bar"></span>
-                <span className="navbar-toggle-bar"></span>
-                <span className="navbar-toggle-bar"></span>
-            </button>
             <div className={`stylelinkAdm ${menuOpen ? 'open' : ''}`}>
                 <Link to='/usuarios'>
                     <h2 className='styleh2Adm'>Gestion de usuario</h2>
@@ -38,6 +33,13 @@ export const NavbarAdmin = () => {
             </div>
             <div style={{ display: 'flex', marginRight: '4em', color: 'white' }}>
                 <BsPersonCircle size={30} onClick={() => navigate('/login')} />
+            </div>
+            <div>
+                <button className="navbar-toggle" onClick={toggleMenu}>
+                    <span className="navbar-toggle-bar"></span>
+                    <span className="navbar-toggle-bar"></span>
+                    <span className="navbar-toggle-bar"></span>
+                </button>
             </div>
         </div >
     )

@@ -36,7 +36,7 @@
         border: none;
         cursor: pointer;
         padding: 0;
-        
+
         .navbar-toggle-bar {
             display: block;
             width: 24px;
@@ -85,17 +85,17 @@
             transform: translateX(-100%);
             transition: transform 0.3s ease-out;
             z-index: 1;
-        
-            
+
+
         }
 
-        
-        
+
+
     }
 
     .stylelinkAdm.open {
         transform: translateX(0);
-        }
+    }
 
-    
+
 }
