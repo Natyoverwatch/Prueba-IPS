@@ -12,7 +12,7 @@ export default function GestUser() {
 
     //New User
     const [newUser, setnewUser] = useState({
-        key: 0,
+        key: null,
         user: '',
         pass: '',
         roll: ''
@@ -120,20 +120,23 @@ export default function GestUser() {
     }, []);
 
     useEffect(() => {
-        setnewUser({ ...newUser, key: isKey + 1 })
-        if (newUser.key > dataSource.length) {
-            setDataSource([...dataSource, newUser]);
-            // setnewUser({
-            //     ...newUser,
-            //     key: 0,
-            //     user: "",
-            //     pass: "",
-            //     roll: ""
-            // })
-        }
+        setnewUser({ ...newUser, key: isKey })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isKey]);
 
+    useEffect(() => {
+        if (newUser.key > dataSource.length) {
+            setDataSource([...dataSource, newUser]);
+            setnewUser({
+                ...newUser,
+                key: null,
+                user: "",
+                pass: "",
+                roll: ""
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [newUser.key]);
 
     return (
         <div>
