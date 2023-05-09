@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+// import React from 'react';
+// import ReactDOM from 'react-dom/client';
 
-export const loginData = async(data, url) => {
+export const loginData = async (data, url) => {
 	try {
 		let response = await fetch(`${url}`, {
 			method: 'POST',
@@ -12,13 +12,13 @@ export const loginData = async(data, url) => {
 			}
 		})
 		let res = await response.json()
-		return(res)
-	}catch (error) {
+		return (res)
+	} catch (error) {
 		console.log(error)
 	}
 }
 
-export const addDataUser = async(data, url, token) => {
+export const addDataUser = async (data, url, token) => {
 	try {
 		let response = await fetch(`${url}`, {
 			method: 'POST',
@@ -30,13 +30,13 @@ export const addDataUser = async(data, url, token) => {
 			}
 		})
 		let res = await response.json()
-		return(res)
-	}catch (error) {
+		return (res)
+	} catch (error) {
 		console.log(error)
 	}
 }
 
-export const addData = async(data, url, token) => {
+export const addData = async (data, url, token) => {
 	try {
 		let response = await fetch(`${url}`, {
 			method: 'POST',
@@ -48,13 +48,13 @@ export const addData = async(data, url, token) => {
 			}
 		})
 		let res = await response.json()
-		return(res)
-	}catch (error) {
+		return (res)
+	} catch (error) {
 		console.log(error)
 	}
 }
 
-export const getData = async(url, token) => {
+export const getData = async (url, token) => {
 	try {
 		let response = await fetch(`${url}`, {
 			method: 'GET',
@@ -65,13 +65,13 @@ export const getData = async(url, token) => {
 			}
 		})
 		let res = await response.json()
-		return(res)
-	}catch (error) {
+		return (res)
+	} catch (error) {
 		console.log(error)
 	}
 }
 
-export const editData = async(data, url, token) => {
+export const editData = async (data, url, token) => {
 	try {
 		let response = await fetch(`${url}`, {
 			method: 'PUT',
@@ -83,13 +83,13 @@ export const editData = async(data, url, token) => {
 			}
 		})
 		let res = await response.json()
-		return(res)
-	}catch (error) {
+		return (res)
+	} catch (error) {
 		console.log(error)
 	}
 }
 
-export const deleteData = async(url, token) => {
+export const deleteData = async (url, token) => {
 	try {
 		let response = await fetch(`${url}`, {
 			method: 'DELETE',
@@ -100,8 +100,8 @@ export const deleteData = async(url, token) => {
 			}
 		})
 		let res = await response.status
-		return(res)
-	}catch (error) {
+		return (res)
+	} catch (error) {
 		console.log(error)
 	}
 }

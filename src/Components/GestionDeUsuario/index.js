@@ -7,8 +7,8 @@ import { NavbarAdmin } from '../NavbarAdmin';
 
 export default function GestUser() {
     const [isEditing, setisEditing] = useState(false)
-    const [isAddNewUser, setisAddNewUser] = useState(false)
     const [isUserEditing, setisUserEditing] = useState('')
+    const [isAddNewUser, setisAddNewUser] = useState(false)
 
     //New User
     const [newUser, setnewUser] = useState({
@@ -43,7 +43,6 @@ export default function GestUser() {
         },
     ])
 
-    //Colums name from table
     const columns = [
         {
             title: 'Nombre',
@@ -98,7 +97,6 @@ export default function GestUser() {
         },
     ];
 
-
     //Add new User 
     const onAddUser = () => {
         setisKey(dataSource.length + 1)
@@ -106,46 +104,47 @@ export default function GestUser() {
 
     //Delete specific user
     const deleteUser = (key) => {
-        console.log(key)
         const newData = dataSource.filter((userData) => userData.key !== key);
         setDataSource(newData);
     }
 
     //Update info from user
     const editUser = (key) => {
-        console.log(key)
         setisEditing(true)
         setisUserEditing({ ...key })
     }
 
     useEffect(() => {
         setisKey(dataSource.length)
-    }, [0]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         setnewUser({ ...newUser, key: isKey + 1 })
         if (newUser.key > dataSource.length) {
             setDataSource([...dataSource, newUser]);
-            setnewUser({
-                ...newUser,
-                key: 0,
-                user: '',
-                pass: '',
-                roll: ''
-            })
+            // setnewUser({
+            //     ...newUser,
+            //     key: 0,
+            //     user: "",
+            //     pass: "",
+            //     roll: ""
+            // })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isKey]);
+
 
     return (
         <div>
             <NavbarAdmin />
             <div className='containeruser'>
                 <div style={{ width: '100%' }}>
-                    <Row style={{ display: 'flex', justifyContent: 'center', padding: '0em 2em' }}>
-                        <Col className='tableUser' lg={24}>
+                    <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
+                        <Col className='tableUser'>
                             <Button style={{ marginBottom: '2rem' }} onClick={() => { setisAddNewUser(true) }}>Agregar un nuevo usuario</Button>
                             <Table columns={columns} dataSource={dataSource} />
-                            {/* Modal para modificaicón de usuarios */}
+                            {/* Modal for updating users */}
                             <Modal
                                 title="Modificación"
                                 open={isEditing}
@@ -157,20 +156,16 @@ export default function GestUser() {
                                         return pre.map((user) => { return user.key === isUserEditing.key ? isUserEditing : user })
                                     });
                                     setisEditing(false);
-                                }}
-                            >
-                                <label>Nombre:</label>
-                                <Input value={isUserEditing?.nameuser}
-                                    onChange={(e) => { setisUserEditing(pre => { return { ...pre, nameuser: e.target.value } }) }}
-                                ></Input>
-                                <label>Contraseña:</label>
-                                <Input value={isUserEditing?.password}
-                                    onChange={(e) => { setisUserEditing(pre => { return { ...pre, password: e.target.value } }) }}
-                                ></Input>
+                                }}>
                                 <label>Usuario:</label>
                                 <Input value={isUserEditing?.user}
                                     onChange={(e) => { setisUserEditing(pre => { return { ...pre, user: e.target.value } }) }}
                                 ></Input>
+                                <label>Contraseña:</label>
+                                <Input value={isUserEditing?.pass}
+                                    onChange={(e) => { setisUserEditing(pre => { return { ...pre, pass: e.target.value } }) }}
+                                ></Input>
+
                                 <label>Roll:</label>
                                 <Input value={isUserEditing?.roll}
                                     onChange={(e) => { setisUserEditing(pre => { return { ...pre, roll: e.target.value } }) }}
@@ -181,45 +176,37 @@ export default function GestUser() {
                                 title="Nuevo Usuario"
                                 open={isAddNewUser}
                                 cancelText='Cancelar'
-                                onCancel={() => { setisAddNewUser(false); }}
+                                onCancel={() => { setisAddNewUser(false) }}
                                 okText='Crear'
                                 onOk={() => {
-                                    if (newUser.user.length == 0 || newUser.pass.length == 0 || newUser.roll.length == 0) {
+                                    if (newUser.user.length === 0 || newUser.pass.length === 0 || newUser.roll.length === 0) {
                                         alert('Revisa si te falta llenar algún dato');
                                     } else {
-                                        setInputValue({
-                                            ...inputValue,
-                                            usuario: "",
-                                            contra: "",
-                                            roll: "",
-                                        })
-                                        setisAddNewUser(false);
-                                        onAddUser();
+                                        onAddUser()
+                                        setisAddNewUser(false)
                                     }
-                                }}
-                            >
+                                }}>
                                 <label>Usuario:</label>
                                 <Input value={newUser.user}
                                     onChange={(e) => {
                                         setnewUser({ ...newUser, user: e.target.value })
-                                    }} placeholder='Usuario' defaultValue="" >
-                                </Input>
+                                    }} placeholder='Usuario' />
                                 <label>Contraseña:</label>
                                 <Input.Password value={newUser.pass}
                                     onChange={(e) => {
                                         setnewUser({ ...newUser, pass: e.target.value })
-                                    }} placeholder='Contraseña' defaultValue=""></Input.Password>
+                                    }} placeholder='Contraseña' />
                                 <label>Roll:</label>
                                 <Input value={newUser.roll}
                                     onChange={(e) => {
                                         setnewUser({ ...newUser, roll: e.target.value })
-                                    }} placeholder='Roll' defaultValue=""></Input>
+                                    }} placeholder='Roll' />
                             </Modal>
                         </Col>
                     </Row>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 

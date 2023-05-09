@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
 import logo from '../../Images/logo.png'
 import './style.scss'
@@ -17,6 +17,7 @@ function Login() {
         const data = await loginData(value, "https://c886-2803-1800-1242-9f3f-ed10-f62a-c432-cb8b.ngrok-free.app/api/admin/login")
         if (data.length > 0) {
             setState({ user: data[0], token: data[1].token })
+            console.log(state)
             navigate('/home')
         } else {
             alert("Login failed, user or pass is incorrect")
