@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Table, Button, Modal, Input, Row, Col, Form, Select } from 'antd';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
@@ -8,18 +8,22 @@ import { addData } from "../../controller/control"
 import { AppContext } from '../../Provider';
 
 export default function GestUser() {
+    //Forms to control diferent modals
+    const [formNewuser] = Form.useForm();
+    const [formUpdateuser] = Form.useForm();
 
-    const [form] = Form.useForm();
-
+    //Control form and update user
     const [isEditing, setisEditing] = useState(false)
-    const [isUserEditing, setisUserEditing] = useState('')
+    const [isUserEditing, setisUserEditing] = useState([])
+
+    //Control for creating new user
     const [isAddNewUser, setisAddNewUser] = useState(false)
 
+    //Global state
     const [state, setState] = useContext(AppContext)
 
     //Data people
     const [dataSource, setDataSource] = useState([]);
-
 
     const columns = [
         {
@@ -62,19 +66,15 @@ export default function GestUser() {
             dataIndex: 'actions',
             key: 'actions',
             render: (_, record) => {
-
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <FiEdit onClick={() => editUser(record)} />
-                        {/* <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteUser(record.key)}> */}
                         <FiTrash2 onClick={() => deleteUser(record.key)} />
-                        {/* </Popconfirm> */}
                     </div >
                 );
             }
         },
     ];
-
 
     //Delete specific user
     const deleteUser = (key) => {
@@ -83,20 +83,19 @@ export default function GestUser() {
     }
 
     //Update info from user
-    const editUser = (key) => {
-        setisEditing(true)
-        setisUserEditing({ ...key })
+    const editUser = (user) => {
+        setisUserEditing({ ...user })
     }
+    useEffect(() => {
+        if (isUserEditing.length !== 0) setisEditing(true)
+    }, [isUserEditing])
 
-
-
-    const onFinish = async (values) => {
+    //Send data server for new user
+    const createNewUser = async (values) => {
         setisAddNewUser(false);
         const data = await addData(values, "https://2e45-147-75-123-138.ngrok-free.app/api/admin", state?.token)
-        console.log(data);
-
+        setState({ user: data[0], token: data[1].token })
     };
-
 
     return (
         <div>
@@ -107,48 +106,20 @@ export default function GestUser() {
                         <Col className='tableUser'>
                             <Button style={{ marginBottom: '2rem' }} onClick={() => { setisAddNewUser(true) }}>Agregar un nuevo usuario</Button>
                             <Table columns={columns} dataSource={dataSource} />
-                            {/* Modal for updating users */}
-                            <Modal
-                                title="Modificación"
-                                open={isEditing}
-                                cancelText='Cancelar'
-                                onCancel={() => { setisEditing(false); }}
-                                okText='Guardar'
-                                onOk={() => {
-                                    setDataSource((pre) => {
-                                        return pre.map((user) => { return user.key === isUserEditing.key ? isUserEditing : user })
-                                    });
-                                    setisEditing(false);
-                                }}>
-                                <label>Usuario:</label>
-                                <Input value={isUserEditing?.user}
-                                    onChange={(e) => { setisUserEditing(pre => { return { ...pre, user: e.target.value } }) }}
-                                ></Input>
-                                <label>Contraseña:</label>
-                                <Input value={isUserEditing?.pass}
-                                    onChange={(e) => { setisUserEditing(pre => { return { ...pre, pass: e.target.value } }) }}
-                                ></Input>
-
-                                <label>Roll:</label>
-                                <Input value={isUserEditing?.roll}
-                                    onChange={(e) => { setisUserEditing(pre => { return { ...pre, roll: e.target.value } }) }}
-                                ></Input>
-                            </Modal>
                             {/* Modal para la creación de usuarios */}
                             <Modal
-                                title="Modal Title"
+                                title="Creación de usuario"
                                 open={isAddNewUser}
                                 onCancel={() => setisAddNewUser(false)}
                                 footer={[
-                                    <Button key="back" onClick={() => setisAddNewUser(false)}>
-                                        Cancel
+                                    <Button key="cancel" onClick={() => setisAddNewUser(false)}>
+                                        Cancelar
                                     </Button>,
-                                    <Button key="ok" onClick={() => { form.submit() }}>
-                                        Submit
+                                    <Button key="create" onClick={() => { formNewuser.submit() }}>
+                                        Crear
                                     </Button>,
-                                ]}
-                            >
-                                <Form form={form} onFinish={onFinish}>
+                                ]}>
+                                <Form form={formNewuser} onFinish={createNewUser}>
                                     <Form.Item name="user" label="Usuario">
                                         <Input />
                                     </Form.Item>
@@ -159,7 +130,7 @@ export default function GestUser() {
                                         <Select
                                             options={[
                                                 {
-                                                    value: 'admin',
+                                                    value: 'Administrador',
                                                     label: 'Administrador',
                                                 },
                                                 {
@@ -171,7 +142,60 @@ export default function GestUser() {
                                                     label: 'Revisor',
                                                 }
                                             ]} />
-
+                                    </Form.Item>
+                                </Form>
+                            </Modal>
+                            {/* Modal for updating users */}
+                            <Modal
+                                title="Actualización de usuario"
+                                open={isEditing}
+                                onCancel={() => setisEditing(false)}
+                                footer={[
+                                    <Button key="cancel" onClick={() => setisEditing(false)}>
+                                        Cancelar
+                                    </Button>,
+                                    <Button key="update" onClick={() => {
+                                        setDataSource((pre) => {
+                                            return pre.map((user) => { return user.key === isUserEditing.key ? isUserEditing : user })
+                                        });
+                                        setisEditing(false);
+                                    }}>
+                                        Actualizar
+                                    </Button>,
+                                ]}>
+                                <Form form={formUpdateuser}
+                                    initialValues={{
+                                        user: isUserEditing?.user,
+                                        pass: isUserEditing?.pass,
+                                        roll: isUserEditing?.roll,
+                                    }}>
+                                    <Form.Item name="user" label="Usuario">
+                                        <Input
+                                            onChange={(e) => { setisUserEditing(pre => { return { ...pre, user: e.target.value } }) }}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item name="pass" label="Contraseña">
+                                        <Input.Password name="pass"
+                                            onChange={(e) => { setisUserEditing(pre => { return { ...pre, pass: e.target.value } }) }}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item name="roll" label="Roll">
+                                        <Select
+                                            onChange={(value, e) => { setisUserEditing(pre => { return { ...pre, roll: value } }) }}
+                                            options={[
+                                                {
+                                                    value: 'Administrador',
+                                                    label: 'Administrador',
+                                                },
+                                                {
+                                                    value: 'auxiliar',
+                                                    label: 'Auxiliar',
+                                                },
+                                                {
+                                                    value: 'revisor',
+                                                    label: 'Revisor',
+                                                }
+                                            ]} />
                                     </Form.Item>
                                 </Form>
                             </Modal>
