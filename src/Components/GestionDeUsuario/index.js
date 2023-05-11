@@ -75,9 +75,7 @@ export default function GestUser() {
             render: (_, record) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Popconfirm title="Seguro deseas editar?" onConfirm={() => editUser(record)}>
-                            <FiEdit />
-                        </Popconfirm>
+                        <FiEdit onClick={() => editUser(record)} />
                         <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteUser(record._id)}>
                             <FiTrash2 />
                         </Popconfirm>
@@ -184,9 +182,11 @@ export default function GestUser() {
                                     <Button key="cancel" onClick={() => setisEditing(false)}>
                                         Cancelar
                                     </Button>,
-                                    <Button key="update" onClick={() => { formUpdateUser.submit() }}>
-                                        Actualizar
-                                    </Button>,
+                                    <Popconfirm title="Seguro deseas editar?" onConfirm={() => { formUpdateUser.submit() }}>
+                                        <Button key="update" >
+                                            Actualizar
+                                        </Button>
+                                    </Popconfirm>,
                                 ]}>
                                 <Form form={formUpdateUser}
                                     onFinish={updateUser}>
