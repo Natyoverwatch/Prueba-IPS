@@ -93,7 +93,7 @@ export default function GestUser() {
     //Send data server for new user
     const createNewUser = async (values) => {
         setisAddNewUser(false);
-        const data = await addData(values, "https://2e45-147-75-123-138.ngrok-free.app/api/admin", state?.token)
+        const data = await addData(values, "https://api.clubdeviajeros.tk/api/users", state?.token)
         setState({ user: data[0], token: data[1].token })
     };
 
@@ -120,6 +120,9 @@ export default function GestUser() {
                                     </Button>,
                                 ]}>
                                 <Form form={formNewuser} onFinish={createNewUser}>
+                                    <Form.Item name="name" label="Nombre">
+                                        <Input />
+                                    </Form.Item>
                                     <Form.Item name="user" label="Usuario">
                                         <Input />
                                     </Form.Item>

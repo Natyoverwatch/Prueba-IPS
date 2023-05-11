@@ -17,9 +17,10 @@ export const NavbarAdmin = () => {
     return (
         <div className='NavbarContainerComponentAdm'>
             <div className='stylelogoAdm'>
-                <img src={logo} alt="logo" style={{ marginLeft: '4em' }} onClick={() => navigate('/')} />
+                <img src={logo} alt="logo" style={{ marginLeft: '1em' }} onClick={() => navigate('/')} />
                 <p className='stylepAdm'>SISALUD</p>
             </div>
+
             <div className={`stylelinkAdm ${menuOpen ? 'open' : ''}`}>
                 <Link to='/usuarios'>
                     <h2 className='styleh2Adm'>Gestion de usuario</h2>
@@ -31,16 +32,14 @@ export const NavbarAdmin = () => {
                     <h2 className='styleh2Adm'>Reportes</h2>
                 </Link>
             </div>
-            <div style={{ display: 'flex', marginRight: '4em', color: 'white' }}>
+            <div style={{ display: 'flex', margin: '1em', alignSelf: 'flex-end', color: 'white' }}>
                 <BsPersonCircle size={30} onClick={() => navigate('/login')} />
             </div>
-            <div>
-                <button className="navbar-toggle" onClick={toggleMenu}>
-                    <span className="navbar-toggle-bar"></span>
-                    <span className="navbar-toggle-bar"></span>
-                    <span className="navbar-toggle-bar"></span>
-                </button>
-            </div>
-        </div >
+            <button className="navbar-toggle" onClick={toggleMenu}>
+                <span className="navbar-toggle-bar"></span>
+                <span className="navbar-toggle-bar"></span>
+                <span className="navbar-toggle-bar"></span>
+            </button>
+        </div>
     )
 }

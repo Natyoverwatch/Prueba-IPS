@@ -14,7 +14,7 @@ function Login() {
     const [state, setState] = useContext(AppContext)
 
     const datosLogin = async (value) => {
-        const data = await loginData(value, "https://c886-2803-1800-1242-9f3f-ed10-f62a-c432-cb8b.ngrok-free.app/api/admin/login")
+        const data = await loginData(value, "https://api.clubdeviajeros.tk/api/users/login")
         if (data.length > 0) {
             setState({ user: data[0], token: data[1].token })
             console.log(state)
@@ -64,7 +64,7 @@ function Login() {
                                         htmlType="submit"
                                         className='estilobotoningresar'
                                         style={{ margin: '1em 0' }}
-                                        onClick={() => navigate('/home')}
+                                    //onClick={() => navigate('/home')}
                                     >
                                         Ingresar
                                     </Button>
