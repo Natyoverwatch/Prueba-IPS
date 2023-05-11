@@ -26,13 +26,17 @@ export default function Reports() {
         setIsModalVisible(false);
     };
 
+    const viewImage = () => {
+        const imageUrl = URL.createObjectURL(imageFile);
+        setImageUrl(imageUrl);
+    }
+
     const onFinish = (values) => {
         console.log('Valores del formulario:', values);
         console.log('Archivo de imagen:', imageFile);
         console.log('URL image:', imageUrl);
         setIsModalVisible(false);
-        // Aquí puedes realizar acciones adicionales, como enviar la imagen al servidor.
-        // Ten en cuenta que almacenar archivos en el repositorio de código no es recomendado.
+        viewImage();
     };
 
     const beforeUpload = (file) => {
@@ -45,10 +49,8 @@ export default function Reports() {
             message.error('La imagen debe ser menor a 2MB');
         }
         setImageFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setImageUrl(imageUrl);
-        console.log(imageUrl);
-        //return false; // Evita que el archivo se suba automáticamente
+
+        return false; // Evita que el archivo se suba automáticamente
     };
 
     return (

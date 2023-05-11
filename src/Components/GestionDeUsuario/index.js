@@ -1,20 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Table, Button, Modal, Input, Row, Col, Form, Select } from 'antd';
+import { Table, Button, Modal, Input, Row, Col, Form, Select, Popconfirm } from 'antd';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
 import "../GestionDeUsuario/style.scss"
 import { NavbarAdmin } from '../NavbarAdmin';
-import { addData } from "../../controller/control"
+import { addData, getData, editData, deleteData } from "../../controller/control"
 import { AppContext } from '../../Provider';
 
 export default function GestUser() {
     //Forms to control diferent modals
-    const [formNewuser] = Form.useForm();
-    const [formUpdateuser] = Form.useForm();
+    const [formNewUser] = Form.useForm();
+    const [formUpdateUser] = Form.useForm();
+
+    //Id for updating specific user
+    const [idEdit, setIdEdit] = useState(null)
 
     //Control form and update user
     const [isEditing, setisEditing] = useState(false)
-    const [isUserEditing, setisUserEditing] = useState([])
 
     //Control for creating new user
     const [isAddNewUser, setisAddNewUser] = useState(false)
@@ -28,6 +30,11 @@ export default function GestUser() {
     const columns = [
         {
             title: 'Nombre',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Usuario',
             dataIndex: 'user',
             key: 'user',
             editable: true,
@@ -68,8 +75,12 @@ export default function GestUser() {
             render: (_, record) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <FiEdit onClick={() => editUser(record)} />
-                        <FiTrash2 onClick={() => deleteUser(record.key)} />
+                        <Popconfirm title="Seguro deseas editar?" onConfirm={() => editUser(record)}>
+                            <FiEdit />
+                        </Popconfirm>
+                        <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteUser(record._id)}>
+                            <FiTrash2 />
+                        </Popconfirm>
                     </div >
                 );
             }
@@ -77,25 +88,41 @@ export default function GestUser() {
     ];
 
     //Delete specific user
-    const deleteUser = (key) => {
-        const newData = dataSource.filter((userData) => userData.key !== key);
-        setDataSource(newData);
+    const deleteUser = async (id) => {
+        const data = await deleteData(`https://api.clubdeviajeros.tk/api/users/${id}`, state?.token)
+        if (data === 200) getUsers()
     }
 
     //Update info from user
     const editUser = (user) => {
-        setisUserEditing({ ...user })
+        formUpdateUser.setFieldsValue(user);
+        setisEditing(true)
+        setIdEdit(user._id)
     }
-    useEffect(() => {
-        if (isUserEditing.length !== 0) setisEditing(true)
-    }, [isUserEditing])
 
-    //Send data server for new user
+    const getUsers = async () => {
+        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/users", state?.token)
+        setDataSource(getConstdata);
+    }
+
+    useEffect(() => {
+        getUsers()
+        // eslint-disable-next-line
+    }, [])
+
+    //Create new user
     const createNewUser = async (values) => {
         setisAddNewUser(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/users", state?.token)
-        setState({ user: data[0], token: data[1].token })
+        data._id ? getUsers() : console.log(data)
+
     };
+
+    //Update user
+    const updateUser = async (values) => {
+        const data = await editData(values, `https://api.clubdeviajeros.tk/api/users/${idEdit}`, state?.token)
+        if (data === "ok") { setisEditing(false); getUsers() }
+    }
 
     return (
         <div>
@@ -115,11 +142,11 @@ export default function GestUser() {
                                     <Button key="cancel" onClick={() => setisAddNewUser(false)}>
                                         Cancelar
                                     </Button>,
-                                    <Button key="create" onClick={() => { formNewuser.submit() }}>
+                                    <Button key="create" onClick={() => { formNewUser.submit() }}>
                                         Crear
                                     </Button>,
                                 ]}>
-                                <Form form={formNewuser} onFinish={createNewUser}>
+                                <Form form={formNewUser} onFinish={createNewUser}>
                                     <Form.Item name="name" label="Nombre">
                                         <Input />
                                     </Form.Item>
@@ -157,34 +184,23 @@ export default function GestUser() {
                                     <Button key="cancel" onClick={() => setisEditing(false)}>
                                         Cancelar
                                     </Button>,
-                                    <Button key="update" onClick={() => {
-                                        setDataSource((pre) => {
-                                            return pre.map((user) => { return user.key === isUserEditing.key ? isUserEditing : user })
-                                        });
-                                        setisEditing(false);
-                                    }}>
+                                    <Button key="update" onClick={() => { formUpdateUser.submit() }}>
                                         Actualizar
                                     </Button>,
                                 ]}>
-                                <Form form={formUpdateuser}
-                                    initialValues={{
-                                        user: isUserEditing?.user,
-                                        pass: isUserEditing?.pass,
-                                        roll: isUserEditing?.roll,
-                                    }}>
+                                <Form form={formUpdateUser}
+                                    onFinish={updateUser}>
+                                    <Form.Item name="name" label="Nombre">
+                                        <Input />
+                                    </Form.Item>
                                     <Form.Item name="user" label="Usuario">
-                                        <Input
-                                            onChange={(e) => { setisUserEditing(pre => { return { ...pre, user: e.target.value } }) }}
-                                        />
+                                        <Input />
                                     </Form.Item>
                                     <Form.Item name="pass" label="Contraseña">
-                                        <Input.Password name="pass"
-                                            onChange={(e) => { setisUserEditing(pre => { return { ...pre, pass: e.target.value } }) }}
-                                        />
+                                        <Input.Password name="pass" />
                                     </Form.Item>
                                     <Form.Item name="roll" label="Roll">
                                         <Select
-                                            onChange={(value, e) => { setisUserEditing(pre => { return { ...pre, roll: value } }) }}
                                             options={[
                                                 {
                                                     value: 'Administrador',
@@ -209,4 +225,3 @@ export default function GestUser() {
         </div >
     )
 }
-
