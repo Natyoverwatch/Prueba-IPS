@@ -56,7 +56,7 @@ export default function GestUser() {
                 )
             },
             filterIcon: () => { return (<SearchOutlined />) },
-            onFilter: (value, record) => { return record.nameuser.toLowerCase().includes(value.toLowerCase()) },
+            onFilter: (value, record) => { return record.user.toLowerCase().includes(value.toLowerCase()) },
         },
         {
             title: 'Contraseña',
@@ -113,7 +113,6 @@ export default function GestUser() {
         setisAddNewUser(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/users", state?.token)
         data._id ? getUsers() : console.log(data)
-
     };
 
     //Update user
