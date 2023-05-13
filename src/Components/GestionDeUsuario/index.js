@@ -139,7 +139,7 @@ export default function GestUser() {
                                     <Button key="cancel" onClick={() => setisAddNewUser(false)}>
                                         Cancelar
                                     </Button>,
-                                    <Button key="create" onClick={() => { formNewUser.submit() }}>
+                                    <Button key="create" type="primary" onClick={() => { formNewUser.submit() }}>
                                         Crear
                                     </Button>,
                                 ]}>
@@ -182,7 +182,7 @@ export default function GestUser() {
                                         Cancelar
                                     </Button>,
                                     <Popconfirm title="Seguro deseas editar?" onConfirm={() => { formUpdateUser.submit() }}>
-                                        <Button key="update" >
+                                        <Button key="update" type="primary" >
                                             Actualizar
                                         </Button>
                                     </Popconfirm>,
