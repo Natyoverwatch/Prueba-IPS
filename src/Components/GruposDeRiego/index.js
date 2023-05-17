@@ -2,10 +2,10 @@ import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
 import { NavbarAdmin } from './../NavbarAdmin';
 import { useNavigate } from 'react-router-dom';
-import { Form, Modal, Button, Input, Row, Col } from 'antd';
+import { Form, Modal, Button, Input, Row, Col, Popconfirm } from 'antd';
 import { addData, getData, editData, deleteData } from "../../controller/control"
 import { AppContext } from '../../Provider';
-
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 //Images
 import mamografiaImage from '../../Images/mamografia.png';
 import sifilisImage from '../../Images/sifilis.png';
@@ -19,7 +19,30 @@ import addImage from '../../Images/agregar-usuario.png';
 
 export default function GruRiesgo() {
 
-    const riksImages = {
+    //Id for updating specific risk group
+    const [idEdit, setIdEdit] = useState(null)
+
+    //Forms to control diferent modals
+    const [formUpdateRisk] = Form.useForm();
+    const [form] = Form.useForm();
+
+    //Estados para el control de las modales
+    //Modal para creación de grupo de riesgo
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    //Modal para la actualización del grupo de riesgo
+    const [isEditing, setisEditing] = useState(false)
+
+    //Global state
+    const [state, setState] = useContext(AppContext)
+
+    //Navegación a la página acorde al grupo de riesgo
+    const navigate = useNavigate();
+
+    //Data risk groups
+    const [dataSource, setDataSource] = useState([]);
+
+    //Diccionario de imagenes de lo grupos de riesgo
+    const riskImages = {
         mamografía: mamografiaImage,
         sifilisgestacionalycongenita: sifilisImage,
         citologia: citologiaImage,
@@ -30,8 +53,9 @@ export default function GruRiesgo() {
         add: addImage,
     }
 
+    //Función para encontrar la imagen de cada grupo en relación al diccionario riksImages
     const filteredRisk = (riskGroup) => {
-        const foundPair = Object.entries(riksImages).find(([key, value]) => key === riskGroup.replace(/\s+/g, ''));
+        const foundPair = Object.entries(riskImages).find(([key, value]) => key === riskGroup.replace(/\s+/g, ''));
         if (foundPair) {
             const [key, value] = foundPair;
             return value
@@ -40,28 +64,28 @@ export default function GruRiesgo() {
         }
     }
 
-    //Global state
-    const [state, setState] = useContext(AppContext)
+    //Editar grupo de riesgo y actualizar
+    const editRisk = (risk) => {
+        setisEditing(true)
+        formUpdateRisk.setFieldsValue(risk);
+        setIdEdit(risk._id)
 
-    const navigate = useNavigate();
+    }
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const updateRisk = async (values) => {
+        const data = await editData(values, `https://api.clubdeviajeros.tk/api/risk/${idEdit}`, state?.token)
+        if (data === "ok") { setisEditing(false); getRisks() }
+    }
 
-    const [form] = Form.useForm();
-
-    //Data risk groups
-    const [dataSource, setDataSource] = useState([]);
-
-    //Create new risk 
+    //Creación de un nuevo grupo de riesgo
     const createNewRisk = async (values) => {
         setIsModalVisible(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/risk", state?.token)
-        console.log(data)
     };
 
+    //Obtención de los grupos de riesgo
     const getRisks = async () => {
         const getConstdata = await getData("https://api.clubdeviajeros.tk/api/risk", state?.token)
-        console.log(getConstdata)
         setDataSource(getConstdata);
     }
 
@@ -70,6 +94,12 @@ export default function GruRiesgo() {
         // eslint-disable-next-line
     }, [])
 
+    //Borrar grupo de riesgo 
+    const deleteRisk = async (risk) => {
+        const data = await deleteData(`https://api.clubdeviajeros.tk/api/risk/${risk._id}`, state?.token)
+        if (data === 200) getRisks()
+    }
+
     return (
         <div>
             <NavbarAdmin />
@@ -77,7 +107,7 @@ export default function GruRiesgo() {
                 Abrir Modal
             </Button>
             <Modal
-                title="Ejemplo de Modal con Formulario"
+                title="Creación grupo de riesgo"
                 open={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 footer={[
@@ -87,12 +117,11 @@ export default function GruRiesgo() {
                     <Button key="create" type="primary" onClick={() => { form.submit() }}>
                         Crear
                     </Button>,
-                ]}
-            >
+                ]}>
                 <Form form={form} onFinish={createNewRisk}>
                     <Form.Item
                         name="name"
-                        label="Nombre"
+                        label="Nombre grupo de riesgo"
                         rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                     >
                         <Input />
@@ -109,10 +138,33 @@ export default function GruRiesgo() {
                             onClick={() => navigate(read.urlnavigate)}>
                             <h1 style={{ textTransform: "capitalize" }}>{read.name} </h1>
                             <img src={filteredRisk(read.name)} alt={read.name + "imagen"} />
+                            <Row style={{ marginTop: "20px" }}>
+                                <FiEdit onClick={() => editRisk(read)} />
+                                <FiTrash2 onClick={() => deleteRisk(read)} />
+                            </Row>
                         </Col>
                     ))
                 }
             </Row>
+            {/* Modal for updating risk */}
+            <Modal
+                title="Actualización del grupo de riesgo"
+                open={isEditing}
+                onCancel={() => setisEditing(false)}
+                footer={[
+                    <Button key="cancel" onClick={() => setisEditing(false)}>
+                        Cancelar
+                    </Button>,
+                    <Button key="create" type="primary" onClick={() => { formUpdateRisk.submit() }}>
+                        Crear
+                    </Button>,
+                ]}>
+                <Form form={formUpdateRisk} onFinish={updateRisk}>
+                    <Form.Item name="name" label="Nombre grupo:">
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     )
 }
