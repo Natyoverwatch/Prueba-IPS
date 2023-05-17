@@ -110,12 +110,16 @@ export default function GruRiesgo() {
             <Modal
                 title="Creación grupo de riesgo"
                 open={isModalVisible}
-                onCancel={() => setIsModalVisible(false)}
+                onCancel={() => {
+                    setIsModalVisible(false)
+                }}
                 footer={[
                     <Button key="cancel" onClick={() => setIsModalVisible(false)}>
                         Cancelar
                     </Button>,
-                    <Button key="create" type="primary" onClick={() => { form.submit() }}>
+                    <Button key="create" type="primary" onClick={() => {
+                        form.submit()
+                    }}>
                         Crear
                     </Button>,
                 ]}>
