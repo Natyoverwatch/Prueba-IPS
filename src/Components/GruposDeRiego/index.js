@@ -81,7 +81,7 @@ export default function GruRiesgo() {
     const createNewRisk = async (values) => {
         setIsModalVisible(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/risk", state?.token)
-        getRisks()
+        if (data) getRisks()
     };
 
     //Obtención de los grupos de riesgo
