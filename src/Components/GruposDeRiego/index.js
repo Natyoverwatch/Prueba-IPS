@@ -13,7 +13,7 @@ import citologiaImage from '../../Images/papilla.png';
 import desnutricionImage from '../../Images/desnutricion.png';
 import edaImage from '../../Images/diarrea.png';
 import iraImage from '../../Images/neumonia.png';
-import mmeImage from '../../Images/muerte.png';
+import mmeImage from '../../Images/mme.png';
 import addImage from '../../Images/agregar-usuario.png';
 
 
