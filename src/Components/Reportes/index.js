@@ -76,17 +76,6 @@ export default function Reports() {
                     </Form.Item>
 
                     <Form.Item
-                        name="email"
-                        label="Email"
-                        rules={[
-                            { required: true, message: 'Por favor ingresa tu correo electrónico' },
-                            { type: 'email', message: 'Por favor ingresa un correo electrónico válido' },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
                         name="imagen"
                         label="Imagen"
                         rules={[{ required: true, message: 'Por favor selecciona una imagen' }]}
