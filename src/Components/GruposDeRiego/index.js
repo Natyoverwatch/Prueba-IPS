@@ -45,7 +45,7 @@ export default function GruRiesgo() {
     const riskImages = {
         mamografía: mamografiaImage,
         sifilisgestacionalycongenita: sifilisImage,
-        citologia: citologiaImage,
+        citologiaycolposcopia: citologiaImage,
         desnutrición: desnutricionImage,
         eda: edaImage,
         ira: iraImage,
@@ -82,6 +82,7 @@ export default function GruRiesgo() {
         setIsModalVisible(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/risk", state?.token)
         if (data) getRisks()
+        console.log(data)
     };
 
     //Obtención de los grupos de riesgo
