@@ -46,6 +46,7 @@ export default function Preguntas() {
     const createNewQuestion = async (values) => {
         setIsModalVisible(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/questions", state?.token)
+        console.log(data)
         if (data) getQuestions()
     };
 
@@ -53,6 +54,7 @@ export default function Preguntas() {
     const getQuestions = async () => {
         const getConstdata = await getData("https://api.clubdeviajeros.tk/api/questions", state?.token)
         setDataSource(getConstdata);
+        console.log(getConstdata);
     }
 
     useEffect(() => {
@@ -68,13 +70,13 @@ export default function Preguntas() {
 
     //Relacion id con grupo de riesgo
     const QuestionName = {
-        _6464311f614c906ff6ba4296: 'mamografía',
-        _646521f6614c906ff6ba43cb: 'sifilis gestacional y congenita',
-        _64657176614c906ff6ba447c: 'citologia',
-        _64657161614c906ff6ba4478: 'desnutrición',
-        _6465719b614c906ff6ba4482: 'eda',
-        _6465226b614c906ff6ba43d8: 'ira',
-        _6465224b614c906ff6ba43d2: 'mme',
+        _6464311f614c906ff6ba4296: 'Mamografía',
+        _646521f6614c906ff6ba43cb: 'Sifilis gestacional y congenita',
+        _64657176614c906ff6ba447c: 'Citologia y colposcopia',
+        _64657161614c906ff6ba4478: 'Desnutrición',
+        _6465719b614c906ff6ba4482: 'Eda',
+        _6465226b614c906ff6ba43d8: 'Ira',
+        _6465224b614c906ff6ba43d2: 'Mme',
     }
 
     const columns = [
@@ -173,7 +175,37 @@ export default function Preguntas() {
                                     label="Id del grupo de riesgo"
                                     rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                                 >
-                                    <Input />
+                                    <Select
+                                        options={[
+                                            {
+                                                value: '64657176614c906ff6ba447c',
+                                                label: 'Citología y colposcopia',
+                                            },
+                                            {
+                                                value: '6464311f614c906ff6ba4296',
+                                                label: 'Mamografía',
+                                            },
+                                            {
+                                                value: '646521f6614c906ff6ba43cb',
+                                                label: 'Sifilis gestacional y congenita',
+                                            },
+                                            {
+                                                value: '64657161614c906ff6ba4478',
+                                                label: 'Desnutricion',
+                                            },
+                                            {
+                                                value: '6465719b614c906ff6ba4482',
+                                                label: 'Eda',
+                                            },
+                                            {
+                                                value: '6465226b614c906ff6ba43d8',
+                                                label: 'Ira',
+                                            },
+                                            {
+                                                value: '6465224b614c906ff6ba43d2',
+                                                label: 'Mme',
+                                            },
+                                        ]} />
                                 </Form.Item>
                                 <Form.Item
                                     name="tipo"
@@ -229,14 +261,43 @@ export default function Preguntas() {
                                     label="Id del grupo de riesgo"
                                     rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                                 >
-                                    <Input />
+                                    <Select
+                                        options={[
+                                            {
+                                                value: '64657176614c906ff6ba447c',
+                                                label: 'Citología y colposcopia',
+                                            },
+                                            {
+                                                value: '6464311f614c906ff6ba4296',
+                                                label: 'Mamografía',
+                                            },
+                                            {
+                                                value: '646521f6614c906ff6ba43cb',
+                                                label: 'Sifilis gestacional y congenita',
+                                            },
+                                            {
+                                                value: '64657161614c906ff6ba4478',
+                                                label: 'Desnutricion',
+                                            },
+                                            {
+                                                value: '6465719b614c906ff6ba4482',
+                                                label: 'Eda',
+                                            },
+                                            {
+                                                value: '6465226b614c906ff6ba43d8',
+                                                label: 'Ira',
+                                            },
+                                            {
+                                                value: '6465224b614c906ff6ba43d2',
+                                                label: 'Mme',
+                                            },
+                                        ]} />
                                 </Form.Item>
                                 <Form.Item
                                     name="tipo"
                                     label="Tipo de pregunta"
                                     rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                                 >
-
                                     <Select
                                         options={[
                                             {

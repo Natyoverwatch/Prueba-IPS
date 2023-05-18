@@ -31,6 +31,9 @@ export const NavbarAdmin = () => {
                 <Link to='/reportes'>
                     <h2 className='styleh2Adm'>Reportes</h2>
                 </Link>
+                <Link to='/supervisor'>
+                    <h2 className='styleh2Adm'>Supervisores</h2>
+                </Link>
             </div>
             <div style={{ display: 'flex', margin: '1em', alignSelf: 'flex-end', color: 'white' }}>
                 <BsPersonCircle size={30} onClick={() => navigate('/login')} />

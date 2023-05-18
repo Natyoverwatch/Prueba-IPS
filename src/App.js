@@ -12,6 +12,7 @@ import GRMamografia from './Components/GruposDeRiego/Mamografia';
 import GRMme from './Components/GruposDeRiego/Mme';
 import GRSifilis from './Components/GruposDeRiego/Sifilis';
 import GRCitologia from './Components/GruposDeRiego/Citologia';
+import Supervisor from './Components/Supervisor';
 
 import MyProvider from "./Provider"
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/Usuarios" element={<GestUser />} />
           <Route path="/griesgo" element={<GruRiesgo />} />
           <Route path="/reportes" element={<Reports />} />
+          <Route path="/supervisor" element={<Supervisor />} />
           {/* Rutas Grupos de riesgo*/}
           <Route path="/mamografia" element={<GRMamografia />} />
           <Route path="/sifilis" element={<GRSifilis />} />
