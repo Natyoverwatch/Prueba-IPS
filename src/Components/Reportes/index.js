@@ -143,10 +143,9 @@ export default function Preguntas() {
     return (
         <div>
             <NavbarAdmin />
-            <div class='containerquestion'>
+            <div className='containerquestion'>
                 <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
                     <Col className='tableUser'>
-
                         <Button style={{ marginBottom: '2rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
                             Crear nueva pregunta
                         </Button>
