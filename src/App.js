@@ -26,7 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/Usuarios" element={<GestUser />} />
-          <Route path="/griesgo" element={<GruRiesgo />} />
+          <Route path="/griesgo/:id" element={<GruRiesgo />} />
           <Route path="/reportes" element={<Reports />} />
           <Route path="/supervisor" element={<Supervisor />} />
           {/* Rutas Grupos de riesgo*/}

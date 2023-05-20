@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
 import { NavbarAdmin } from './../NavbarAdmin';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Modal, Button, Input, Row, Col, Popconfirm } from 'antd';
 import { addData, getData, editData, deleteData } from "../../controller/control"
 import { AppContext } from '../../Provider';
@@ -18,6 +18,8 @@ import addImage from '../../Images/agregar-usuario.png';
 
 
 export default function GruRiesgo() {
+
+    let { id } = useParams()
 
     //Id for updating specific risk group
     const [idEdit, setIdEdit] = useState(null)
@@ -80,20 +82,24 @@ export default function GruRiesgo() {
     //Creación de un nuevo grupo de riesgo
     const createNewRisk = async (values) => {
         setIsModalVisible(false);
-        const data = await addData(values, "https://api.clubdeviajeros.tk/api/risk", state?.token)
+        const datos = {
+            name: values.name,
+            id_supervisor: id,
+        }
+        const data = await addData(datos, "https://api.clubdeviajeros.tk/api/risk", state?.token)
         if (data) getRisks()
-        console.log(data)
+
     };
 
     //Obtención de los grupos de riesgo
     const getRisks = async () => {
-        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/risk", state?.token)
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
         setDataSource(getConstdata);
-        console.log(getConstdata)
     }
 
     useEffect(() => {
         getRisks()
+        console.log(id)
         // eslint-disable-next-line
     }, [])
 

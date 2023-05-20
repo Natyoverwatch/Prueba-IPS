@@ -23,7 +23,7 @@ export default function Supervisor() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
-
+    const [idSupervisor, setIdSupervisor] = useState()
     //Global state
     const [state, setState] = useContext(AppContext)
 
@@ -107,16 +107,19 @@ export default function Supervisor() {
                         <Form.Item
                             label='Seleccione un supervisor'
                         >
-                            <Select style={{ width: '100%' }}>
+                            <Select
+                                style={{ width: '100%' }}
+                                onChange={(e) => setIdSupervisor(e)}
+                            >
                                 {dataSource.map((read, index) => (
                                     <Option
                                         key={index}
-                                        value={read.name}>{read.name}
+                                        value={read._id}>{read.name}
                                     </Option>))}
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' onClick={() => navigate('/griesgo')}> Siguiente</Button>
+                            <Button type='primary' onClick={() => navigate(`/griesgo/${idSupervisor}`)}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>

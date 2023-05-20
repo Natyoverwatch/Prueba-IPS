@@ -25,9 +25,6 @@ export const NavbarAdmin = () => {
                 <Link to='/usuarios'>
                     <h2 className='styleh2Adm'>Gestion de usuario</h2>
                 </Link>
-                <Link to='/griesgo'>
-                    <h2 className='styleh2Adm'>Grupos de riesgo</h2>
-                </Link>
                 <Link to='/reportes'>
                     <h2 className='styleh2Adm'>Reportes</h2>
                 </Link>
