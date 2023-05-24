@@ -7,9 +7,7 @@ import { AppContext } from '../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
 
-
-
-export default function Reports() {
+export default function Questions() {
 
     //Id for updating specific questions
     const [idEdit, setIdEdit] = useState(null)
@@ -29,6 +27,8 @@ export default function Reports() {
 
     //Data de las preguntas
     const [dataSource, setDataSource] = useState([]);
+
+    const [dataRisk, setDataRisk] = useState([]);
 
     //Editar las preguntas y actualizar
     const editQuestions = (questions) => {
@@ -79,10 +79,16 @@ export default function Reports() {
         _6465224b614c906ff6ba43d2: 'Mme',
     }
 
+    //Obtención de los grupos de riesgo
+    const getRisks = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
+        setDataRisk(getConstdata);
+    }
+
     const columns = [
         {
             title: 'Id del grupo de Riesgo',
-            dataIndex: 'id_riesgo',
+            render: (a) => { dataSource.filter(data => data._id === a.id_riesgo) },
             key: 'id_riesgo',
         },
         /*{
