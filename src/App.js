@@ -28,7 +28,7 @@ function App() {
           <Route path="/Usuarios" element={<GestUser />} />
           <Route path="/griesgo/:id" element={<GruRiesgo />} />
           <Route path="/reportes" element={<Reports />} />
-          <Route path="/questions" element={<Questions />} />
+          <Route path="/questions/:id" element={<Questions />} />
           <Route path="/supervisor" element={<Supervisor />} />
           {/* Rutas Grupos de riesgo*/}
           <Route path="/mamografia" element={<GRMamografia />} />
