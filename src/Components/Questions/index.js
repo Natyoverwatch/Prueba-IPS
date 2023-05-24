@@ -7,6 +7,8 @@ import { AppContext } from '../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
 
+const { Option } = Select
+
 export default function Questions() {
 
     //Id for updating specific questions
@@ -54,7 +56,7 @@ export default function Questions() {
     const getQuestions = async () => {
         const getConstdata = await getData("https://api.clubdeviajeros.tk/api/questions", state?.token)
         setDataSource(getConstdata);
-        console.log(getConstdata);
+        getRisks()
     }
 
     useEffect(() => {
@@ -81,14 +83,19 @@ export default function Questions() {
 
     //Obtención de los grupos de riesgo
     const getRisks = async () => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${state?.id_supervisor}`, state?.token)
         setDataRisk(getConstdata);
+    }
+
+    const filterRisk = (a) => {
+        const filtro = dataRisk.filter(data => data._id === a.id_riesgo)
+        return (filtro[0]?.name)
     }
 
     const columns = [
         {
             title: 'Id del grupo de Riesgo',
-            render: (a) => { dataSource.filter(data => data._id === a.id_riesgo) },
+            render: (a) => filterRisk(a),
             key: 'id_riesgo',
         },
         /*{
@@ -182,36 +189,13 @@ export default function Questions() {
                                     rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                                 >
                                     <Select
-                                        options={[
-                                            {
-                                                value: '64657176614c906ff6ba447c',
-                                                label: 'Citología y colposcopia',
-                                            },
-                                            {
-                                                value: '6464311f614c906ff6ba4296',
-                                                label: 'Mamografía',
-                                            },
-                                            {
-                                                value: '646521f6614c906ff6ba43cb',
-                                                label: 'Sifilis gestacional y congenita',
-                                            },
-                                            {
-                                                value: '64657161614c906ff6ba4478',
-                                                label: 'Desnutricion',
-                                            },
-                                            {
-                                                value: '6465719b614c906ff6ba4482',
-                                                label: 'Eda',
-                                            },
-                                            {
-                                                value: '6465226b614c906ff6ba43d8',
-                                                label: 'Ira',
-                                            },
-                                            {
-                                                value: '6465224b614c906ff6ba43d2',
-                                                label: 'Mme',
-                                            },
-                                        ]} />
+                                    >
+                                        {dataRisk.map((read, index) => (
+                                            <Option
+                                                key={index}
+                                                value={read._id}>{read.name}
+                                            </Option>))}
+                                    </Select>
                                 </Form.Item>
                                 <Form.Item
                                     name="tipo"

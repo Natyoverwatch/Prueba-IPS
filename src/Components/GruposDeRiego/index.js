@@ -93,13 +93,14 @@ export default function GruRiesgo() {
 
     //Obtención de los grupos de riesgo
     const getRisks = async () => {
+        setState({ ...state, id_supervisor: id })
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
         setDataSource(getConstdata);
     }
 
     useEffect(() => {
         getRisks()
-        console.log(id)
+        console.log(state)
         // eslint-disable-next-line
     }, [])
 
