@@ -68,6 +68,7 @@ export default function GruRiesgo() {
 
     //Editar grupo de riesgo y actualizar
     const editRisk = (risk) => {
+        form.resetFields()
         setisEditing(true)
         formUpdateRisk.setFieldsValue(risk);
         setIdEdit(risk._id)
@@ -81,6 +82,7 @@ export default function GruRiesgo() {
 
     //Creación de un nuevo grupo de riesgo
     const createNewRisk = async (values) => {
+        form.resetFields()
         setIsModalVisible(false);
         const datos = {
             name: values.name,
@@ -113,17 +115,14 @@ export default function GruRiesgo() {
     return (
         <div>
             <NavbarAdmin />
-            <Button type="primary" onClick={() => { setIsModalVisible(true) }}>
-                Abrir Modal
-            </Button>
             <Modal
                 title="Creación grupo de riesgo"
                 open={isModalVisible}
-                onCancel={() => {
-                    setIsModalVisible(false)
-                }}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+                    <Button key="cancel" onClick={() => {
+                        setIsModalVisible(false)
+                        form.resetFields()
+                    }}>
                         Cancelar
                     </Button>,
                     <Button key="create" type="primary" onClick={() => {
@@ -146,32 +145,51 @@ export default function GruRiesgo() {
                 {
                     dataSource.map((read, index) => (
                         <Col
-                            className='styledCol'
-                            xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 5, offset: 2 }}
-                            key={index}
-                            onClick={() => navigate(`/questions/${read._id}`)}>
-                            <h1 style={{ textTransform: "capitalize" }}>{read.name} </h1>
-                            <img src={filteredRisk(read.name)} alt={read.name + "imagen"} />
+                            className='styledColGrisk'
+                            xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}
+                            key={index}>
+                            <Row className='styledRow2' onClick={() => navigate(`/questions/${read._id}`)}>
+                                <h1 style={{ textTransform: "capitalize" }}>{read.name} </h1>
+                                <img src={filteredRisk(read.name)} alt={read.name + "imagen"} />
+                            </Row>
                             <Row style={{ marginTop: "20px" }}>
                                 <FiEdit onClick={() => editRisk(read)} />
-                                <FiTrash2 onClick={() => deleteRisk(read)} />
+                                <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteRisk(read)}>
+                                    <FiTrash2 />
+                                </Popconfirm>
                             </Row>
                         </Col>
                     ))
                 }
+                <Col
+                    className='styledColGrisk'
+                    xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}>
+                    <Row className='styledRow2' onClick={() => { setIsModalVisible(true) }}>
+                        <h1 style={{ textTransform: "capitalize" }}> agregar grupo de riesgo </h1>
+                        <img src={filteredRisk('add')} alt={"addimage"} />
+                    </Row>
+                </Col>
             </Row>
             {/* Modal for updating risk */}
             <Modal
                 title="Actualización del grupo de riesgo"
                 open={isEditing}
-                onCancel={() => setisEditing(false)}
+                onCancel={() => {
+                    setisEditing(false)
+                    form.resetFields()
+                }}
                 footer={[
-                    <Button key="cancel" onClick={() => setisEditing(false)}>
+                    <Button key="cancel" onClick={() => {
+                        setisEditing(false)
+                        form.resetFields()
+                    }}>
                         Cancelar
                     </Button>,
-                    <Button key="create" type="primary" onClick={() => { formUpdateRisk.submit() }}>
-                        Crear
-                    </Button>,
+                    <Popconfirm title="Seguro deseas editar?" onConfirm={() => { formUpdateRisk.submit() }}>
+                        <Button key="create" type="primary">
+                            Crear
+                        </Button>
+                    </Popconfirm>,
                 ]}>
                 <Form form={formUpdateRisk} onFinish={updateRisk}>
                     <Form.Item name="name" label="Nombre grupo:">

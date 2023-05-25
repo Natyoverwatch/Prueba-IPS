@@ -42,12 +42,14 @@ export default function Supervisor() {
     }
 
     const updateSupervisor = async (values) => {
+        form.resetFields()
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/supervisor/${idEdit}`, state?.token)
         if (data === "ok") { setisEditing(false); getSupervisor() }
     }
 
     //Creación de un nuevo supervisor
     const createNewSupervisor = async (values) => {
+        form.resetFields()
         setIsModalVisible(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/supervisor", state?.token)
         if (data) getSupervisor()
@@ -68,7 +70,7 @@ export default function Supervisor() {
 
     //Borrar supervisor
     const deleteSupervisor = async (supervisor) => {
-        const data = await deleteData(`https://api.clubdeviajeros.tk/api/supervisor/${supervisor._id}`, state?.token)
+        const data = await deleteData(`https://api.clubdeviajeros.tk/api/supervisor/${supervisor}`, state?.token)
         if (data === 200) getSupervisor()
     }
 
@@ -85,7 +87,10 @@ export default function Supervisor() {
             render: (_, record) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <FiEdit onClick={() => editSupervisor(record)} />
+                        <FiEdit onClick={() => {
+                            editSupervisor(record)
+                            form.resetFields()
+                        }} />
                         <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteSupervisor(record._id)}>
                             <FiTrash2 />
                         </Popconfirm>
@@ -138,9 +143,13 @@ export default function Supervisor() {
                 open={isModalVisible}
                 onCancel={() => {
                     setIsModalVisible(false)
+                    form.resetFields()
                 }}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+                    <Button key="cancel" onClick={() => {
+                        setIsModalVisible(false)
+                        form.resetFields()
+                    }}>
                         Cancelar
                     </Button>,
                     <Button key="create" type="primary" onClick={() => {
@@ -164,9 +173,15 @@ export default function Supervisor() {
             <Modal
                 title="Actualización del nombre del supervisor"
                 open={isEditing}
-                onCancel={() => setisEditing(false)}
+                onCancel={() => {
+                    setisEditing(false)
+                    form.resetFields()
+                }}
                 footer={[
-                    <Button key="cancel" onClick={() => setisEditing(false)}>
+                    <Button key="cancel" onClick={() => {
+                        setisEditing(false)
+                        form.resetFields()
+                    }}>
                         Cancelar
                     </Button>,
                     <Button key="create" type="primary" onClick={() => { formUpdateSupervisor.submit() }}>

@@ -42,12 +42,14 @@ export default function Questions() {
     }
 
     const updateQuestions = async (values) => {
+        form.resetFields()
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/questions/${idEdit}`, state?.token)
         if (data === "ok") { setisEditing(false); getQuestions() }
     }
 
     //Creación de una nueva pregunta
     const createNewQuestion = async (values) => {
+        form.resetFields()
         setIsModalVisible(false);
         const datos = {
             id_riesgo: id,
@@ -103,11 +105,20 @@ export default function Questions() {
     }
 
     const columns = [
-
-        /*{
-            title: 'Nombre del grupo de Riesgo',
-            dataIndex: 'name_risk',
-            key: 'name_risk',
+        {
+            title: 'ID',
+            dataIndex: 'id_riesgo',
+            key: 'idrisk',
+        },
+        {
+            title: 'Tipo de pregunta',
+            dataIndex: 'tipo',
+            key: 'tipo',
+        },
+        {
+            title: 'Pregunta',
+            dataIndex: 'pregunta',
+            key: 'pregunta',
             editable: true,
             filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
                 return (
@@ -128,21 +139,6 @@ export default function Questions() {
             },
             filterIcon: () => { return (<SearchOutlined />) },
             onFilter: (value, record) => { return record.user.toLowerCase().includes(value.toLowerCase()) },
-        },*/
-        {
-            title: 'ID',
-            dataIndex: 'id_riesgo',
-            key: 'idrisk',
-        },
-        {
-            title: 'Tipo de pregunta',
-            dataIndex: 'tipo',
-            key: 'tipo',
-        },
-        {
-            title: 'Pregunta',
-            dataIndex: 'pregunta',
-            key: 'pregunta',
         },
         {
             title: 'Nombre del input de la pregunta',
@@ -169,13 +165,13 @@ export default function Questions() {
         <div>
             <NavbarAdmin />
             <div className='containerquestion'>
-                <Row>
-                    <Col>
-                        {filterRisk({ id_riesgo: id })}
-                    </Col>
-                </Row>
                 <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
-                    <Col className='tableUser'>
+                    <Col>
+                        <Row style={{ justifyContent: 'center', }}>
+                            <Col>
+                                <h1 style={{ textTransform: 'uppercase', fontSize: '2.5rem', color: '#105c5c', fontWeight: '800' }}>{filterRisk({ id_riesgo: id })}</h1>
+                            </Col>
+                        </Row>
                         <Button style={{ marginBottom: '2rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
                             Crear nueva pregunta
                         </Button>
@@ -186,9 +182,13 @@ export default function Questions() {
                             open={isModalVisible}
                             onCancel={() => {
                                 setIsModalVisible(false)
+                                form.resetFields()
                             }}
                             footer={[
-                                <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+                                <Button key="cancel" onClick={() => {
+                                    setIsModalVisible(false)
+                                    form.resetFields()
+                                }}>
                                     Cancelar
                                 </Button>,
                                 <Button key="create" type="primary" onClick={() => {
@@ -198,7 +198,6 @@ export default function Questions() {
                                 </Button>,
                             ]}>
                             <Form form={form} onFinish={createNewQuestion}>
-
                                 <Form.Item
                                     name="tipo"
                                     label="Tipo de pregunta"
@@ -236,9 +235,15 @@ export default function Questions() {
                         <Modal
                             title="Actualización de la pregunta"
                             open={isEditing}
-                            onCancel={() => setisEditing(false)}
+                            onCancel={() => {
+                                setisEditing(false)
+                                form.resetFields()
+                            }}
                             footer={[
-                                <Button key="cancel" onClick={() => setisEditing(false)}>
+                                <Button key="cancel" onClick={() => {
+                                    setisEditing(false)
+                                    form.resetFields()
+                                }}>
                                     Cancelar
                                 </Button>,
                                 <Popconfirm title="Seguro deseas editar?" onConfirm={() => { formUpdateQuestions.submit() }}>
@@ -248,43 +253,6 @@ export default function Questions() {
                                 </Popconfirm>,
                             ]}>
                             <Form form={formUpdateQuestions} onFinish={updateQuestions}>
-                                <Form.Item
-                                    name="id_riesgo"
-                                    label="Id del grupo de riesgo"
-                                    rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
-                                >
-                                    <Select
-                                        options={[
-                                            {
-                                                value: '64657176614c906ff6ba447c',
-                                                label: 'Citología y colposcopia',
-                                            },
-                                            {
-                                                value: '6464311f614c906ff6ba4296',
-                                                label: 'Mamografía',
-                                            },
-                                            {
-                                                value: '646521f6614c906ff6ba43cb',
-                                                label: 'Sifilis gestacional y congenita',
-                                            },
-                                            {
-                                                value: '64657161614c906ff6ba4478',
-                                                label: 'Desnutricion',
-                                            },
-                                            {
-                                                value: '6465719b614c906ff6ba4482',
-                                                label: 'Eda',
-                                            },
-                                            {
-                                                value: '6465226b614c906ff6ba43d8',
-                                                label: 'Ira',
-                                            },
-                                            {
-                                                value: '6465224b614c906ff6ba43d2',
-                                                label: 'Mme',
-                                            },
-                                        ]} />
-                                </Form.Item>
                                 <Form.Item
                                     name="tipo"
                                     label="Tipo de pregunta"
