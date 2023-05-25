@@ -49,8 +49,14 @@ export default function Questions() {
     //Creación de una nueva pregunta
     const createNewQuestion = async (values) => {
         setIsModalVisible(false);
-        const data = await addData(values, "https://api.clubdeviajeros.tk/api/questions", state?.token)
-        console.log(data)
+        const datos = {
+            id_riesgo: id,
+            tipo: values.tipo,
+            pregunta: values.pregunta,
+            name: values.name,
+        }
+        const data = await addData(datos, "https://api.clubdeviajeros.tk/api/questions", state?.token)
+        // console.log(data)
         if (data) getQuestions()
     };
 
@@ -68,7 +74,7 @@ export default function Questions() {
 
     //Borrar pregunta 
     const deleteQuestions = async (questions) => {
-        const data = await deleteData(`https://api.clubdeviajeros.tk/api/questions/${questions._id}`, state?.token)
+        const data = await deleteData(`https://api.clubdeviajeros.tk/api/questions/${questions}`, state?.token)
         if (data === 200) getQuestions()
     }
 
@@ -87,10 +93,12 @@ export default function Questions() {
     const getRisks = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${state?.id_supervisor}`, state?.token)
         setDataRisk(getConstdata);
+
     }
 
     const filterRisk = (a) => {
         const filtro = dataRisk.filter(data => data._id === a.id_riesgo)
+
         return (filtro[0]?.name)
     }
 
@@ -122,6 +130,11 @@ export default function Questions() {
             onFilter: (value, record) => { return record.user.toLowerCase().includes(value.toLowerCase()) },
         },*/
         {
+            title: 'ID',
+            dataIndex: 'id_riesgo',
+            key: 'idrisk',
+        },
+        {
             title: 'Tipo de pregunta',
             dataIndex: 'tipo',
             key: 'tipo',
@@ -138,13 +151,12 @@ export default function Questions() {
         },
         {
             title: 'Acciones',
-            dataIndex: 'actions',
             key: 'actions',
-            render: (_, record) => {
+            render: (a) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <FiEdit onClick={() => editQuestions(record)} />
-                        <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteQuestions(record._id)}>
+                        <FiEdit onClick={() => editQuestions(a)} />
+                        <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteQuestions(a._id)}>
                             <FiTrash2 />
                         </Popconfirm>
                     </div >
@@ -157,6 +169,11 @@ export default function Questions() {
         <div>
             <NavbarAdmin />
             <div className='containerquestion'>
+                <Row>
+                    <Col>
+                        {filterRisk({ id_riesgo: id })}
+                    </Col>
+                </Row>
                 <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
                     <Col className='tableUser'>
                         <Button style={{ marginBottom: '2rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
@@ -165,7 +182,7 @@ export default function Questions() {
                         <Table columns={columns} dataSource={dataSource} />
                         {/* Modal para la creación de usuarios */}
                         <Modal
-                            title={ }
+                            title={filterRisk({ id_riesgo: id })}
                             open={isModalVisible}
                             onCancel={() => {
                                 setIsModalVisible(false)
