@@ -6,10 +6,12 @@ import { addData, getData, editData, deleteData } from "../../controller/control
 import { AppContext } from '../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
+import { useParams } from 'react-router-dom';
 
 const { Option } = Select
 
 export default function Questions() {
+    let { id } = useParams()
 
     //Id for updating specific questions
     const [idEdit, setIdEdit] = useState(null)
@@ -54,7 +56,7 @@ export default function Questions() {
 
     //Obtención de las preguntas
     const getQuestions = async () => {
-        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/questions", state?.token)
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${id}`, state?.token)
         setDataSource(getConstdata);
         getRisks()
     }
@@ -93,11 +95,7 @@ export default function Questions() {
     }
 
     const columns = [
-        {
-            title: 'Id del grupo de Riesgo',
-            render: (a) => filterRisk(a),
-            key: 'id_riesgo',
-        },
+
         /*{
             title: 'Nombre del grupo de Riesgo',
             dataIndex: 'name_risk',
@@ -167,7 +165,7 @@ export default function Questions() {
                         <Table columns={columns} dataSource={dataSource} />
                         {/* Modal para la creación de usuarios */}
                         <Modal
-                            title="Creación preguntas"
+                            title={ }
                             open={isModalVisible}
                             onCancel={() => {
                                 setIsModalVisible(false)
@@ -183,20 +181,7 @@ export default function Questions() {
                                 </Button>,
                             ]}>
                             <Form form={form} onFinish={createNewQuestion}>
-                                <Form.Item
-                                    name="id_riesgo"
-                                    label="Id del grupo de riesgo"
-                                    rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
-                                >
-                                    <Select
-                                    >
-                                        {dataRisk.map((read, index) => (
-                                            <Option
-                                                key={index}
-                                                value={read._id}>{read.name}
-                                            </Option>))}
-                                    </Select>
-                                </Form.Item>
+
                                 <Form.Item
                                     name="tipo"
                                     label="Tipo de pregunta"

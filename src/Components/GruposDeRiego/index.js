@@ -33,7 +33,6 @@ export default function GruRiesgo() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización del grupo de riesgo
     const [isEditing, setisEditing] = useState(false)
-    const [idSupervisorRisk, setIdSupervisorRisk] = useState()
 
     //Global state
     const [state, setState] = useContext(AppContext)
@@ -88,7 +87,6 @@ export default function GruRiesgo() {
             id_supervisor: id,
         }
         const data = await addData(datos, "https://api.clubdeviajeros.tk/api/risk", state?.token)
-        setIdSupervisorRisk(datos._id)
         if (data) { getRisks() }
 
     };
@@ -151,7 +149,7 @@ export default function GruRiesgo() {
                             className='styledCol'
                             xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 5, offset: 2 }}
                             key={index}
-                            onClick={() => navigate(`/questions/${idSupervisorRisk}`)}>
+                            onClick={() => navigate(`/questions/${read._id}`)}>
                             <h1 style={{ textTransform: "capitalize" }}>{read.name} </h1>
                             <img src={filteredRisk(read.name)} alt={read.name + "imagen"} />
                             <Row style={{ marginTop: "20px" }}>
