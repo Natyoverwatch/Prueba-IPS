@@ -5,9 +5,6 @@ import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table } from 
 import { addData, getData, editData, deleteData } from "../../controller/control"
 import { AppContext } from '../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { SearchOutlined } from "@ant-design/icons"
-
-
 
 export default function Reports() {
 
@@ -85,31 +82,6 @@ export default function Reports() {
             dataIndex: 'id_riesgo',
             key: 'id_riesgo',
         },
-        /*{
-            title: 'Nombre del grupo de Riesgo',
-            dataIndex: 'name_risk',
-            key: 'name_risk',
-            editable: true,
-            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
-                return (
-                    <>
-                        <Input
-                            autoFocus
-                            placeholder='Escribe aquí'
-                            onPressEnter={() => { confirm() }}
-                            onBlur={() => { confirm() }}
-                            value={selectedKeys[0]}
-                            onChange={(e) => {
-                                setSelectedKeys(e.target.value ? [e.target.value] : [])
-                                confirm({ closeDropdown: false })
-                            }}
-                        ></Input>
-                    </>
-                )
-            },
-            filterIcon: () => { return (<SearchOutlined />) },
-            onFilter: (value, record) => { return record.user.toLowerCase().includes(value.toLowerCase()) },
-        },*/
         {
             title: 'Tipo de pregunta',
             dataIndex: 'tipo',

@@ -23,7 +23,7 @@ export default function Supervisor() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
-    const [idSupervisor, setIdSupervisor] = useState()
+    const [idSupervisor, setIdSupervisor] = useState("")
     //Global state
     const [state, setState] = useContext(AppContext)
 
@@ -124,7 +124,7 @@ export default function Supervisor() {
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' onClick={() => navigate(`/griesgo/${idSupervisor}`)}> Siguiente</Button>
+                            <Button type='primary' onClick={() => idSupervisor.length > 0 ? navigate(`/griesgo/${idSupervisor}`) : ""}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>
@@ -194,6 +194,6 @@ export default function Supervisor() {
                     </Form.Item>
                 </Form>
             </Modal>
-        </div>
+        </div >
     )
 }

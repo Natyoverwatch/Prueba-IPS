@@ -41,6 +41,7 @@ export default function Questions() {
         setIdEdit(questions._id)
     }
 
+    //Actualizar la pregunta
     const updateQuestions = async (values) => {
         form.resetFields()
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/questions/${idEdit}`, state?.token)
@@ -58,7 +59,6 @@ export default function Questions() {
             name: values.name,
         }
         const data = await addData(datos, "https://api.clubdeviajeros.tk/api/questions", state?.token)
-        // console.log(data)
         if (data) getQuestions()
     };
 
@@ -80,17 +80,6 @@ export default function Questions() {
         if (data === 200) getQuestions()
     }
 
-    //Relacion id con grupo de riesgo
-    const QuestionName = {
-        _6464311f614c906ff6ba4296: 'Mamografía',
-        _646521f6614c906ff6ba43cb: 'Sifilis gestacional y congenita',
-        _64657176614c906ff6ba447c: 'Citologia y colposcopia',
-        _64657161614c906ff6ba4478: 'Desnutrición',
-        _6465719b614c906ff6ba4482: 'Eda',
-        _6465226b614c906ff6ba43d8: 'Ira',
-        _6465224b614c906ff6ba43d2: 'Mme',
-    }
-
     //Obtención de los grupos de riesgo
     const getRisks = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${state?.id_supervisor}`, state?.token)
@@ -98,9 +87,9 @@ export default function Questions() {
 
     }
 
+    //
     const filterRisk = (a) => {
         const filtro = dataRisk.filter(data => data._id === a.id_riesgo)
-
         return (filtro[0]?.name)
     }
 

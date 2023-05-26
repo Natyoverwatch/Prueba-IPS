@@ -116,6 +116,10 @@ export default function GruRiesgo() {
         <div>
             <NavbarAdmin />
             <Modal
+                onCancel={() => {
+                    setIsModalVisible(false)
+                    form.resetFields()
+                }}
                 title="Creación grupo de riesgo"
                 open={isModalVisible}
                 footer={[
