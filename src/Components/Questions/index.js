@@ -95,14 +95,20 @@ export default function Questions() {
 
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id_riesgo',
-            key: 'idrisk',
-        },
-        {
             title: 'Tipo de pregunta',
             dataIndex: 'tipo',
             key: 'tipo',
+            filters: [
+                {
+                    text: 'seguimiento',
+                    value: 'seguimiento',
+                },
+                {
+                    text: 'personal',
+                    value: 'personal',
+                },
+            ],
+            onFilter: (value, record) => record.tipo.indexOf(value) === 0,
         },
         {
             title: 'Pregunta',
@@ -127,7 +133,7 @@ export default function Questions() {
                 )
             },
             filterIcon: () => { return (<SearchOutlined />) },
-            onFilter: (value, record) => { return record.user.toLowerCase().includes(value.toLowerCase()) },
+            onFilter: (value, record) => { return record.pregunta.toLowerCase().includes(value.toLowerCase()) },
         },
         {
             title: 'Nombre del input de la pregunta',
