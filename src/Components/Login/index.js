@@ -18,7 +18,7 @@ function Login() {
         if (data.length > 0) {
             setState({ user: data[0], token: data[1].token })
             console.log(state)
-            navigate('/home')
+            navigate('/supervisor')
         } else {
             alert("Login failed, user or pass is incorrect")
             navigate('/login')
