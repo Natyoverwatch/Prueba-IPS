@@ -11,8 +11,10 @@ import { AppContext } from '../../Provider';
 
 function Login() {
 
+    //Estado para veriicar si entro un administrador
     const [state, setState] = useContext(AppContext)
 
+    //Validar usuario que ingresa
     const datosLogin = async (value) => {
         const data = await loginData(value, "https://api.clubdeviajeros.tk/api/users/login")
         if (data.length > 0) {
@@ -26,6 +28,7 @@ function Login() {
     };
 
     const navigate = useNavigate();
+
     return (
         <div className='container'>
             <div style={{ width: '100%' }}>
@@ -64,15 +67,10 @@ function Login() {
                                         htmlType="submit"
                                         className='estilobotoningresar'
                                         style={{ margin: '1em 0' }}
-                                    //onClick={() => navigate('/home')}
                                     >
                                         Ingresar
                                     </Button>
-                                    <Button
-                                        type='default'
-                                        className='estilobotoncancelar'
-                                    // onClick={() => navigate('/')}
-                                    >
+                                    <Button type='default' className='estilobotoncancelar'>
                                         Cancelar
                                     </Button>
                                 </Form.Item>

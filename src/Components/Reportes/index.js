@@ -123,7 +123,7 @@ export default function Reports() {
                         <Button style={{ marginBottom: '2rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
                             Crear nueva pregunta
                         </Button>
-                        <Table columns={columns} dataSource={dataSource} />
+                        <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                         {/* Modal para la creación de usuarios */}
                         <Modal
                             title="Creación preguntas"

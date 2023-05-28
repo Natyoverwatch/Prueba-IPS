@@ -18,7 +18,7 @@ import addImage from '../../Images/agregar-usuario.png';
 
 
 export default function GruRiesgo() {
-
+    //Obtener los parametros por supervisor su ID
     let { id } = useParams()
 
     //Id for updating specific risk group
@@ -72,7 +72,6 @@ export default function GruRiesgo() {
         setisEditing(true)
         formUpdateRisk.setFieldsValue(risk);
         setIdEdit(risk._id)
-
     }
 
     const updateRisk = async (values) => {
@@ -90,7 +89,6 @@ export default function GruRiesgo() {
         }
         const data = await addData(datos, "https://api.clubdeviajeros.tk/api/risk", state?.token)
         if (data) { getRisks() }
-
     };
 
     //Obtención de los grupos de riesgo

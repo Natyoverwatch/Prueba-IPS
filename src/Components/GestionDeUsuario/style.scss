@@ -8,11 +8,9 @@
     align-items: center;
     min-height: 100vh;
 
-
     // Ajustar en celulares el fondo
     @media (max-width: 768px) {
         background-position: right;
-
     }
 
     .Cancelar {

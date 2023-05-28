@@ -129,7 +129,7 @@ export default function GestUser() {
                     <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
                         <Col className='tableUser'>
                             <Button style={{ marginBottom: '2rem' }} onClick={() => { setisAddNewUser(true) }}>Agregar un nuevo usuario</Button>
-                            <Table columns={columns} dataSource={dataSource} />
+                            <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                             {/* Modal para la creación de usuarios */}
                             <Modal
                                 title="Creación de usuario"

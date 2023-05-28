@@ -134,7 +134,7 @@ export default function Supervisor() {
                     <Button style={{ float: 'right', marginBottom: '1rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
                         Agregar supervisor
                     </Button>
-                    <Table columns={columns} dataSource={dataSource} />
+                    <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                 </Col>
             </Row>
             {/*Modal creacion supervisor*/}
@@ -168,7 +168,6 @@ export default function Supervisor() {
                     </Form.Item>
                 </Form>
             </Modal>
-
             {/* Modal para editar o actualizar el supervisor */}
             <Modal
                 title="Actualización del nombre del supervisor"

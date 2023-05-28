@@ -20,7 +20,6 @@ export const NavbarAdmin = () => {
                 <img src={logo} alt="logo" style={{ marginLeft: '1em' }} onClick={() => navigate('/')} />
                 <p className='stylepAdm'>SISALUD</p>
             </div>
-
             <div className={`stylelinkAdm ${menuOpen ? 'open' : ''}`}>
                 <Link to='/usuarios'>
                     <h2 className='styleh2Adm'>Gestion de usuario</h2>

@@ -170,7 +170,7 @@ export default function Questions() {
                         <Button style={{ marginBottom: '2rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
                             Crear nueva pregunta
                         </Button>
-                        <Table columns={columns} dataSource={dataSource} />
+                        <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                         {/* Modal para la creación de usuarios */}
                         <Modal
                             title={filterRisk({ id_riesgo: id })}
