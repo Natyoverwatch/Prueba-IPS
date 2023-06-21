@@ -7,6 +7,8 @@ import GruRiesgo from './Components/GruposDeRiego';
 import Reports from './Components/Reportes'
 import Supervisor from './Components/Supervisor';
 import Questions from './Components/Questions';
+import Auxiliar from './Components/Auxiliar';
+import GruRiesgoAux from './Components/GruposDeRiesgoAuxiliares';
 
 import MyProvider from "./Provider"
 
@@ -22,7 +24,9 @@ function App() {
           <Route path="/griesgo/:id" element={<GruRiesgo />} />
           <Route path="/reportes" element={<Reports />} />
           <Route path="/questions/:id" element={<Questions />} />
-          <Route path="/supervisor" element={<Supervisor />} />
+          <Route path="/administrador" element={<Supervisor />} />
+          <Route path="/auxiliar" element={<Auxiliar />} />
+          <Route path="/griesgoaux/:id" element={<GruRiesgoAux />} />
         </Routes>
       </BrowserRouter>
     </MyProvider>

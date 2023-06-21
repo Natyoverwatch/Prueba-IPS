@@ -7,6 +7,8 @@ import { NavbarAdmin } from '../NavbarAdmin';
 import { addData, getData, editData, deleteData } from "../../controller/control"
 import { AppContext } from '../../Provider';
 
+const { Option } = Select
+
 export default function GestUser() {
     //Forms to control diferent modals
     const [formNewUser] = Form.useForm();
@@ -26,6 +28,10 @@ export default function GestUser() {
 
     //Data people
     const [dataSource, setDataSource] = useState([]);
+    const [dataSupervisor, setDataSupervisor] = useState([]);
+
+    //Estado del auxiliar
+    const [isAux, setIsAux] = useState(false)
 
     const columns = [
         {
@@ -105,6 +111,7 @@ export default function GestUser() {
 
     useEffect(() => {
         getUsers()
+        getSupervisor()
         // eslint-disable-next-line
     }, [])
 
@@ -119,6 +126,13 @@ export default function GestUser() {
     const updateUser = async (values) => {
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/users/${idEdit}`, state?.token)
         if (data === "ok") { setisEditing(false); getUsers() }
+    }
+
+    //Obtención de los supervisores
+    const getSupervisor = async () => {
+        const getConstdataSup = await getData("https://api.clubdeviajeros.tk/api/supervisor", state?.token)
+        setDataSupervisor(getConstdataSup);
+        console.log(getConstdataSup)
     }
 
     return (
@@ -170,6 +184,17 @@ export default function GestUser() {
                                                 }
                                             ]} />
                                     </Form.Item>
+                                    <Form.Item name="roll" label="Roll">
+                                        <Select
+                                            style={{ width: '100%' }}
+                                        >
+                                            {dataSupervisor.map((read, index) => (
+                                                <Option
+                                                    key={index}
+                                                    value={read._id}>{read.name}
+                                                </Option>))}
+                                        </Select>
+                                    </Form.Item>
                                 </Form>
                             </Modal>
                             {/* Modal for updating users */}
@@ -197,6 +222,23 @@ export default function GestUser() {
                                     </Form.Item>
                                     <Form.Item name="pass" label="Contraseña">
                                         <Input.Password name="pass" />
+                                    </Form.Item>
+                                    <Form.Item name="roll" label="Roll">
+                                        <Select
+                                            options={[
+                                                {
+                                                    value: 'Administrador',
+                                                    label: 'Administrador',
+                                                },
+                                                {
+                                                    value: 'auxiliar',
+                                                    label: 'Auxiliar',
+                                                },
+                                                {
+                                                    value: 'revisor',
+                                                    label: 'Revisor',
+                                                }
+                                            ]} />
                                     </Form.Item>
                                     <Form.Item name="roll" label="Roll">
                                         <Select

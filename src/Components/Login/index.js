@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
 import logo from '../../Images/logo.png'
 import './style.scss'
@@ -19,8 +19,7 @@ function Login() {
         const data = await loginData(value, "https://api.clubdeviajeros.tk/api/users/login")
         if (data.length > 0) {
             setState({ user: data[0], token: data[1].token })
-            console.log(state)
-            navigate('/supervisor')
+            navigate(`/${state.user.roll.toLowerCase()}`)
         } else {
             alert("Login failed, user or pass is incorrect")
             navigate('/login')

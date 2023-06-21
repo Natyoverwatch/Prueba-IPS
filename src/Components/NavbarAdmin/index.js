@@ -27,8 +27,11 @@ export const NavbarAdmin = () => {
                 <Link to='/reportes'>
                     <h2 className='styleh2Adm'>Reportes</h2>
                 </Link>
-                <Link to='/supervisor'>
+                <Link to='/administrador'>
                     <h2 className='styleh2Adm'>Supervisores</h2>
+                </Link>
+                <Link to='/auxiliar'>
+                    <h2 className='styleh2Adm'>Asignacion auxiliares</h2>
                 </Link>
             </div>
             <div style={{ display: 'flex', margin: '1em', alignSelf: 'flex-end', color: 'white' }}>
