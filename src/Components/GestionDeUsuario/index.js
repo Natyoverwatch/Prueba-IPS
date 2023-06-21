@@ -242,20 +242,14 @@ export default function GestUser() {
                                     </Form.Item>
                                     <Form.Item name="roll" label="Roll">
                                         <Select
-                                            options={[
-                                                {
-                                                    value: 'Administrador',
-                                                    label: 'Administrador',
-                                                },
-                                                {
-                                                    value: 'auxiliar',
-                                                    label: 'Auxiliar',
-                                                },
-                                                {
-                                                    value: 'revisor',
-                                                    label: 'Revisor',
-                                                }
-                                            ]} />
+                                            style={{ width: '100%' }}
+                                        >
+                                            {dataSupervisor.map((read, index) => (
+                                                <Option
+                                                    key={index}
+                                                    value={read._id}>{read.name}
+                                                </Option>))}
+                                        </Select>
                                     </Form.Item>
                                 </Form>
                             </Modal>
