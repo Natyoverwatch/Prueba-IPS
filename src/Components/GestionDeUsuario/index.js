@@ -135,6 +135,11 @@ export default function GestUser() {
         console.log(getConstdataSup)
     }
 
+    const handleChange = (selectedOption) => {
+        (selectedOption === "auxiliar") ? setIsAux(true) : setIsAux(false)
+    }
+
+
     return (
         <div>
             <NavbarAdmin />
@@ -169,6 +174,7 @@ export default function GestUser() {
                                     </Form.Item>
                                     <Form.Item name="roll" label="Roll">
                                         <Select
+                                            onChange={handleChange}
                                             options={[
                                                 {
                                                     value: 'Administrador',
@@ -184,7 +190,10 @@ export default function GestUser() {
                                                 }
                                             ]} />
                                     </Form.Item>
-                                    <Form.Item name="roll" label="Roll">
+                                    <Form.Item
+                                        name="supervisor"
+                                        label="Supervisor"
+                                        hidden={!isAux}>
                                         <Select
                                             style={{ width: '100%' }}
                                         >
