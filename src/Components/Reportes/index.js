@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { NavbarAdmin } from './../NavbarAdmin';
+import { NavbarAdmin } from '../Administrador/NavbarAdmin';
 import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table } from 'antd';
 import { addData, getData, editData, deleteData } from "../../controller/control"
 import { AppContext } from '../../Provider';

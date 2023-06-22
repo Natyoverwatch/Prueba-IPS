@@ -3,13 +3,13 @@ import "./style.scss"
 import { NavbarAdmin } from '../NavbarAdmin';
 import { useNavigate } from 'react-router-dom';
 import { Form, Modal, Button, Input, Row, Col, Popconfirm, Table, Select } from 'antd';
-import { addData, getData, editData, deleteData } from "../../controller/control"
-import { AppContext } from '../../Provider';
+import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 const { Option } = Select
 
-export default function Auxiliar() {
+export default function Supervisor() {
 
     //Id for updating specific supervisor 
     const [idEdit, setIdEdit] = useState(null)
@@ -23,18 +23,15 @@ export default function Auxiliar() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
-    const [idAuxiliar, setIdAuxiliar] = useState("")
+    const [idSupervisor, setIdSupervisor] = useState("")
     //Global state
     const [state, setState] = useContext(AppContext)
 
     //Navegación a la página acorde a los supervisores
     const navigate = useNavigate();
 
-    //Data auxiliares
+    //Data supervisor groups
     const [dataSource, setDataSource] = useState([]);
-
-    //Data risk groups
-    const [dataGrupoRiesgo, setDataGrupoRiesgo] = useState([]);
 
     //Editar supervisor y actualizar
     const editSupervisor = (supervisor) => {
@@ -47,7 +44,7 @@ export default function Auxiliar() {
     const updateSupervisor = async (values) => {
         form.resetFields()
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/supervisor/${idEdit}`, state?.token)
-        if (data === "ok") { setisEditing(false); getUsers() }
+        if (data === "ok") { setisEditing(false); getSupervisor() }
     }
 
     //Creación de un nuevo supervisor
@@ -55,29 +52,26 @@ export default function Auxiliar() {
         form.resetFields()
         setIsModalVisible(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/supervisor", state?.token)
-        if (data) getUsers()
+        if (data) getSupervisor()
         console.log(data)
     };
 
     //Obtención de los supervisores
-    const getUsers = async () => {
-        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/users", state?.token)
+    const getSupervisor = async () => {
+        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/supervisor", state?.token)
+        setDataSource(getConstdata);
         console.log(getConstdata)
-        const filteredData = getConstdata.filter(item => item.roll.toLowerCase() === "auxiliar")
-        setDataSource([...dataSource, ...filteredData])
-
-        console.log(dataSource)
     }
 
     useEffect(() => {
-        getUsers()
+        getSupervisor()
         // eslint-disable-next-line
     }, [])
 
     //Borrar supervisor
     const deleteSupervisor = async (supervisor) => {
         const data = await deleteData(`https://api.clubdeviajeros.tk/api/supervisor/${supervisor}`, state?.token)
-        if (data === 200) getUsers()
+        if (data === 200) getSupervisor()
     }
 
     const columns = [
@@ -111,16 +105,16 @@ export default function Auxiliar() {
             <NavbarAdmin />
             <Row className='styledRow'>
                 <Col
-                    className='styledColAuxiliar'
+                    className='styledColSupervisor'
                     xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 5, offset: 2 }}>
                     <Form
                         layout="vertical">
                         <Form.Item
-                            label='Seleccione un auxiliar'
+                            label='Seleccione un supervisor'
                         >
                             <Select
                                 style={{ width: '100%' }}
-                                onChange={(e) => setIdAuxiliar(e)}
+                                onChange={(e) => setIdSupervisor(e)}
                             >
                                 {dataSource.map((read, index) => (
                                     <Option
@@ -130,7 +124,7 @@ export default function Auxiliar() {
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' onClick={() => idAuxiliar.length > 0 ? navigate(`/griesgoaux/${idAuxiliar}`) : ""}> Siguiente</Button>
+                            <Button type='primary' onClick={() => idSupervisor.length > 0 ? navigate(`/griesgo/${idSupervisor}`) : ""}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>
@@ -138,14 +132,14 @@ export default function Auxiliar() {
             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                 <Col>
                     <Button style={{ float: 'right', marginBottom: '1rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
-                        Agregar asignacion de supervisor a auxiliar
+                        Agregar supervisor
                     </Button>
                     <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                 </Col>
             </Row>
             {/*Modal creacion supervisor*/}
             <Modal
-                title="Asignacion de supervisor a auxiliar"
+                title="Creación grupo de riesgo"
                 open={isModalVisible}
                 onCancel={() => {
                     setIsModalVisible(false)
@@ -165,13 +159,6 @@ export default function Auxiliar() {
                     </Button>,
                 ]}>
                 <Form form={form} onFinish={createNewSupervisor}>
-                    <Form.Item
-                        name="name"
-                        label="Nombre del auxiliar"
-                        rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
-                    >
-                        <Input />
-                    </Form.Item>
                     <Form.Item
                         name="name"
                         label="Nombre del supervisor"

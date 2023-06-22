@@ -2,10 +2,10 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Table, Button, Modal, Input, Row, Col, Form, Select, Popconfirm } from 'antd';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
-import "../GestionDeUsuario/style.scss"
+import "./style.scss"
 import { NavbarAdmin } from '../NavbarAdmin';
-import { addData, getData, editData, deleteData } from "../../controller/control"
-import { AppContext } from '../../Provider';
+import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { AppContext } from '../../../Provider';
 
 const { Option } = Select
 
@@ -265,7 +265,7 @@ export default function GestUser() {
                                             {dataSupervisor.map((read, index) => (
                                                 <Option
                                                     key={index}
-                                                    value={read._id}>{read.name}
+                                                    value={read.name}>{read.name}
                                                 </Option>))}
                                         </Select>
                                     </Form.Item>

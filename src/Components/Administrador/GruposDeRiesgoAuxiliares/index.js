@@ -1,23 +1,23 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { NavbarAdmin } from './../NavbarAdmin';
+import { NavbarAdmin } from '../NavbarAdmin';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Modal, Button, Input, Row, Col, Popconfirm } from 'antd';
-import { addData, getData, editData, deleteData } from "../../controller/control"
-import { AppContext } from '../../Provider';
+import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 //Images
-import mamografiaImage from '../../Images/mamografia.png';
-import sifilisImage from '../../Images/sifilis.png';
-import citologiaImage from '../../Images/papilla.png';
-import desnutricionImage from '../../Images/desnutricion.png';
-import edaImage from '../../Images/diarrea.png';
-import iraImage from '../../Images/neumonia.png';
-import mmeImage from '../../Images/mme.png';
-import addImage from '../../Images/agregar-usuario.png';
+import mamografiaImage from '../../../Images/mamografia.png';
+import sifilisImage from '../../../Images/sifilis.png';
+import citologiaImage from '../../../Images/papilla.png';
+import desnutricionImage from '../../../Images/desnutricion.png';
+import edaImage from '../../../Images/diarrea.png';
+import iraImage from '../../../Images/neumonia.png';
+import mmeImage from '../../../Images/mme.png';
+import addImage from '../../../Images/agregar-usuario.png';
 
 
-export default function GruRiesgo() {
+export default function GruRiesgoAuxAdmin() {
     //Obtener los parametros por supervisor su ID
     let { id } = useParams()
 
@@ -167,7 +167,7 @@ export default function GruRiesgo() {
                     className='styledColGrisk'
                     xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}>
                     <Row className='styledRow2' onClick={() => { setIsModalVisible(true) }}>
-                        <h1 style={{ textTransform: "capitalize" }}> agregar grupo de riesgo </h1>
+                        <h1 style={{ textTransform: "capitalize" }}> Asignar grupo de riesgo </h1>
                         <img src={filteredRisk('add')} alt={"addimage"} />
                     </Row>
                 </Col>

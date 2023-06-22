@@ -1,4 +1,4 @@
-import logo from '../../Images/logo.png'
+import logo from '../../../Images/logo.png'
 import './style.scss'
 import { BsPersonCircle } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ export const NavbarAdmin = () => {
                 <Link to='/administrador'>
                     <h2 className='styleh2Adm'>Supervisores</h2>
                 </Link>
-                <Link to='/auxiliar'>
+                <Link to='/adminauxiliar'>
                     <h2 className='styleh2Adm'>Asignacion auxiliares</h2>
                 </Link>
             </div>

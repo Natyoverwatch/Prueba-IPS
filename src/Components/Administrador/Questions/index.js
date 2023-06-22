@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { NavbarAdmin } from './../NavbarAdmin';
+import { NavbarAdmin } from '../NavbarAdmin';
 import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table } from 'antd';
-import { addData, getData, editData, deleteData } from "../../controller/control"
-import { AppContext } from '../../Provider';
+import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
 import { useParams } from 'react-router-dom';

@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { NavbarAdmin } from './../NavbarAdmin';
+import { NavbarAdmin } from '../NavbarAdmin';
 import { useNavigate } from 'react-router-dom';
 import { Form, Modal, Button, Input, Row, Col, Popconfirm, Table, Select } from 'antd';
-import { addData, getData, editData, deleteData } from "../../controller/control"
-import { AppContext } from '../../Provider';
+import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 const { Option } = Select
 
-export default function Supervisor() {
+export default function AdminAuxiliar() {
 
     //Id for updating specific supervisor 
     const [idEdit, setIdEdit] = useState(null)
@@ -23,15 +23,18 @@ export default function Supervisor() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
-    const [idSupervisor, setIdSupervisor] = useState("")
+    const [idAuxiliar, setIdAuxiliar] = useState("")
     //Global state
     const [state, setState] = useContext(AppContext)
 
     //Navegación a la página acorde a los supervisores
     const navigate = useNavigate();
 
-    //Data supervisor groups
+    //Data auxiliares
     const [dataSource, setDataSource] = useState([]);
+
+    //Data risk groups
+    const [dataGrupoRiesgo, setDataGrupoRiesgo] = useState([]);
 
     //Editar supervisor y actualizar
     const editSupervisor = (supervisor) => {
@@ -44,7 +47,7 @@ export default function Supervisor() {
     const updateSupervisor = async (values) => {
         form.resetFields()
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/supervisor/${idEdit}`, state?.token)
-        if (data === "ok") { setisEditing(false); getSupervisor() }
+        if (data === "ok") { setisEditing(false); getUsers() }
     }
 
     //Creación de un nuevo supervisor
@@ -52,26 +55,36 @@ export default function Supervisor() {
         form.resetFields()
         setIsModalVisible(false);
         const data = await addData(values, "https://api.clubdeviajeros.tk/api/supervisor", state?.token)
-        if (data) getSupervisor()
+        if (data) getUsers()
         console.log(data)
     };
 
     //Obtención de los supervisores
-    const getSupervisor = async () => {
-        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/supervisor", state?.token)
-        setDataSource(getConstdata);
+    const getUsers = async () => {
+        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/users", state?.token)
         console.log(getConstdata)
+        const filteredData = getConstdata.filter(item => item.roll.toLowerCase() === "auxiliar")
+        setDataSource([...dataSource, ...filteredData])
+
+        console.log(dataSource)
     }
 
     useEffect(() => {
-        getSupervisor()
+        getUsers()
         // eslint-disable-next-line
     }, [])
+
+    //Obtención de los supervisores
+    /* const getGrisk = async () => {
+        setState({ ...state, id_supervisor: id })
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
+        setDataGrupoRiesgo(getConstdata);
+    } */
 
     //Borrar supervisor
     const deleteSupervisor = async (supervisor) => {
         const data = await deleteData(`https://api.clubdeviajeros.tk/api/supervisor/${supervisor}`, state?.token)
-        if (data === 200) getSupervisor()
+        if (data === 200) getUsers()
     }
 
     const columns = [
@@ -105,16 +118,16 @@ export default function Supervisor() {
             <NavbarAdmin />
             <Row className='styledRow'>
                 <Col
-                    className='styledColSupervisor'
+                    className='styledColAuxiliar'
                     xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 5, offset: 2 }}>
                     <Form
                         layout="vertical">
                         <Form.Item
-                            label='Seleccione un supervisor'
+                            label='Seleccione un auxiliar'
                         >
                             <Select
                                 style={{ width: '100%' }}
-                                onChange={(e) => setIdSupervisor(e)}
+                                onChange={(e) => setIdAuxiliar(e)}
                             >
                                 {dataSource.map((read, index) => (
                                     <Option
@@ -124,7 +137,7 @@ export default function Supervisor() {
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' onClick={() => idSupervisor.length > 0 ? navigate(`/griesgo/${idSupervisor}`) : ""}> Siguiente</Button>
+                            <Button type='primary' onClick={() => idAuxiliar.length > 0 ? navigate(`/griesgoauxadmin/${idAuxiliar}`) : ""}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>
@@ -132,14 +145,14 @@ export default function Supervisor() {
             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                 <Col>
                     <Button style={{ float: 'right', marginBottom: '1rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
-                        Agregar supervisor
+                        Agregar asignacion de supervisor a auxiliar
                     </Button>
                     <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                 </Col>
             </Row>
             {/*Modal creacion supervisor*/}
             <Modal
-                title="Creación grupo de riesgo"
+                title="Asignacion de supervisor a auxiliar"
                 open={isModalVisible}
                 onCancel={() => {
                     setIsModalVisible(false)
@@ -160,12 +173,19 @@ export default function Supervisor() {
                 ]}>
                 <Form form={form} onFinish={createNewSupervisor}>
                     <Form.Item
-                        name="name"
-                        label="Nombre del supervisor"
-                        rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
-                    >
-                        <Input />
+                        name="griesgo"
+                        label="Grupo de riesgo">
+                        <Select
+                            style={{ width: '100%' }}
+                        >
+                            {dataGrupoRiesgo.map((read, index) => (
+                                <Option
+                                    key={index}
+                                    value={read._id}>{read.name}
+                                </Option>))}
+                        </Select>
                     </Form.Item>
+
                 </Form>
             </Modal>
             {/* Modal para editar o actualizar el supervisor */}
