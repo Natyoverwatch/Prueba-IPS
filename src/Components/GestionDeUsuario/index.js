@@ -75,6 +75,11 @@ export default function GestUser() {
             key: 'roll',
         },
         {
+            title: 'Supevisor',
+            dataIndex: 'supervisor',
+            key: 'supervisor',
+        },
+        {
             title: 'Acciones',
             dataIndex: 'actions',
             key: 'actions',
@@ -200,7 +205,7 @@ export default function GestUser() {
                                             {dataSupervisor.map((read, index) => (
                                                 <Option
                                                     key={index}
-                                                    value={read._id}>{read.name}
+                                                    value={read.name}>{read.name}
                                                 </Option>))}
                                         </Select>
                                     </Form.Item>
@@ -234,6 +239,7 @@ export default function GestUser() {
                                     </Form.Item>
                                     <Form.Item name="roll" label="Roll">
                                         <Select
+                                            onChange={handleChange}
                                             options={[
                                                 {
                                                     value: 'Administrador',
@@ -249,7 +255,10 @@ export default function GestUser() {
                                                 }
                                             ]} />
                                     </Form.Item>
-                                    <Form.Item name="roll" label="Roll">
+                                    <Form.Item
+                                        name="supervisor"
+                                        label="Supervisor"
+                                        hidden={!isAux}>
                                         <Select
                                             style={{ width: '100%' }}
                                         >
