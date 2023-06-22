@@ -36,29 +36,6 @@ export default function AdminAuxiliar() {
     //Data risk groups
     const [dataGrupoRiesgo, setDataGrupoRiesgo] = useState([]);
 
-    //Editar supervisor y actualizar
-    const editSupervisor = (supervisor) => {
-        setisEditing(true)
-        formUpdateSupervisor.setFieldsValue(supervisor);
-        setIdEdit(supervisor._id)
-
-    }
-
-    const updateSupervisor = async (values) => {
-        form.resetFields()
-        const data = await editData(values, `https://api.clubdeviajeros.tk/api/supervisor/${idEdit}`, state?.token)
-        if (data === "ok") { setisEditing(false); getUsers() }
-    }
-
-    //Creación de un nuevo supervisor
-    const createNewSupervisor = async (values) => {
-        form.resetFields()
-        setIsModalVisible(false);
-        const data = await addData(values, "https://api.clubdeviajeros.tk/api/supervisor", state?.token)
-        if (data) getUsers()
-        console.log(data)
-    };
-
     //Obtención de los supervisores
     const getUsers = async () => {
         const getConstdata = await getData("https://api.clubdeviajeros.tk/api/users", state?.token)
@@ -80,38 +57,6 @@ export default function AdminAuxiliar() {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
         setDataGrupoRiesgo(getConstdata);
     } */
-
-    //Borrar supervisor
-    const deleteSupervisor = async (supervisor) => {
-        const data = await deleteData(`https://api.clubdeviajeros.tk/api/supervisor/${supervisor}`, state?.token)
-        if (data === 200) getUsers()
-    }
-
-    const columns = [
-        {
-            title: 'Nombre del supervisor',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Acciones',
-            dataIndex: 'actions',
-            key: 'actions',
-            render: (_, record) => {
-                return (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <FiEdit onClick={() => {
-                            editSupervisor(record)
-                            form.resetFields()
-                        }} />
-                        <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteSupervisor(record._id)}>
-                            <FiTrash2 />
-                        </Popconfirm>
-                    </div >
-                );
-            }
-        }
-    ]
 
     return (
         <div>
@@ -137,82 +82,12 @@ export default function AdminAuxiliar() {
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' onClick={() => idAuxiliar.length > 0 ? navigate(`/griesgoauxadmin/${idAuxiliar}`) : ""}> Siguiente</Button>
+                            <Button type='primary' onClick={() => idAuxiliar.length > 0 ? navigate(`/griesgoauxadmin/${idAuxiliar}/646595f7b0b0538fbd1ff672`) : ""}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>
             </Row>
-            <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                <Col>
-                    <Button style={{ float: 'right', marginBottom: '1rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
-                        Agregar asignacion de supervisor a auxiliar
-                    </Button>
-                    <Table columns={columns} dataSource={dataSource} rowKey="_id" />
-                </Col>
-            </Row>
-            {/*Modal creacion supervisor*/}
-            <Modal
-                title="Asignacion de supervisor a auxiliar"
-                open={isModalVisible}
-                onCancel={() => {
-                    setIsModalVisible(false)
-                    form.resetFields()
-                }}
-                footer={[
-                    <Button key="cancel" onClick={() => {
-                        setIsModalVisible(false)
-                        form.resetFields()
-                    }}>
-                        Cancelar
-                    </Button>,
-                    <Button key="create" type="primary" onClick={() => {
-                        form.submit()
-                    }}>
-                        Crear
-                    </Button>,
-                ]}>
-                <Form form={form} onFinish={createNewSupervisor}>
-                    <Form.Item
-                        name="griesgo"
-                        label="Grupo de riesgo">
-                        <Select
-                            style={{ width: '100%' }}
-                        >
-                            {dataGrupoRiesgo.map((read, index) => (
-                                <Option
-                                    key={index}
-                                    value={read._id}>{read.name}
-                                </Option>))}
-                        </Select>
-                    </Form.Item>
 
-                </Form>
-            </Modal>
-            {/* Modal para editar o actualizar el supervisor */}
-            <Modal
-                title="Actualización del nombre del supervisor"
-                open={isEditing}
-                onCancel={() => {
-                    setisEditing(false)
-                    form.resetFields()
-                }}
-                footer={[
-                    <Button key="cancel" onClick={() => {
-                        setisEditing(false)
-                        form.resetFields()
-                    }}>
-                        Cancelar
-                    </Button>,
-                    <Button key="create" type="primary" onClick={() => { formUpdateSupervisor.submit() }}>
-                        Crear
-                    </Button>,
-                ]}>
-                <Form form={formUpdateSupervisor} onFinish={updateSupervisor}>
-                    <Form.Item name="name" label="Nombre del supervisor:">
-                        <Input />
-                    </Form.Item>
-                </Form>
-            </Modal>
         </div >
     )
 }

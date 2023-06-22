@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
 import { NavbarAdmin } from '../NavbarAdmin';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Modal, Button, Input, Row, Col, Popconfirm } from 'antd';
+import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select } from 'antd';
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -16,10 +16,13 @@ import iraImage from '../../../Images/neumonia.png';
 import mmeImage from '../../../Images/mme.png';
 import addImage from '../../../Images/agregar-usuario.png';
 
+const { Option } = Select
 
 export default function GruRiesgoAuxAdmin() {
     //Obtener los parametros por supervisor su ID
-    let { id } = useParams()
+    let { idaux } = useParams()
+    let { idadm } = useParams()
+
 
     //Id for updating specific risk group
     const [idEdit, setIdEdit] = useState(null)
@@ -41,6 +44,8 @@ export default function GruRiesgoAuxAdmin() {
     const navigate = useNavigate();
 
     //Data risk groups
+    const [dataRiskSource, setRiskDataSource] = useState([]);
+    //Data Aux risk groups
     const [dataSource, setDataSource] = useState([]);
 
     //Diccionario de imagenes de lo grupos de riesgo
@@ -83,23 +88,33 @@ export default function GruRiesgoAuxAdmin() {
     const createNewRisk = async (values) => {
         form.resetFields()
         setIsModalVisible(false);
+        console.log(values)
         const datos = {
             name: values.name,
-            id_supervisor: id,
+            id_auxiliar: idaux,
         }
-        const data = await addData(datos, "https://api.clubdeviajeros.tk/api/risk", state?.token)
+        const data = await addData(datos, "https://ai.clubdeviajeros.tk/api/risk", state?.token)
+        console.log(data)
         if (data) { getRisks() }
     };
 
     //Obtención de los grupos de riesgo
     const getRisks = async () => {
-        setState({ ...state, id_supervisor: id })
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
+        setState({ ...state, id_auxiliar: idaux })
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${idaux}`, state?.token)
         setDataSource(getConstdata);
+    }
+
+    //Obtención de los grupos de riesgo
+    const getRisksAdm = async () => {
+        setState({ ...state, id_supervisor: idadm })
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${idadm}`, state?.token)
+        setRiskDataSource(getConstdata);
     }
 
     useEffect(() => {
         getRisks()
+        getRisksAdm()
         console.log(state)
         // eslint-disable-next-line
     }, [])
@@ -137,9 +152,16 @@ export default function GruRiesgoAuxAdmin() {
                     <Form.Item
                         name="name"
                         label="Nombre grupo de riesgo"
-                        rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                     >
-                        <Input />
+                        <Select
+                            style={{ width: '100%' }}
+                        >
+                            {dataRiskSource.map((read, index) => (
+                                <Option
+                                    key={index}
+                                    value={read.name}>{read.name}
+                                </Option>))}
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -150,8 +172,8 @@ export default function GruRiesgoAuxAdmin() {
                             className='styledColGrisk'
                             xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}
                             key={index}>
-                            <Row className='styledRow2' onClick={() => navigate(`/questions/${read._id}`)}>
-                                <h1 style={{ textTransform: "capitalize" }}>{read.name} </h1>
+                            <Row className='styledRow2'>
+                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{read.name} </h1>
                                 <img src={filteredRisk(read.name)} alt={read.name + "imagen"} />
                             </Row>
                             <Row style={{ marginTop: "20px" }}>
@@ -167,7 +189,7 @@ export default function GruRiesgoAuxAdmin() {
                     className='styledColGrisk'
                     xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}>
                     <Row className='styledRow2' onClick={() => { setIsModalVisible(true) }}>
-                        <h1 style={{ textTransform: "capitalize" }}> Asignar grupo de riesgo </h1>
+                        <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}> Asignar grupo de riesgo </h1>
                         <img src={filteredRisk('add')} alt={"addimage"} />
                     </Row>
                 </Col>
@@ -195,7 +217,15 @@ export default function GruRiesgoAuxAdmin() {
                 ]}>
                 <Form form={formUpdateRisk} onFinish={updateRisk}>
                     <Form.Item name="name" label="Nombre grupo:">
-                        <Input />
+                        <Select
+                            style={{ width: '100%' }}
+                        >
+                            {dataRiskSource.map((read, index) => (
+                                <Option
+                                    key={index}
+                                    value={read.name}>{read.name}
+                                </Option>))}
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>

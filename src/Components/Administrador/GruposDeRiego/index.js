@@ -100,7 +100,7 @@ export default function GruRiesgo() {
 
     useEffect(() => {
         getRisks()
-        console.log(state)
+        console.log(dataSource)
         // eslint-disable-next-line
     }, [])
 
@@ -151,7 +151,7 @@ export default function GruRiesgo() {
                             xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}
                             key={index}>
                             <Row className='styledRow2' onClick={() => navigate(`/questions/${read._id}`)}>
-                                <h1 style={{ textTransform: "capitalize" }}>{read.name} </h1>
+                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{read.name} </h1>
                                 <img src={filteredRisk(read.name)} alt={read.name + "imagen"} />
                             </Row>
                             <Row style={{ marginTop: "20px" }}>
@@ -167,7 +167,7 @@ export default function GruRiesgo() {
                     className='styledColGrisk'
                     xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}>
                     <Row className='styledRow2' onClick={() => { setIsModalVisible(true) }}>
-                        <h1 style={{ textTransform: "capitalize" }}> agregar grupo de riesgo </h1>
+                        <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}> agregar grupo de riesgo </h1>
                         <img src={filteredRisk('add')} alt={"addimage"} />
                     </Row>
                 </Col>

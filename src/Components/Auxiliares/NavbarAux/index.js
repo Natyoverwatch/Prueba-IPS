@@ -3,10 +3,12 @@ import './style.scss'
 import { BsPersonCircle } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AppContext } from '../../../Provider';
 
 export const NavbarAux = () => {
     const navigate = useNavigate();
+    const [state, setState] = useContext(AppContext)
 
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,7 +23,7 @@ export const NavbarAux = () => {
                 <p className='stylepAux'>SISALUD</p>
             </div>
             <div className={`stylelinkAux ${menuOpen ? 'open' : ''}`}>
-                <Link to='/grupos'>
+                <Link to={`/auxiliar/${state.user._id}`}>
                     <h2 className='styleh2Aux'>Grupos de riesgo</h2>
                 </Link>
             </div>
