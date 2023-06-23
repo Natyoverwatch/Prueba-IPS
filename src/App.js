@@ -13,6 +13,7 @@ import GruRiesgoAuxAdmin from './Components/Administrador/GruposDeRiesgoAuxiliar
 import MyProvider from "./Provider"
 import GruRiesgoAux from './Components/Auxiliares/GruposRiesgo';
 import QuestionsGRisk from './Components/Auxiliares/QuestionsGRisk';
+import AsignacionSupervisor from './Components/Administrador/AsignacionSupervisor';
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
           <Route path="/questions/:id" element={<Questions />} />
           <Route path="/administrador/:id" element={<Supervisor />} />
           <Route path="/adminauxiliar" element={<AdminAuxiliar />} />
-          <Route path="/griesgoauxadmin/:idaux/:idadm" element={<GruRiesgoAuxAdmin />} />
+          <Route path="/asignacionsupervisor/:idaux" element={<AsignacionSupervisor />} />
+          <Route path="/griesgoauxadmin/:idadm" element={<GruRiesgoAuxAdmin />} />
           {/*Rutas para acceso a auxiliares*/}
           <Route path="/auxiliar/:id" element={<GruRiesgoAux />} />
           <Route path="/questionsgrisk/:id" element={<QuestionsGRisk />} />

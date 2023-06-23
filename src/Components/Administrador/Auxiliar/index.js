@@ -71,7 +71,7 @@ export default function AdminAuxiliar() {
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' onClick={() => idAuxiliar.length > 0 ? navigate(`/griesgoauxadmin/${idAuxiliar}/646595f7b0b0538fbd1ff672`) : ""}> Siguiente</Button>
+                            <Button type='primary' onClick={() => idAuxiliar.length > 0 ? navigate(`/asignacionsupervisor/${idAuxiliar}`) : ""}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>

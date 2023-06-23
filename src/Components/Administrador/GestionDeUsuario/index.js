@@ -75,11 +75,6 @@ export default function GestUser() {
             key: 'roll',
         },
         {
-            title: 'Supevisor',
-            dataIndex: 'supervisor',
-            key: 'supervisor',
-        },
-        {
             title: 'Acciones',
             dataIndex: 'actions',
             key: 'actions',
@@ -140,11 +135,6 @@ export default function GestUser() {
         console.log(getConstdataSup)
     }
 
-    const handleChange = (selectedOption) => {
-        (selectedOption === "auxiliar") ? setIsAux(true) : setIsAux(false)
-    }
-
-
     return (
         <div>
             <NavbarAdmin />
@@ -179,7 +169,6 @@ export default function GestUser() {
                                     </Form.Item>
                                     <Form.Item name="roll" label="Roll">
                                         <Select
-                                            onChange={handleChange}
                                             options={[
                                                 {
                                                     value: 'Administrador',
@@ -194,20 +183,6 @@ export default function GestUser() {
                                                     label: 'Revisor',
                                                 }
                                             ]} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="supervisor"
-                                        label="Supervisor"
-                                        hidden={!isAux}>
-                                        <Select
-                                            style={{ width: '100%' }}
-                                        >
-                                            {dataSupervisor.map((read, index) => (
-                                                <Option
-                                                    key={index}
-                                                    value={read.name}>{read.name}
-                                                </Option>))}
-                                        </Select>
                                     </Form.Item>
                                 </Form>
                             </Modal>
@@ -239,7 +214,6 @@ export default function GestUser() {
                                     </Form.Item>
                                     <Form.Item name="roll" label="Roll">
                                         <Select
-                                            onChange={handleChange}
                                             options={[
                                                 {
                                                     value: 'Administrador',
@@ -254,20 +228,6 @@ export default function GestUser() {
                                                     label: 'Revisor',
                                                 }
                                             ]} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="supervisor"
-                                        label="Supervisor"
-                                        hidden={!isAux}>
-                                        <Select
-                                            style={{ width: '100%' }}
-                                        >
-                                            {dataSupervisor.map((read, index) => (
-                                                <Option
-                                                    key={index}
-                                                    value={read.name}>{read.name}
-                                                </Option>))}
-                                        </Select>
                                     </Form.Item>
                                 </Form>
                             </Modal>
