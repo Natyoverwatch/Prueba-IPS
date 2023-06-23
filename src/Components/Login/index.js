@@ -20,7 +20,7 @@ function Login() {
         console.log(data)
         if (data.length > 0) {
             setState({ user: data[0], token: data[1].token })
-            navigate(`/${state.user.roll.toLowerCase()}/${state.user._id}`)
+            navigate(`/${data[0].roll.toLowerCase()}/${data[0]._id}`)
         } else {
             alert("Login failed, user or pass is incorrect")
             navigate('/login')

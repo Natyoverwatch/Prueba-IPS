@@ -33,30 +33,19 @@ export default function AdminAuxiliar() {
     //Data auxiliares
     const [dataSource, setDataSource] = useState([]);
 
-    //Data risk groups
-    const [dataGrupoRiesgo, setDataGrupoRiesgo] = useState([]);
-
     //Obtención de los supervisores
     const getUsers = async () => {
         const getConstdata = await getData("https://api.clubdeviajeros.tk/api/users", state?.token)
         console.log(getConstdata)
         const filteredData = getConstdata.filter(item => item.roll.toLowerCase() === "auxiliar")
         setDataSource([...dataSource, ...filteredData])
-
-        console.log(dataSource)
     }
 
     useEffect(() => {
         getUsers()
+        console.log(dataSource)
         // eslint-disable-next-line
     }, [])
-
-    //Obtención de los supervisores
-    /* const getGrisk = async () => {
-        setState({ ...state, id_supervisor: id })
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
-        setDataGrupoRiesgo(getConstdata);
-    } */
 
     return (
         <div>
