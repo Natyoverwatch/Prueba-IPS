@@ -67,7 +67,7 @@ export default function AsignacionSupervisor() {
         form.resetFields()
         setisEditing(true)
         formUpdateRisk.setFieldsValue(value);
-        setIdEdit(value.id_auxiliar)
+        setIdEdit(value._id)
     }
     const updateRiskAux = async (values) => {
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/asignaciones/${idEdit}`, state?.token)
@@ -122,7 +122,7 @@ export default function AsignacionSupervisor() {
 
     //Borrar asiganciones
     const deleteRiskAsig = async (value) => {
-        const data = await deleteData(`https://api.clubdeviajeros.tk/api/asignaciones/${value.id_riesgo}`, state?.token)
+        const data = await deleteData(`https://api.clubdeviajeros.tk/api/asignaciones/${value._id}`, state?.token)
         if (data === 200) getRisksAux()
     }
 

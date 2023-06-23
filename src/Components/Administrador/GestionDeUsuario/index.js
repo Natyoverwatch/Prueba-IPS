@@ -30,9 +30,6 @@ export default function GestUser() {
     const [dataSource, setDataSource] = useState([]);
     const [dataSupervisor, setDataSupervisor] = useState([]);
 
-    //Estado del auxiliar
-    const [isAux, setIsAux] = useState(false)
-
     const columns = [
         {
             title: 'Nombre',

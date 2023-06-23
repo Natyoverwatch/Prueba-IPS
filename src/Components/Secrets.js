@@ -22,17 +22,19 @@ const handleChange = (selectedOption) => {
             }
         ]} />
 </Form.Item>
-{/* <Form.Item
-                                        name="supervisor"
-                                        label="Supervisor"
-                                        hidden={!isAux}>
-                                        <Select
-                                            style={{ width: '100%' }}
-                                        >
-                                            {dataSupervisor.map((read, index) => (
-                                                <Option
-                                                    key={index}
-                                                    value={read.name}>{read.name}
-                                                </Option>))}
-                                        </Select>
-                                    </Form.Item> */}
+{
+    <Form.Item
+        name="supervisor"
+        label="Supervisor"
+        hidden={!isAux}>
+    <Select
+        style={{ width: '100%' }}
+    >
+        {dataSupervisor.map((read, index) => (
+            <Option
+                key={index}
+                value={read.name}>{read.name}
+            </Option>))}
+    </Select>
+</Form.Item>
+}
