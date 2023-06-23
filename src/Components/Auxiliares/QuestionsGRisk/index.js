@@ -87,7 +87,6 @@ export default function QuestionsGRisk() {
     const getRisks = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${state?.id_supervisor}`, state?.token)
         setDataRisk(getConstdata);
-
     }
 
     //

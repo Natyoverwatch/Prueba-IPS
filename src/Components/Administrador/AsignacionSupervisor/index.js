@@ -55,17 +55,6 @@ export default function AsignacionSupervisor() {
     //Data risk groups
     const [valueForm, setValueForm] = useState([]);
 
-    //Función para encontrar la imagen de cada grupo en relación al diccionario riksImages
-    /* const filteredRisk = (riskGroup) => {
-        const foundPair = Object.entries(riskImages).find(([key, value]) => key === riskGroup.replace(/\s+/g, ''));
-        if (foundPair) {
-            const [key, value] = foundPair;
-            return value
-        } else {
-            console.log('Pair not found.');
-        }
-    } */
-
     //Editar asignacion
     const editRiskAux = (value) => {
         form.resetFields()
@@ -100,7 +89,6 @@ export default function AsignacionSupervisor() {
         setState({ ...state, id_auxiliar: idaux })
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/asignaciones/${idaux}`, state?.token)
         setDataSource(getConstdata);
-
     }
 
     //Obtención de los grupos de riesgo con filtro
@@ -165,12 +153,14 @@ export default function AsignacionSupervisor() {
 
     //Función para encontrar la imagen de cada grupo en relación al diccionario riksImages
     const filteredRisk = (riskGroup) => {
-        const foundPair = Object.entries(riskImages).find(([key, value]) => key === riskGroup.replace(/\s+/g, ''));
-        if (foundPair) {
-            const [key, value] = foundPair;
-            return value
-        } else {
-            console.log('Pair not found.');
+        if (riskGroup) {
+            const foundPair = Object.entries(riskImages).find(([key, value]) => key === riskGroup.split(" ").filter(Boolean).join(""));
+            if (foundPair) {
+                const [key, value] = foundPair;
+                return value
+            } else {
+                console.log('Pair not found.');
+            }
         }
     }
 

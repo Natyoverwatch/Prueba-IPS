@@ -28,12 +28,12 @@ function App() {
           <Route path="/griesgo/:id" element={<GruRiesgo />} />
           <Route path="/reportes" element={<Reports />} />
           <Route path="/questions/:id" element={<Questions />} />
-          <Route path="/administrador/:id" element={<Supervisor />} />
+          <Route path="/administrador" element={<Supervisor />} />
           <Route path="/adminauxiliar" element={<AdminAuxiliar />} />
           <Route path="/asignacionsupervisor/:idaux" element={<AsignacionSupervisor />} />
           <Route path="/griesgoauxadmin/:idadm" element={<GruRiesgoAuxAdmin />} />
           {/*Rutas para acceso a auxiliares*/}
-          <Route path="/auxiliar/:id" element={<GruRiesgoAux />} />
+          <Route path="/auxiliar" element={<GruRiesgoAux />} />
           <Route path="/questionsgrisk/:id" element={<QuestionsGRisk />} />
         </Routes>
       </BrowserRouter>

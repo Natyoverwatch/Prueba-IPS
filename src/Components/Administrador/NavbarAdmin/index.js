@@ -4,11 +4,9 @@ import { BsPersonCircle } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import React, { useContext, useState } from 'react';
-import { AppContext } from '../../../Provider';
 
 export const NavbarAdmin = () => {
     const navigate = useNavigate();
-    const [state, setState] = useContext(AppContext)
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -28,7 +26,7 @@ export const NavbarAdmin = () => {
                 <Link to='/reportes'>
                     <h2 className='styleh2Adm'>Reportes</h2>
                 </Link>
-                <Link to={`/administrador/${state.user._id}`}>
+                <Link to='/administrador'>
                     <h2 className='styleh2Adm'>Supervisores</h2>
                 </Link>
                 <Link to='/adminauxiliar'>

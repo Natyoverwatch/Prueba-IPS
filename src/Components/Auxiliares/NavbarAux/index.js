@@ -23,7 +23,7 @@ export const NavbarAux = () => {
                 <p className='stylepAux'>SISALUD</p>
             </div>
             <div className={`stylelinkAux ${menuOpen ? 'open' : ''}`}>
-                <Link to={`/auxiliar/${state.user._id}`}>
+                <Link to='/auxiliar'>
                     <h2 className='styleh2Aux'>Grupos de riesgo</h2>
                 </Link>
             </div>

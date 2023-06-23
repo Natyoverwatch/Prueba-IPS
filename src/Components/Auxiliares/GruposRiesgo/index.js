@@ -15,7 +15,6 @@ import iraImage from '../../../Images/neumonia.png';
 import mmeImage from '../../../Images/mme.png';
 import addImage from '../../../Images/agregar-usuario.png';
 
-
 export default function GruRiesgoAux() {
     //Obtener los parametros por supervisor su ID
     let { id } = useParams()
@@ -26,8 +25,43 @@ export default function GruRiesgoAux() {
     //Navegación a la página acorde al grupo de riesgo
     const navigate = useNavigate();
 
+    //Data supervisor
+    const [dataSupervisor, setDataSupervisor] = useState([]);
     //Data Aux risk groups
-    const [dataSource, setDataSource] = useState([{ name: 'mme', _id: '646ec11e4a67e19f1b828b93' }]);
+    const [dataSource, setDataSource] = useState([]);
+    //Data risk groups filter
+    const [dataRiskSource, setRiskDataSource] = useState([]);
+    //Data risk groups
+    const [dataSourceRisk, setDataSourceRisk] = useState([]);
+
+    //Obtención de asignaciones
+    const getRisksAux = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/asignaciones/${state.user._id}`, state?.token)
+        setDataSource(getConstdata);
+    }
+
+    //Obtención de los grupos de riesgo
+    const getRisks = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
+        setDataSourceRisk(getConstdata);
+    }
+
+    //Obtención de los supervisores
+    const getSupervisor = async () => {
+        const getConstdata = await getData("https://api.clubdeviajeros.tk/api/supervisor", state?.token)
+        setDataSupervisor(getConstdata);
+    }
+
+    // filtro nombre supervisor
+    const filterNameSupervisor = (a) => {
+        const filtro = dataSupervisor.filter(data => data._id === a.id_supervisor)
+        return (filtro[0]?.name)
+    }
+    // filtro nombre supervisor
+    const filterRiskSupervisor = (a) => {
+        const filtro = dataSourceRisk.filter(data => data._id === a.id_riesgo)
+        return (filtro[0]?.name)
+    }
 
     //Diccionario de imagenes de lo grupos de riesgo
     const riskImages = {
@@ -38,30 +72,25 @@ export default function GruRiesgoAux() {
         eda: edaImage,
         ira: iraImage,
         mme: mmeImage,
-        add: addImage,
     }
 
     //Función para encontrar la imagen de cada grupo en relación al diccionario riksImages
     const filteredRisk = (riskGroup) => {
-        const foundPair = Object.entries(riskImages).find(([key, value]) => key === riskGroup.replace(/\s+/g, ''));
-        if (foundPair) {
-            const [key, value] = foundPair;
-            return value
-        } else {
-            console.log('Pair not found.');
+        if (riskGroup) {
+            const foundPair = Object.entries(riskImages).find(([key, value]) => key === riskGroup.split(" ").filter(Boolean).join(""));
+            if (foundPair) {
+                const [key, value] = foundPair;
+                return value
+            } else {
+                console.log('Pair not found.');
+            }
         }
     }
 
-    //Obtención de los grupos de riesgo
-    const getRisks = async () => {
-        setState({ ...state, id_auxiliar: id })
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${id}`, state?.token)
-        setDataSource(getConstdata);
-    }
-
-
     useEffect(() => {
-        /* getRisks()*/
+        getRisks()
+        getSupervisor()
+        getRisksAux()
         console.log(state)
         // eslint-disable-next-line
     }, [])
@@ -77,8 +106,10 @@ export default function GruRiesgoAux() {
                             xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}
                             key={index}>
                             <Row className='styledRow2' onClick={() => navigate(`/questionsgrisk/${read._id}`)}>
-                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{read.name} </h1>
-                                <img src={filteredRisk(read.name)} alt={read.name + "imagen"} />
+                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>
+                                    {filterNameSupervisor({ id_supervisor: read.id_supervisor })} - {filterRiskSupervisor({ id_riesgo: read.id_riesgo })}
+                                </h1>
+                                <img src={filteredRisk(filterRiskSupervisor({ id_riesgo: read.id_riesgo }))} alt={filterRiskSupervisor({ id_riesgo: read.id_riesgo }) + "image"} />
                             </Row>
                         </Col>
                     ))
