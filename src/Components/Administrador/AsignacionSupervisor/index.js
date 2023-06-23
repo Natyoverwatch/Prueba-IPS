@@ -52,6 +52,8 @@ export default function AsignacionSupervisor() {
     const [dataRiskSource, setRiskDataSource] = useState([]);
     //Data risk groups
     const [dataSourceRisk, setDataSourceRisk] = useState([]);
+    //Data risk groups
+    const [valueForm, setValueForm] = useState([]);
 
     //Función para encontrar la imagen de cada grupo en relación al diccionario riksImages
     /* const filteredRisk = (riskGroup) => {
@@ -85,7 +87,7 @@ export default function AsignacionSupervisor() {
         console.log(values)
         const datos = {
             id_auxiliar: idaux,
-            id_supervisor: values._id,
+            id_supervisor: values.id_supervisor,
             id_riesgo: values.id_riesgo,
         }
         const data = await addData(datos, "https://api.clubdeviajeros.tk/api/asignaciones", state?.token)
@@ -198,7 +200,7 @@ export default function AsignacionSupervisor() {
                 ]}>
                 <Form form={form} onFinish={createNewAsigSup}>
                     <Form.Item
-                        name="_id"
+                        name="id_supervisor"
                         label="Nombre del supervisor"
                     >
                         <Select
@@ -282,7 +284,7 @@ export default function AsignacionSupervisor() {
                 ]}>
                 <Form form={formUpdateRisk} onFinish={updateRiskAux}>
                     <Form.Item
-                        name="_id"
+                        name="id_supervisor"
                         label="Nombre del supervisor"
                     >
                         <Select
