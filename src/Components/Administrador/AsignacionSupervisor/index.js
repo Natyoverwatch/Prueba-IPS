@@ -147,8 +147,29 @@ export default function AsignacionSupervisor() {
     // filtro nombre supervisor
     const filterRiskSupervisor = (a) => {
         const filtro = dataSourceRisk.filter(data => data._id === a.id_riesgo)
-        console.log(filtro)
         return (filtro[0]?.name)
+    }
+
+    //Diccionario de imagenes de lo grupos de riesgo
+    const riskImages = {
+        mamografía: mamografiaImage,
+        sifilisgestacionalycongenita: sifilisImage,
+        citologiaycolposcopia: citologiaImage,
+        desnutrición: desnutricionImage,
+        eda: edaImage,
+        ira: iraImage,
+        mme: mmeImage,
+    }
+
+    //Función para encontrar la imagen de cada grupo en relación al diccionario riksImages
+    const filteredRisk = (riskGroup) => {
+        const foundPair = Object.entries(riskImages).find(([key, value]) => key === riskGroup.replace(/\s+/g, ''));
+        if (foundPair) {
+            const [key, value] = foundPair;
+            return value
+        } else {
+            console.log('Pair not found.');
+        }
     }
 
     return (
@@ -215,9 +236,10 @@ export default function AsignacionSupervisor() {
                             xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}
                             key={index}>
                             <Row className='styledRow2'>
-                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{filterNameSupervisor({ id_supervisor: read.id_supervisor })}</h1>
-                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{filterRiskSupervisor({ id_riesgo: read.id_riesgo })}</h1>
-                                <img src={addSupervisor} alt={"addSupervisor"} />
+                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>
+                                    {filterNameSupervisor({ id_supervisor: read.id_supervisor })} - {filterRiskSupervisor({ id_riesgo: read.id_riesgo })}
+                                </h1>
+                                <img src={filteredRisk(filterRiskSupervisor({ id_riesgo: read.id_riesgo }))} alt={filterRiskSupervisor({ id_riesgo: read.id_riesgo }) + "image"} />
                             </Row>
                             <Row style={{ marginTop: "20px" }}>
                                 <FiEdit onClick={() => editRiskAux(read)} />
