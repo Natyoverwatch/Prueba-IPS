@@ -1,17 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table } from 'antd';
+import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table, Tabs } from 'antd';
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { SearchOutlined } from "@ant-design/icons"
+import { FcReading, FcFinePrint } from "react-icons/fc";
+import { SearchOutlined, AndroidOutlined, AppleOutlined } from "@ant-design/icons"
 import { useParams } from 'react-router-dom';
 import { NavbarAux } from '../NavbarAux';
 import addImage from '../../../Images/agregar-usuario.png';
 import ppersonal from '../../../Images/preguntapersonal.png'
 import pseguimiento from '../../../Images/preguntaseguimiento.png'
-
-const { Option } = Select
 
 export default function QuestionsGRisk() {
     let { id } = useParams()
@@ -33,7 +32,8 @@ export default function QuestionsGRisk() {
     const [state, setState] = useContext(AppContext)
 
     //Data de las preguntas
-    const [dataSource, setDataSource] = useState([]);
+    const [dataSourcePersonales, setDataSourcePersonales] = useState([]);
+    const [dataSourceSeguimiento, setDataSourceSeguimiento] = useState([]);
 
     const [dataRisk, setDataRisk] = useState([]);
 
@@ -68,8 +68,10 @@ export default function QuestionsGRisk() {
     //Obtención de las preguntas
     const getQuestions = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${id}`, state?.token)
-        setDataSource(getConstdata);
-        getRisks()
+        const filteredDataPersonales = getConstdata.filter(item => item.tipo === "personal")
+        setDataSourcePersonales(filteredDataPersonales);
+        const filteredDataSeguimiento = getConstdata.filter(item => item.tipo === "seguimiento")
+        setDataSourceSeguimiento(filteredDataSeguimiento);
     }
 
     useEffect(() => {
@@ -95,66 +97,56 @@ export default function QuestionsGRisk() {
         return (filtro[0]?.name)
     }
 
-    const columns = [
+    const items = [
         {
-            title: 'Tipo de pregunta',
-            dataIndex: 'tipo',
-            key: 'tipo',
-            filters: [
-                {
-                    text: 'seguimiento',
-                    value: 'seguimiento',
-                },
-                {
-                    text: 'personal',
-                    value: 'personal',
-                },
-            ],
-            onFilter: (value, record) => record.tipo.indexOf(value) === 0,
+            key: '1',
+            label:
+                (<span >
+                    <FcReading style={{ fontSize: '24px' }} />
+                    Preguntas Personales
+                </span>),
+            children:
+                (
+                    <Form form={form} layout="vertical" /* onFinish={createNewQuestion} */>
+                        {dataSourcePersonales.map((read, index) => (
+                            <Form.Item
+                                key={index}
+                                name={read._id}
+                                label={read.pregunta}
+                                rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
+                            >
+                                <Input />
+                            </Form.Item>))}
+                        <Form.Item>
+                            <Button type='primary' /* onClick={} */> Enviar datos</Button>
+                        </Form.Item>
+                    </Form>
+                ),
         },
         {
-            title: 'Pregunta',
-            dataIndex: 'pregunta',
-            key: 'pregunta',
-            editable: true,
-            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
-                return (
-                    <>
-                        <Input
-                            autoFocus
-                            placeholder='Escribe aquí'
-                            onPressEnter={() => { confirm() }}
-                            onBlur={() => { confirm() }}
-                            value={selectedKeys[0]}
-                            onChange={(e) => {
-                                setSelectedKeys(e.target.value ? [e.target.value] : [])
-                                confirm({ closeDropdown: false })
-                            }}
-                        ></Input>
-                    </>
-                )
-            },
-            filterIcon: () => { return (<SearchOutlined />) },
-            onFilter: (value, record) => { return record.pregunta.toLowerCase().includes(value.toLowerCase()) },
-        },
-        {
-            title: 'Nombre del input de la pregunta',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Acciones',
-            key: 'actions',
-            render: (a) => {
-                return (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <FiEdit onClick={() => editQuestions(a)} />
-                        <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteQuestions(a._id)}>
-                            <FiTrash2 />
-                        </Popconfirm>
-                    </div >
-                );
-            }
+            key: '2',
+            label:
+                (<span >
+                    <FcFinePrint style={{ fontSize: '24px' }} />
+                    Preguntas de seguimiento
+                </span>),
+            children:
+                (
+                    <Form form={form} layout="vertical" /* onFinish={createNewQuestion} */>
+                        {dataSourceSeguimiento.map((read, index) => (
+                            <Form.Item
+                                key={index}
+                                name={read._id}
+                                label={read.pregunta}
+                                rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
+                            >
+                                <Input />
+                            </Form.Item>))}
+                        <Form.Item>
+                            <Button type='primary' /* onClick={} */> Enviar datos</Button>
+                        </Form.Item>
+                    </Form>
+                ),
         },
     ];
 
@@ -177,6 +169,15 @@ export default function QuestionsGRisk() {
                         <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}> Preguntas de seguimiento </h1>
                         <img src={pseguimiento} alt={"pseguimiento"} />
                     </Row>
+                </Col>
+            </Row>
+            <Row className='styledRow'>
+                <Col>
+                    <Tabs
+                        defaultActiveKey="1"
+                        centered
+                        items={items}
+                    />
                 </Col>
             </Row>
         </div>

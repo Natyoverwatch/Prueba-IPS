@@ -105,7 +105,7 @@ export default function GruRiesgoAux() {
                             className='styledColGrisk'
                             xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}
                             key={index}>
-                            <Row className='styledRow2' onClick={() => navigate(`/questionsgrisk/${read._id}`)}>
+                            <Row className='styledRow2' onClick={() => navigate(`/questionsgrisk/${read.id_riesgo}`)}>
                                 <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>
                                     {filterNameSupervisor({ id_supervisor: read.id_supervisor })} - {filterRiskSupervisor({ id_riesgo: read.id_riesgo })}
                                 </h1>
