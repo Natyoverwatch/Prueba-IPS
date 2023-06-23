@@ -48,8 +48,10 @@ export default function AsignacionSupervisor() {
     const [dataSupervisor, setDataSupervisor] = useState([]);
     //Data Aux risk groups
     const [dataSource, setDataSource] = useState([]);
-    //Data risk groups
+    //Data risk groups filter
     const [dataRiskSource, setRiskDataSource] = useState([]);
+    //Data risk groups
+    const [dataSourceRisk, setDataSourceRisk] = useState([]);
 
     //Función para encontrar la imagen de cada grupo en relación al diccionario riksImages
     /* const filteredRisk = (riskGroup) => {
@@ -99,11 +101,16 @@ export default function AsignacionSupervisor() {
 
     }
 
-    //Obtención de los grupos de riesgo
+    //Obtención de los grupos de riesgo con filtro
     const getRisksAdm = async (value) => {
         setState({ ...state, id_supervisor: value });
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${value}`, state?.token)
         setRiskDataSource(getConstdata);
+    }
+    //Obtención de los grupos de riesgo
+    const getRisks = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
+        setDataSourceRisk(getConstdata);
     }
 
     //Obtención de los supervisores
@@ -114,6 +121,7 @@ export default function AsignacionSupervisor() {
 
     useEffect(() => {
         getRisksAdm()
+        getRisks()
         getSupervisor()
         getRisksAux()
         console.log(state)
@@ -129,6 +137,18 @@ export default function AsignacionSupervisor() {
     const handleChange = (selectedOption) => {
         (selectedOption) ? setIsAux(true) : setIsAux(false)
         getRisksAdm(selectedOption)
+    }
+
+    // filtro nombre supervisor
+    const filterNameSupervisor = (a) => {
+        const filtro = dataSupervisor.filter(data => data._id === a.id_supervisor)
+        return (filtro[0]?.name)
+    }
+    // filtro nombre supervisor
+    const filterRiskSupervisor = (a) => {
+        const filtro = dataSourceRisk.filter(data => data._id === a.id_riesgo)
+        console.log(filtro)
+        return (filtro[0]?.name)
     }
 
     return (
@@ -195,7 +215,8 @@ export default function AsignacionSupervisor() {
                             xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}
                             key={index}>
                             <Row className='styledRow2'>
-                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{read.name} </h1>
+                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{filterNameSupervisor({ id_supervisor: read.id_supervisor })}</h1>
+                                <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}>{filterRiskSupervisor({ id_riesgo: read.id_riesgo })}</h1>
                                 <img src={addSupervisor} alt={"addSupervisor"} />
                             </Row>
                             <Row style={{ marginTop: "20px" }}>
