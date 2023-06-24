@@ -101,8 +101,8 @@ export default function QuestionsGRisk() {
         {
             key: '1',
             label:
-                (<span >
-                    <FcReading style={{ fontSize: '24px' }} />
+                (<span style={{ fontSize: '20px', display: 'flex', alignItems: 'center' }}>
+                    <FcReading style={{ marginRight: '10px' }} size={30} />
                     Preguntas Personales
                 </span>),
             children:
@@ -126,8 +126,8 @@ export default function QuestionsGRisk() {
         {
             key: '2',
             label:
-                (<span >
-                    <FcFinePrint style={{ fontSize: '24px' }} />
+                (<span style={{ fontSize: '20px', display: 'flex', alignItems: 'center' }}>
+                    <FcFinePrint style={{ marginRight: '10px' }} size={30} />
                     Preguntas de seguimiento
                 </span>),
             children:
@@ -143,7 +143,7 @@ export default function QuestionsGRisk() {
                                 <Input />
                             </Form.Item>))}
                         <Form.Item label="Próximo seguimiento">
-                            <DatePicker />
+                            <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
                         </Form.Item>
                         <Form.Item label="Observaciones">
                             <Input />
@@ -160,24 +160,6 @@ export default function QuestionsGRisk() {
     return (
         <div>
             <NavbarAux />
-            <Row className='styledRow'>
-                <Col
-                    className='styledColGrisk'
-                    xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}>
-                    <Row className='styledRow2' onClick={() => { }}>
-                        <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}> Preguntas Personales </h1>
-                        <img src={ppersonal} alt={"ppersonal"} />
-                    </Row>
-                </Col>
-                <Col
-                    className='styledColGrisk'
-                    xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 6, offset: 2 }}>
-                    <Row className='styledRow2' onClick={() => { }}>
-                        <h1 style={{ textTransform: "capitalize", textAlign: 'center' }}> Preguntas de seguimiento </h1>
-                        <img src={pseguimiento} alt={"pseguimiento"} />
-                    </Row>
-                </Col>
-            </Row>
             <Row className='styledRow'>
                 <Col>
                     <Tabs
