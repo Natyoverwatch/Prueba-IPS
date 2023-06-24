@@ -79,6 +79,7 @@ export default function AsignacionSupervisor() {
             id_supervisor: values.id_supervisor,
             id_riesgo: values.id_riesgo,
         }
+        console.log(datos)
         const data = await addData(datos, "https://api.clubdeviajeros.tk/api/asignaciones", state?.token)
         console.log(data)
         if (data) { getRisksAux() }
@@ -88,6 +89,7 @@ export default function AsignacionSupervisor() {
     const getRisksAux = async () => {
         setState({ ...state, id_auxiliar: idaux })
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/asignaciones/${idaux}`, state?.token)
+        console.log(getConstdata)
         setDataSource(getConstdata);
     }
 

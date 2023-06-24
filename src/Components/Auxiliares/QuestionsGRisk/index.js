@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table, Tabs } from 'antd';
+import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table, Tabs, DatePicker } from 'antd';
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -142,9 +142,16 @@ export default function QuestionsGRisk() {
                             >
                                 <Input />
                             </Form.Item>))}
+                        <Form.Item label="Próximo seguimiento">
+                            <DatePicker />
+                        </Form.Item>
+                        <Form.Item label="Observaciones">
+                            <Input />
+                        </Form.Item>
                         <Form.Item>
                             <Button type='primary' /* onClick={} */> Enviar datos</Button>
                         </Form.Item>
+
                     </Form>
                 ),
         },
