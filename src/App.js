@@ -8,7 +8,6 @@ import Reports from './Components/Reportes'
 import Supervisor from './Components/Administrador/Supervisor';
 import Questions from './Components/Administrador/Questions';
 import AdminAuxiliar from './Components/Administrador/Auxiliar';
-import GruRiesgoAuxAdmin from './Components/Administrador/GruposDeRiesgoAuxiliares';
 
 import MyProvider from "./Provider"
 import GruRiesgoAux from './Components/Auxiliares/GruposRiesgo';
@@ -31,7 +30,6 @@ function App() {
           <Route path="/administrador" element={<Supervisor />} />
           <Route path="/adminauxiliar" element={<AdminAuxiliar />} />
           <Route path="/asignacionsupervisor/:idaux" element={<AsignacionSupervisor />} />
-          <Route path="/griesgoauxadmin/:idadm" element={<GruRiesgoAuxAdmin />} />
           {/*Rutas para acceso a auxiliares*/}
           <Route path="/auxiliar" element={<GruRiesgoAux />} />
           <Route path="/questionsgrisk/:id" element={<QuestionsGRisk />} />
