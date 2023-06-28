@@ -4,9 +4,9 @@ import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table, Tabs, 
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { FcReading, FcFinePrint } from "react-icons/fc";
+import { FcReading, FcFinePrint, FcPrevious } from "react-icons/fc";
 import { SearchOutlined, AndroidOutlined, AppleOutlined } from "@ant-design/icons"
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { NavbarAux } from '../NavbarAux';
 import addImage from '../../../Images/agregar-usuario.png';
 import ppersonal from '../../../Images/preguntapersonal.png'
@@ -20,7 +20,10 @@ export default function QuestionsGRisk() {
 
     //Forms to control diferent modals
     const [formUpdateQuestions] = Form.useForm();
-    const [form] = Form.useForm();
+    const [formPersonal] = Form.useForm();
+    const [formSeguimiento] = Form.useForm();
+
+    const navigate = useNavigate();
 
     //Estados para el control de las modales
     //Modal para creación de las preguntas
@@ -44,26 +47,7 @@ export default function QuestionsGRisk() {
         setIdEdit(questions._id)
     }
 
-    //Actualizar la pregunta
-    const updateQuestions = async (values) => {
-        form.resetFields()
-        const data = await editData(values, `https://api.clubdeviajeros.tk/api/questions/${idEdit}`, state?.token)
-        if (data === "ok") { setisEditing(false); getQuestions() }
-    }
-
-    //Creación de una nueva pregunta
-    const createNewQuestion = async (values) => {
-        form.resetFields()
-        setIsModalVisible(false);
-        const datos = {
-            id_riesgo: id,
-            tipo: values.tipo,
-            pregunta: values.pregunta,
-            name: values.name,
-        }
-        const data = await addData(datos, "https://api.clubdeviajeros.tk/api/questions", state?.token)
-        if (data) getQuestions()
-    };
+    
 
     //Obtención de las preguntas
     const getQuestions = async () => {
@@ -97,6 +81,11 @@ export default function QuestionsGRisk() {
         return (filtro[0]?.name)
     }
 
+    const sendPersonalQuestions = async(values) => {
+        const sendData = await addData({id_riesgo: id, values}, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
+        console.log(sendData)
+    }
+
     const items = [
         {
             key: '1',
@@ -107,7 +96,7 @@ export default function QuestionsGRisk() {
                 </span>),
             children:
                 (
-                    <Form form={form} layout="vertical" /* onFinish={createNewQuestion} */>
+                    <Form form={formPersonal} layout="vertical" onFinish={sendPersonalQuestions} >
                         {dataSourcePersonales.map((read, index) => (
                             <Form.Item
                                 key={index}
@@ -118,7 +107,7 @@ export default function QuestionsGRisk() {
                                 <Input />
                             </Form.Item>))}
                         <Form.Item>
-                            <Button type='primary' /* onClick={} */> Enviar datos</Button>
+                            <Button type='primary' htmlType="submit"> Enviar datos</Button>
                         </Form.Item>
                     </Form>
                 ),
@@ -132,7 +121,7 @@ export default function QuestionsGRisk() {
                 </span>),
             children:
                 (
-                    <Form form={form} layout="vertical" /* onFinish={createNewQuestion} */>
+                    <Form form={formSeguimiento} layout="vertical" /* onFinish={createNewQuestion} */>
                         {dataSourceSeguimiento.map((read, index) => (
                             <Form.Item
                                 key={index}
@@ -160,6 +149,9 @@ export default function QuestionsGRisk() {
     return (
         <div>
             <NavbarAux />
+            <div className='div-arrow-back'>
+                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow'/>
+            </div>
             <Row className='styledRow'>
                 <Col>
                     <Tabs

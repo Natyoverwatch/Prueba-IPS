@@ -6,7 +6,8 @@ import { addData, getData, editData, deleteData } from "../../../controller/cont
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { SearchOutlined } from "@ant-design/icons"
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FcPrevious } from 'react-icons/fc'
 
 const { Option } = Select
 
@@ -15,6 +16,9 @@ export default function Questions() {
 
     //Id for updating specific questions
     const [idEdit, setIdEdit] = useState(null)
+
+    //Navegación a la página acorde al grupo de riesgo
+    const navigate = useNavigate();
 
     //Forms to control diferent modals
     const [formUpdateQuestions] = Form.useForm();
@@ -160,6 +164,9 @@ export default function Questions() {
         <div>
             <NavbarAdmin />
             <div className='containerquestion'>
+                <div className='div-arrow-back'>
+                    <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow'/>
+                </div>
                 <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
                     <Col>
                         <Row style={{ justifyContent: 'center', }}>

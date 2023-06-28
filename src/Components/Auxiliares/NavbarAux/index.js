@@ -28,7 +28,7 @@ export const NavbarAux = () => {
                 </Link>
             </div>
             <div style={{ display: 'flex', margin: '1em', alignSelf: 'flex-end', color: 'white' }}>
-                <BsPersonCircle size={30} onClick={() => navigate('/login')} />
+                <BsPersonCircle size={30} onClick={() => navigate('/login')} className='icon'/>
             </div>
             <button className="navbar-toggle" onClick={toggleMenu}>
                 <span className="navbar-toggle-bar"></span>

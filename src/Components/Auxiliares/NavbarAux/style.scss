@@ -15,6 +15,7 @@
 
         img {
             height: 3.5rem;
+            cursor: pointer;
         }
 
         .stylepAux {
@@ -25,6 +26,10 @@
             color: #197B8D;
             margin-left: 1rem;
         }
+    }
+
+    .icon{
+        cursor: pointer;
     }
 
     .navbar-toggle {

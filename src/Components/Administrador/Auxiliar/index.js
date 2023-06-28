@@ -6,6 +6,7 @@ import { Form, Modal, Button, Input, Row, Col, Popconfirm, Table, Select } from 
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FcPrevious } from 'react-icons/fc'
 
 const { Option } = Select
 
@@ -15,7 +16,7 @@ export default function AdminAuxiliar() {
     const [idEdit, setIdEdit] = useState(null)
 
     //Forms to control diferent modals
-    const [formUpdateSupervisor] = Form.useForm();
+    const [formUpdateAuxiliar] = Form.useForm();
     const [form] = Form.useForm();
 
     //Estados para el control de las modales
@@ -38,18 +39,64 @@ export default function AdminAuxiliar() {
         const getConstdata = await getData("https://api.clubdeviajeros.tk/api/users", state?.token)
         console.log(getConstdata)
         const filteredData = getConstdata.filter(item => item.roll.toLowerCase() === "auxiliar")
-        setDataSource([...dataSource, ...filteredData])
+        setDataSource(filteredData)
     }
 
     useEffect(() => {
         getUsers()
         console.log(dataSource)
-        // eslint-disable-next-line
-    }, [])
+    }, [0])
+
+    const columns = [
+        {
+            title: 'Nombre del auxiliar',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Acciones',
+            dataIndex: 'actions',
+            key: 'actions',
+            render: (_, record) => {
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <FiEdit onClick={() => {
+                            editAuxiliar(record)
+                            form.resetFields()
+                        }} />
+                        <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteAuxiliar(record._id)}>
+                            <FiTrash2 />
+                        </Popconfirm>
+                    </div >
+                );
+            }
+        }
+    ]
+
+    //Borrar auxiliar
+    const deleteAuxiliar = async(auxiliar) => {
+        const data = await deleteData(`https://api.clubdeviajeros.tk/api/users/${auxiliar}`, state?.token)
+        if (data === 200) getUsers()
+    }
+
+    const editAuxiliar = (auxiliar) => {
+        setisEditing(true)
+        formUpdateAuxiliar.setFieldsValue(auxiliar);
+        setIdEdit(auxiliar._id)
+    }
+
+    const updateAuxiliar = async (values) => {
+        form.resetFields()
+        const data = await editData(values, `https://api.clubdeviajeros.tk/api/users/${idEdit}`, state?.token)
+        if (data === "ok") { setisEditing(false); getUsers() }
+    }
 
     return (
         <div>
             <NavbarAdmin />
+            <div>
+                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow'/>
+            </div>
             <Row className='styledRow'>
                 <Col
                     className='styledColAuxiliar'
@@ -76,7 +123,35 @@ export default function AdminAuxiliar() {
                     </Form>
                 </Col>
             </Row>
-
+            <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
+                <Col className='tableUser'>
+                    <Table columns={columns} dataSource={dataSource} rowKey="_id" />
+                </Col>
+            </Row>
+            <Modal
+                title="Actualización del nombre del supervisor"
+                open={isEditing}
+                onCancel={() => {
+                    setisEditing(false)
+                    form.resetFields()
+                }}
+                footer={[
+                    <Button key="cancel" onClick={() => {
+                        setisEditing(false)
+                        form.resetFields()
+                    }}>
+                        Cancelar
+                    </Button>,
+                    <Button key="create" type="primary" onClick={() => { formUpdateAuxiliar.submit() }}>
+                        Editar
+                    </Button>,
+                ]}>
+                <Form form={formUpdateAuxiliar} onFinish={updateAuxiliar}>
+                    <Form.Item name="name" label="Nombre del auxiliar:">
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div >
     )
 }

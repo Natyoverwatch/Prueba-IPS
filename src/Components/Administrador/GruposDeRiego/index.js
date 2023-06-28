@@ -6,6 +6,7 @@ import { Form, Modal, Button, Input, Row, Col, Popconfirm } from 'antd';
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FcPrevious } from 'react-icons/fc'
 //Images
 import mamografiaImage from '../../../Images/mamografia.png';
 import sifilisImage from '../../../Images/sifilis.png';
@@ -113,6 +114,9 @@ export default function GruRiesgo() {
     return (
         <div>
             <NavbarAdmin />
+            <div>
+                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow'/>
+            </div>
             <Modal
                 onCancel={() => {
                     setIsModalVisible(false)
