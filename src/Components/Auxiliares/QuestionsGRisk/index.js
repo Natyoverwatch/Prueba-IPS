@@ -37,7 +37,8 @@ export default function QuestionsGRisk() {
     //Data de las preguntas
     const [dataSourcePersonales, setDataSourcePersonales] = useState([]);
     const [dataSourceSeguimiento, setDataSourceSeguimiento] = useState([]);
-
+    //Data pacientes
+    const [dataSource, setDataSource] = useState([]);
     const [dataRisk, setDataRisk] = useState([]);
 
     //Editar las preguntas y actualizar
@@ -47,11 +48,17 @@ export default function QuestionsGRisk() {
         setIdEdit(questions._id)
     }
 
-    
+    //Obtención de los pacientes
+    const getPaciente = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/${id}`, state?.token)
+        /* setDataSource(getConstdata) */
+        console.log(getConstdata)
+        /* getQuestions(getConstdata.id_riesgo) */
+    }
 
     //Obtención de las preguntas
-    const getQuestions = async () => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${id}`, state?.token)
+    const getQuestions = async (a) => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${a}`, state?.token)
         const filteredDataPersonales = getConstdata.filter(item => item.tipo === "personal")
         setDataSourcePersonales(filteredDataPersonales);
         const filteredDataSeguimiento = getConstdata.filter(item => item.tipo === "seguimiento")
@@ -59,7 +66,7 @@ export default function QuestionsGRisk() {
     }
 
     useEffect(() => {
-        getQuestions()
+        getPaciente()
         // eslint-disable-next-line
     }, [])
 
@@ -81,8 +88,8 @@ export default function QuestionsGRisk() {
         return (filtro[0]?.name)
     }
 
-    const sendPersonalQuestions = async(values) => {
-        const sendData = await addData({id_riesgo: id, values}, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
+    const sendPersonalQuestions = async (values) => {
+        const sendData = await addData({ id_riesgo: id, values }, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
         console.log(sendData)
     }
 
@@ -150,7 +157,7 @@ export default function QuestionsGRisk() {
         <div>
             <NavbarAux />
             <div className='div-arrow-back'>
-                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow'/>
+                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow' />
             </div>
             <Row className='styledRow'>
                 <Col>

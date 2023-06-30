@@ -20,14 +20,13 @@ export default function CreacionPaciente() {
     //Forms to control diferent modals
     const [formUpdatePaciente] = Form.useForm();
     const [formPersonal] = Form.useForm();
-    const [form] = Form.useForm();
 
     //Estados para el control de las modales
     //Modal para creación de los supervisores
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
-    const [idAuxiliar, setIdAuxiliar] = useState("")
+    const [idPaciente, setIdPaciente] = useState("")
     //Global state
     const [state, setState] = useContext(AppContext)
 
@@ -58,6 +57,8 @@ export default function CreacionPaciente() {
     const sendPersonal = async (values) => {
         const sendData = await addData({ id_riesgo: id, values }, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
         console.log(sendData)
+        if (sendData) getPaciente()
+        formPersonal.resetFields()
     }
     //Borrar supervisor
     const deletePaciente = async (paciente) => {
@@ -73,7 +74,7 @@ export default function CreacionPaciente() {
     }
 
     const updatePaciente = async (values) => {
-        form.resetFields()
+        formPersonal.resetFields()
         const data = await editData(values, `https://api.clubdeviajeros.tk/api/personal/${idEdit}`, state?.token)
         if (data === "ok") { setisEditing(false); getPaciente() }
     }
@@ -87,8 +88,9 @@ export default function CreacionPaciente() {
     const columns = [
         {
             title: 'Nombre del paciente',
-            dataIndex: `values["64712e8a851e4c86bf5423a1"]`,
-            key: 'values["64712e8a851e4c86bf5423a1"]',
+            dataIndex: 'values',
+            key: 'values',
+            render: (values) => values['64712e08851e4c86bf54237b'],
         },
         {
             title: 'Acciones',
@@ -97,10 +99,10 @@ export default function CreacionPaciente() {
             render: (_, record) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <FiEdit onClick={() => {
+                        {/* <FiEdit onClick={() => {
                             editPaciente(record)
                             form.resetFields()
-                        }} />
+                        }} /> */}
                         <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deletePaciente(record._id)}>
                             <FiTrash2 />
                         </Popconfirm>
@@ -124,17 +126,17 @@ export default function CreacionPaciente() {
                         >
                             <Select
                                 style={{ width: '100%' }}
-                            /* onChange={(e) => setIdSupervisor(e)} */
+                                onChange={(e) => setIdPaciente(e)}
                             >
                                 {dataSource.map((read, index) => (
                                     <Option
                                         key={index}
-                                        value={read._id}>{read.name}
+                                        value={read._id}>{read.values["64712e08851e4c86bf54237b"]}
                                     </Option>))}
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' /* onClick={() => navigate(`/griesgo/${idSupervisor}`) : ""} */> Siguiente</Button>
+                            <Button type='primary' onClick={() => idPaciente.length > 0 ? navigate(`/questionsgrisk/${idPaciente}`) : ""}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>
@@ -153,17 +155,18 @@ export default function CreacionPaciente() {
                 open={isModalVisible}
                 onCancel={() => {
                     setIsModalVisible(false)
-                    form.resetFields()
+                    formPersonal.resetFields()
                 }}
                 footer={[
                     <Button key="cancel" onClick={() => {
                         setIsModalVisible(false)
-                        form.resetFields()
+                        formPersonal.resetFields()
                     }}>
                         Cancelar
                     </Button>,
                     <Button key="create" type="primary" onClick={() => {
-                        form.submit()
+                        setIsModalVisible(false)
+                        formPersonal.submit()
                     }}>
                         Crear
                     </Button>,
@@ -177,7 +180,8 @@ export default function CreacionPaciente() {
                             rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                         >
                             <Input />
-                        </Form.Item>))}
+                        </Form.Item>
+                    ))}
                 </Form>
             </Modal>
             {/* Modal para editar o actualizar el supervisor */}
@@ -186,12 +190,12 @@ export default function CreacionPaciente() {
                 open={isEditing}
                 onCancel={() => {
                     setisEditing(false)
-                    form.resetFields()
+                    formPersonal.resetFields()
                 }}
                 footer={[
                     <Button key="cancel" onClick={() => {
                         setisEditing(false)
-                        form.resetFields()
+                        formPersonal.resetFields()
                     }}>
                         Cancelar
                     </Button>,
