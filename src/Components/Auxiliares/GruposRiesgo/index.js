@@ -14,6 +14,7 @@ import edaImage from '../../../Images/diarrea.png';
 import iraImage from '../../../Images/neumonia.png';
 import mmeImage from '../../../Images/mme.png';
 import addImage from '../../../Images/agregar-usuario.png';
+import { FcPrevious } from "react-icons/fc";
 
 export default function GruRiesgoAux() {
     //Obtener los parametros por supervisor su ID
@@ -98,6 +99,9 @@ export default function GruRiesgoAux() {
     return (
         <div>
             <NavbarAux />
+            <div className='div-arrow-back'>
+                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow' />
+            </div>
             <Row className='styledRow'>
                 {
                     dataSource.map((read, index) => (

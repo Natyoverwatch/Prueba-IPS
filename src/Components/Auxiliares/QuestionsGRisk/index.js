@@ -17,6 +17,7 @@ export default function QuestionsGRisk() {
 
     //Id for updating specific questions
     const [idEdit, setIdEdit] = useState(null)
+    const [idRecord, setIdRecord] = useState()
 
     //Forms to control diferent modals
     const [formUpdateQuestions] = Form.useForm();
@@ -40,6 +41,8 @@ export default function QuestionsGRisk() {
     //Data pacientes
     const [dataSource, setDataSource] = useState([]);
     const [dataRisk, setDataRisk] = useState([]);
+    const [questions, setQuestions] = useState([])
+    const [initialVal, setInitialVal] = useState()
 
     //Editar las preguntas y actualizar
     const editQuestions = (questions) => {
@@ -50,25 +53,48 @@ export default function QuestionsGRisk() {
 
     //Obtención de los pacientes
     const getPaciente = async () => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/${id}`, state?.token)
-        /* setDataSource(getConstdata) */
-        console.log(getConstdata)
-        getQuestions(getConstdata.id_riesgo)
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/name/${id}`, state?.token)
+        setInitialVal(getConstdata[0].values)
+        setIdRecord(getConstdata[0]._id)
+        await getQuestions(getConstdata[0])
     }
 
+
     //Obtención de las preguntas
-    const getQuestions = async (a) => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${a}`, state?.token)
+    const getQuestions = async (data) => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${data.id_riesgo}`, state?.token)
+        setQuestions(getConstdata)
+        await getNameQuestions(data, getConstdata)
         const filteredDataPersonales = getConstdata.filter(item => item.tipo === "personal")
         setDataSourcePersonales(filteredDataPersonales);
         const filteredDataSeguimiento = getConstdata.filter(item => item.tipo === "seguimiento")
         setDataSourceSeguimiento(filteredDataSeguimiento);
     }
 
+    const getNameQuestions = async(values, data) => {
+        let array = []
+        Object.entries(values.values).forEach(([key, val]) => {
+            const newObject = data.filter((a) => a._id === key)
+            array.push({
+                id: key,
+                pregunta: newObject[0].pregunta,
+                respuesta: val
+            })
+        })
+        setDataSource(array)
+    }
+
     useEffect(() => {
         getPaciente()
         // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+        setTimeout(() => {
+            formPersonal.setFieldsValue({"64712e08851e4c86bf54237b": "lalo landa"})
+            console.log(initialVal)
+        }, 5000)
+    }, [initialVal])
 
     //Borrar pregunta 
     const deleteQuestions = async (questions) => {
@@ -89,8 +115,9 @@ export default function QuestionsGRisk() {
     }
 
     const sendPersonalQuestions = async (values) => {
-        const sendData = await addData({ id_riesgo: id, values }, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
-        console.log(sendData)
+        // const sendData = await addData({ id_riesgo: id, values }, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
+        // console.log(sendData)
+        console.log(values)
     }
 
     const items = [
@@ -104,17 +131,17 @@ export default function QuestionsGRisk() {
             children:
                 (
                     <Form form={formPersonal} layout="vertical" onFinish={sendPersonalQuestions} >
-                        {dataSourcePersonales.map((read, index) => (
+                        {dataSource.map((read, index) => (
                             <Form.Item
                                 key={index}
-                                name={read._id}
+                                name={read.id}
                                 label={read.pregunta}
                                 rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                             >
-                                <Input />
+                                <Input/>
                             </Form.Item>))}
                         <Form.Item>
-                            <Button type='primary' htmlType="submit"> Enviar datos</Button>
+                            <Button type='primary' htmlType="submit">Actualizar</Button>
                         </Form.Item>
                     </Form>
                 ),

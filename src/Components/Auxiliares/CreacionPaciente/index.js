@@ -115,6 +115,9 @@ export default function CreacionPaciente() {
     return (
         <div>
             <NavbarAux />
+            <div className='div-arrow-back'>
+                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow' />
+            </div>
             <Row className='styledRow'>
                 <Col
                     className='styledColSupervisor'
