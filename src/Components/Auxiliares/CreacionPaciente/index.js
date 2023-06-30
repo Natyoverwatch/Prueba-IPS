@@ -86,9 +86,9 @@ export default function CreacionPaciente() {
 
     const columns = [
         {
-            title: 'Nombre del supervisor',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Nombre del paciente',
+            dataIndex: `values["64712e8a851e4c86bf5423a1"]`,
+            key: 'values["64712e8a851e4c86bf5423a1"]',
         },
         {
             title: 'Acciones',
@@ -120,7 +120,7 @@ export default function CreacionPaciente() {
                     <Form
                         layout="vertical">
                         <Form.Item
-                            label='Seleccione un supervisor'
+                            label='Seleccione un paciente'
                         >
                             <Select
                                 style={{ width: '100%' }}
@@ -142,14 +142,14 @@ export default function CreacionPaciente() {
             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                 <Col>
                     <Button style={{ float: 'right', marginBottom: '1rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
-                        Agregar supervisor
+                        Agregar un paciente
                     </Button>
                     <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                 </Col>
             </Row>
             {/*Modal creacion supervisor*/}
             <Modal
-                title="Creación grupo de riesgo"
+                title="Creación paciente"
                 open={isModalVisible}
                 onCancel={() => {
                     setIsModalVisible(false)
@@ -178,9 +178,6 @@ export default function CreacionPaciente() {
                         >
                             <Input />
                         </Form.Item>))}
-                    <Form.Item>
-                        <Button type='primary' htmlType="submit"> Enviar datos</Button>
-                    </Form.Item>
                 </Form>
             </Modal>
             {/* Modal para editar o actualizar el supervisor */}
@@ -202,10 +199,16 @@ export default function CreacionPaciente() {
                         Crear
                     </Button>,
                 ]}>
-                <Form form={formUpdatePaciente} onFinish={updatePaciente}>
-                    <Form.Item name="name" label="Nombre del supervisor:">
-                        <Input />
-                    </Form.Item>
+                <Form form={formUpdatePaciente} layout="vertical" onFinish={updatePaciente} >
+                    {dataSourcePersonales.map((read, index) => (
+                        <Form.Item
+                            key={index}
+                            name={read._id}
+                            label={read.pregunta}
+                            rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
+                        >
+                            <Input />
+                        </Form.Item>))}
                 </Form>
             </Modal>
         </div >
