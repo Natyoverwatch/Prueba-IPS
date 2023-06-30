@@ -8,6 +8,7 @@ import Reports from './Components/Reportes'
 import Supervisor from './Components/Administrador/Supervisor';
 import Questions from './Components/Administrador/Questions';
 import AdminAuxiliar from './Components/Administrador/Auxiliar';
+import CreacionPaciente from './Components/Auxiliares/CreacionPaciente';
 
 import MyProvider from "./Provider"
 import GruRiesgoAux from './Components/Auxiliares/GruposRiesgo';
@@ -33,6 +34,7 @@ function App() {
           {/*Rutas para acceso a auxiliares*/}
           <Route path="/auxiliar" element={<GruRiesgoAux />} />
           <Route path="/questionsgrisk/:id" element={<QuestionsGRisk />} />
+          <Route path="/creacionpaciente/:id" element={<CreacionPaciente />} />
         </Routes>
       </BrowserRouter>
     </MyProvider>
