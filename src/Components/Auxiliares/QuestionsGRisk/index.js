@@ -53,7 +53,7 @@ export default function QuestionsGRisk() {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/${id}`, state?.token)
         /* setDataSource(getConstdata) */
         console.log(getConstdata)
-        /* getQuestions(getConstdata.id_riesgo) */
+        getQuestions(getConstdata.id_riesgo)
     }
 
     //Obtención de las preguntas
