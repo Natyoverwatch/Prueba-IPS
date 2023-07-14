@@ -165,7 +165,7 @@ export default function Questions() {
             <NavbarAdmin />
             <div className='containerquestion'>
                 <div className='div-arrow-back'>
-                    <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow'/>
+                    <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow' />
                 </div>
                 <Row style={{ display: 'flex', justifyContent: 'center', padding: '0 1em' }}>
                     <Col>

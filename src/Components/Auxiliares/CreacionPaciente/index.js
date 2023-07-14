@@ -48,7 +48,7 @@ export default function CreacionPaciente() {
 
     //Obtención de los pacientes
     const getPaciente = async () => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/${id}`, state?.token)
         setDataSource(getConstdata)
         console.log(getConstdata)
     }
@@ -90,7 +90,7 @@ export default function CreacionPaciente() {
             title: 'Nombre del paciente',
             dataIndex: 'values',
             key: 'values',
-            render: (values) => values['64712e08851e4c86bf54237b'],
+            render: (values) => values['name'],
         },
         {
             title: 'Acciones',
@@ -131,7 +131,7 @@ export default function CreacionPaciente() {
                                 {dataSource.map((read, index) => (
                                     <Option
                                         key={index}
-                                        value={read._id}>{read.values["64712e08851e4c86bf54237b"]}
+                                        value={read._id}>{read.values["name"]}
                                     </Option>))}
                             </Select>
                         </Form.Item>
@@ -172,12 +172,26 @@ export default function CreacionPaciente() {
                     </Button>,
                 ]}>
                 <Form form={formPersonal} layout="vertical" onFinish={sendPersonal} >
+                    <Form.Item
+                        name="name"
+                        label="Nombre completo del paciente"
+                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="id_paciente"
+                        label="Número de identificacione del paciente"
+                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
+                    >
+                        <Input />
+                    </Form.Item>
                     {dataSourcePersonales.map((read, index) => (
                         <Form.Item
                             key={index}
                             name={read._id}
                             label={read.pregunta}
-                            rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
+                            rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
                         >
                             <Input />
                         </Form.Item>
@@ -204,6 +218,20 @@ export default function CreacionPaciente() {
                     </Button>,
                 ]}>
                 <Form form={formUpdatePaciente} layout="vertical" onFinish={updatePaciente} >
+                    <FormItem
+                        name="name"
+                        label="Nombre completo del paciente"
+                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
+                    >
+                        <Input />
+                    </FormItem>
+                    <FormItem
+                        name="id_paciente"
+                        label="Número de identificacione del paciente"
+                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
+                    >
+                        <Input />
+                    </FormItem>
                     {dataSourcePersonales.map((read, index) => (
                         <Form.Item
                             key={index}

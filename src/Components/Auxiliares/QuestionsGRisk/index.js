@@ -57,6 +57,7 @@ export default function QuestionsGRisk() {
         setInitialVal(getConstdata[0].values)
         setIdRecord(getConstdata[0]._id)
         await getQuestions(getConstdata[0])
+
     }
 
 
@@ -71,15 +72,17 @@ export default function QuestionsGRisk() {
         setDataSourceSeguimiento(filteredDataSeguimiento);
     }
 
-    const getNameQuestions = async(values, data) => {
+    const getNameQuestions = async (values, data) => {
         let array = []
         Object.entries(values.values).forEach(([key, val]) => {
             const newObject = data.filter((a) => a._id === key)
-            array.push({
-                id: key,
-                pregunta: newObject[0].pregunta,
-                respuesta: val
-            })
+            if (newObject.length > 0 && newObject[0].pregunta) {
+                array.push({
+                    id: key,
+                    pregunta: newObject[0].pregunta,
+                    respuesta: val
+                })
+            }
         })
         setDataSource(array)
     }
@@ -112,13 +115,13 @@ export default function QuestionsGRisk() {
     }
 
     const sendPersonalQuestions = async (values) => {
-        const data = await editData({values: values}, `https://api.clubdeviajeros.tk/api/personal/${idRecord}`, state?.token)
+        const data = await editData({ values: values }, `https://api.clubdeviajeros.tk/api/personal/${idRecord}`, state?.token)
         console.log(data)
     }
 
-    const createNewQuestion = async(values) => {
-        const data = await addData({id_paciente: idRecord, values}, `https://api.clubdeviajeros.tk/api/seguimiento`, state?.token)
-        if(data._id){
+    const createNewQuestion = async (values) => {
+        const data = await addData({ id_paciente: idRecord, values }, `https://api.clubdeviajeros.tk/api/seguimiento`, state?.token)
+        if (data._id) {
             alert('Datos insertados correctamente')
             formSeguimiento.resetFields()
         }
@@ -135,6 +138,20 @@ export default function QuestionsGRisk() {
             children:
                 (
                     <Form form={formPersonal} layout="vertical" onFinish={sendPersonalQuestions} >
+                        <Form.Item
+                            name="name"
+                            label="Nombre completo del paciente"
+                            rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name="id_paciente"
+                            label="Número de identificacione del paciente"
+                            rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
+                        >
+                            <Input />
+                        </Form.Item>
                         {dataSource.map((read, index) => (
                             <Form.Item
                                 key={index}
@@ -142,7 +159,7 @@ export default function QuestionsGRisk() {
                                 label={read.pregunta}
                                 rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                             >
-                                <Input/>
+                                <Input />
                             </Form.Item>))}
                         <Form.Item>
                             <Button type='primary' htmlType="submit">Actualizar</Button>
