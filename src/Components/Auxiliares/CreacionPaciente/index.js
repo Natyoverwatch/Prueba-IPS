@@ -218,20 +218,20 @@ export default function CreacionPaciente() {
                     </Button>,
                 ]}>
                 <Form form={formUpdatePaciente} layout="vertical" onFinish={updatePaciente} >
-                    <FormItem
+                    <Form.Item
                         name="name"
                         label="Nombre completo del paciente"
                         rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
                     >
                         <Input />
-                    </FormItem>
-                    <FormItem
+                    </Form.Item>
+                    <Form.Item
                         name="id_paciente"
                         label="Número de identificacione del paciente"
                         rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
                     >
                         <Input />
-                    </FormItem>
+                    </Form.Item>
                     {dataSourcePersonales.map((read, index) => (
                         <Form.Item
                             key={index}
