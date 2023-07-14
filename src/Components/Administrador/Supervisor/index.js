@@ -76,7 +76,7 @@ export default function Supervisor() {
 
     const columns = [
         {
-            title: 'Nombre del supervisor',
+            title: 'Nombre del cliente',
             dataIndex: 'name',
             key: 'name',
         },
@@ -110,7 +110,7 @@ export default function Supervisor() {
                     <Form
                         layout="vertical">
                         <Form.Item
-                            label='Seleccione un supervisor'
+                            label='Seleccione un cliente'
                         >
                             <Select
                                 style={{ width: '100%' }}
@@ -132,7 +132,7 @@ export default function Supervisor() {
             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                 <Col>
                     <Button style={{ float: 'right', marginBottom: '1rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
-                        Agregar supervisor
+                        Agregar cliente
                     </Button>
                     <Table columns={columns} dataSource={dataSource} rowKey="_id" />
                 </Col>

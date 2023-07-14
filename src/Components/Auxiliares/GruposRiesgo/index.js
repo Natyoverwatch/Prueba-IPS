@@ -2,9 +2,10 @@ import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
 import { NavbarAux } from '../NavbarAux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Row, Col } from 'antd';
+import { Row, Col, Modal, Button, Table } from 'antd';
 import { getData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
+import { FcAlarmClock } from "react-icons/fc";
 //Images
 import mamografiaImage from '../../../Images/mamografia.png';
 import sifilisImage from '../../../Images/sifilis.png';
@@ -17,6 +18,7 @@ import addImage from '../../../Images/agregar-usuario.png';
 import { FcPrevious } from "react-icons/fc";
 
 export default function GruRiesgoAux() {
+    const [isModalOpen, setIsModalOpen] = useState(true);
     //Obtener los parametros por supervisor su ID
     let { id } = useParams()
 
@@ -96,6 +98,43 @@ export default function GruRiesgoAux() {
         // eslint-disable-next-line
     }, [])
 
+    const dataSourceTable = [
+        {
+            nombre: "Ernesto Beltran",
+            riesgo: "Desnutricion"
+        }
+    ]
+
+    const columns = [
+        {
+            title: 'Nombre del paciente',
+            dataIndex: 'nombre',
+            key: 'name'
+        },
+        {
+            title: 'Riesgo',
+            dataIndex: 'riesgo',
+            key: 'risk'
+        },
+        {
+            title: 'Acción',
+            render: (a) => <FcAlarmClock />,
+            key: 'alarm'
+        }
+    ]
+
+    const showModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      const handleOk = () => {
+        setIsModalOpen(false);
+      };
+    
+      const handleCancel = () => {
+        setIsModalOpen(false);
+      };
+
     return (
         <div>
             <NavbarAux />
@@ -119,6 +158,16 @@ export default function GruRiesgoAux() {
                     ))
                 }
             </Row>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Button type="primary" onClick={() => showModal()}>
+                    Abrir Seguimientos del día
+                </Button>
+            </div>
+            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <div>
+                    <Table columns={columns} dataSource={dataSourceTable}/>  
+                </div>
+            </Modal>
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { addData, getData, editData, deleteData } from "../../../controller/cont
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FcPrevious } from 'react-icons/fc'
+import { FcPrevious, FcReading } from 'react-icons/fc'
 import { NavbarAux } from '../NavbarAux';
 
 const { Option } = Select
@@ -99,10 +99,7 @@ export default function CreacionPaciente() {
             render: (_, record) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        {/* <FiEdit onClick={() => {
-                            editPaciente(record)
-                            form.resetFields()
-                        }} /> */}
+                        <FcReading />
                         <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deletePaciente(record._id)}>
                             <FiTrash2 />
                         </Popconfirm>

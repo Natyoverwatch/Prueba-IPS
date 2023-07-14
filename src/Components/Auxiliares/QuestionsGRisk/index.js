@@ -4,7 +4,7 @@ import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table, Tabs, 
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { FcReading, FcFinePrint, FcPrevious } from "react-icons/fc";
+import { FcReading, FcFinePrint, FcPrevious, FcAlarmClock } from "react-icons/fc";
 import { SearchOutlined, AndroidOutlined, AppleOutlined } from "@ant-design/icons"
 import { useParams, useNavigate } from 'react-router-dom';
 import { NavbarAux } from '../NavbarAux';
@@ -90,10 +90,7 @@ export default function QuestionsGRisk() {
     }, [])
 
     useEffect(() => {
-        setTimeout(() => {
-            formPersonal.setFieldsValue({"64712e08851e4c86bf54237b": "lalo landa"})
-            console.log(initialVal)
-        }, 5000)
+        formPersonal.setFieldsValue(initialVal)
     }, [initialVal])
 
     //Borrar pregunta 
@@ -115,9 +112,16 @@ export default function QuestionsGRisk() {
     }
 
     const sendPersonalQuestions = async (values) => {
-        // const sendData = await addData({ id_riesgo: id, values }, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
-        // console.log(sendData)
-        console.log(values)
+        const data = await editData({values: values}, `https://api.clubdeviajeros.tk/api/personal/${idRecord}`, state?.token)
+        console.log(data)
+    }
+
+    const createNewQuestion = async(values) => {
+        const data = await addData({id_paciente: idRecord, values}, `https://api.clubdeviajeros.tk/api/seguimiento`, state?.token)
+        if(data._id){
+            alert('Datos insertados correctamente')
+            formSeguimiento.resetFields()
+        }
     }
 
     const items = [
@@ -155,7 +159,7 @@ export default function QuestionsGRisk() {
                 </span>),
             children:
                 (
-                    <Form form={formSeguimiento} layout="vertical" /* onFinish={createNewQuestion} */>
+                    <Form form={formSeguimiento} layout="vertical" onFinish={createNewQuestion} >
                         {dataSourceSeguimiento.map((read, index) => (
                             <Form.Item
                                 key={index}
@@ -165,16 +169,32 @@ export default function QuestionsGRisk() {
                             >
                                 <Input />
                             </Form.Item>))}
-                        <Form.Item label="Próximo seguimiento">
+                        <Form.Item>
+                            <Button type='primary' htmlType="submit"> Enviar datos</Button>
+                        </Form.Item>
+
+                    </Form>
+                ),
+        },
+        {
+            key: '3',
+            label:
+                (<span style={{ fontSize: '20px', display: 'flex', alignItems: 'center' }}>
+                    <FcAlarmClock style={{ marginRight: '10px' }} size={30} />
+                    Proximo Seguimiento
+                </span>),
+            children:
+                (
+                    <Form form={formSeguimiento} layout="vertical" onFinish={createNewQuestion} >
+                        <Form.Item label="Próximo seguimiento" name="next">
                             <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
                         </Form.Item>
-                        <Form.Item label="Observaciones">
+                        <Form.Item label="Observaciones" name="comments">
                             <Input />
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' /* onClick={} */> Enviar datos</Button>
+                            <Button type='primary' htmlType="submit"> Enviar datos</Button>
                         </Form.Item>
-
                     </Form>
                 ),
         },
