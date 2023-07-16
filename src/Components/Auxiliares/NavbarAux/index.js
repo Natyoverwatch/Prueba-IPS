@@ -26,9 +26,12 @@ export const NavbarAux = () => {
                 <Link to='/auxiliar'>
                     <h2 className='styleh2Aux'>Grupos de riesgo</h2>
                 </Link>
+                <Link to='/agenda'>
+                    <h2 className='styleh2Aux'>Agenda</h2>
+                </Link>
             </div>
             <div style={{ display: 'flex', margin: '1em', alignSelf: 'flex-end', color: 'white' }}>
-                <BsPersonCircle size={30} onClick={() => navigate('/login')} className='icon'/>
+                <BsPersonCircle size={30} onClick={() => navigate('/login')} className='icon' />
             </div>
             <button className="navbar-toggle" onClick={toggleMenu}>
                 <span className="navbar-toggle-bar"></span>

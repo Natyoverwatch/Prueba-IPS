@@ -14,6 +14,7 @@ import MyProvider from "./Provider"
 import GruRiesgoAux from './Components/Auxiliares/GruposRiesgo';
 import QuestionsGRisk from './Components/Auxiliares/QuestionsGRisk';
 import AsignacionSupervisor from './Components/Administrador/AsignacionSupervisor';
+import Agenda from './Components/Auxiliares/Agenda';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/auxiliar" element={<GruRiesgoAux />} />
           <Route path="/questionsgrisk/:id" element={<QuestionsGRisk />} />
           <Route path="/creacionpaciente/:id" element={<CreacionPaciente />} />
+          <Route path="/agenda" element={<Agenda />} />
         </Routes>
       </BrowserRouter>
     </MyProvider>
