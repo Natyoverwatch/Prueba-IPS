@@ -106,18 +106,6 @@ export default function QuestionsGRisk() {
         if (data === 200) getQuestions()
     }
 
-    //Obtención de los grupos de riesgo
-    const getRisks = async () => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk/${state?.id_supervisor}`, state?.token)
-        setDataRisk(getConstdata);
-    }
-
-    //
-    const filterRisk = (a) => {
-        const filtro = dataRisk.filter(data => data._id === a.id_riesgo)
-        return (filtro[0]?.name)
-    }
-
     const sendPersonalQuestions = async (values) => {
         const data = await editData({ values: values }, `https://api.clubdeviajeros.tk/api/personal/${idRecord}`, state?.token)
         console.log(data)

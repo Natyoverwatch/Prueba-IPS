@@ -31,7 +31,7 @@ export default function GruRiesgoAux() {
     //Data Aux risk groups
     const [dataSource, setDataSource] = useState([]);
     //Data risk groups filter
-    const [dataRiskSource, setRiskDataSource] = useState([]);
+    const [dataPaciente, setDataPacientes] = useState([]);
     //Data risk groups
     const [dataSourceRisk, setDataSourceRisk] = useState([]);
     //Data Dates
@@ -57,10 +57,15 @@ export default function GruRiesgoAux() {
         setDataSupervisor(getConstdata);
     }
 
+    //Obtención de los pacientes
+    const getPaciente = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
+        setDataPacientes(getConstdata)
+    }
+
     //Obtención de las fechas - agenda
     const getDates = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/agenda/${state.user._id}`, state?.token)
-        console.log(getConstdata)
         // Crear un objeto Date con la fecha y hora actuales
         const fechaHoy = new Date();
 
@@ -74,8 +79,22 @@ export default function GruRiesgoAux() {
 
         // filtro fecha hoy
         const filtro = getConstdata.filter(data => data.fecha.slice(0, 10) === fechaFormateada);
-        setDataSourceDates(filtro);
-        console.log(filtro);
+
+        let array = []
+        Object.entries(filtro).forEach((element) => {
+            const newObject = dataSourceRisk.filter((a) => a._id === element[1].id_riesgo)
+            const newObject2 = dataPaciente.filter((a) => a._id === element[1].id_paciente)
+            array.push({
+                nombre: newObject2[0]?.values.name,
+                griesgo: newObject[0]?.name,
+                hora: element[1].fecha.slice(11, 16),
+                observacion: element[1].observacion,
+            })
+        })
+        setDataSourceDatesToday(array);
+        console.log('array: ', array);
+        console.log(dataSourceDatesToday);
+
     }
 
     // filtro nombre supervisor
@@ -114,6 +133,7 @@ export default function GruRiesgoAux() {
     }
 
     useEffect(() => {
+        getPaciente()
         getDates()
         getRisks()
         getSupervisor()
@@ -121,13 +141,6 @@ export default function GruRiesgoAux() {
         console.log(state)
         // eslint-disable-next-line
     }, [])
-
-    const dataSourceTable = [
-        {
-            nombre: "Ernesto Beltran",
-            riesgo: "Desnutricion"
-        }
-    ]
 
     const columns = [
         {
@@ -137,8 +150,18 @@ export default function GruRiesgoAux() {
         },
         {
             title: 'Riesgo',
-            dataIndex: 'riesgo',
+            dataIndex: 'griesgo',
             key: 'risk'
+        },
+        {
+            title: 'Hora',
+            dataIndex: 'hora',
+            key: 'hour'
+        },
+        {
+            title: 'Observaciones',
+            dataIndex: 'observacion',
+            key: 'comments'
         },
         {
             title: 'Acción',
@@ -189,7 +212,7 @@ export default function GruRiesgoAux() {
             </div>
             <Modal title="Agenda Pacientes Hoy" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <div>
-                    <Table columns={columns} dataSource={dataSourceTable} />
+                    <Table columns={columns} dataSource={dataSourceDatesToday} />
                 </div>
             </Modal>
         </div>
