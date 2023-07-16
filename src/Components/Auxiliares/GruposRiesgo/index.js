@@ -19,8 +19,6 @@ import { FcPrevious } from "react-icons/fc";
 
 export default function GruRiesgoAux() {
     const [isModalOpen, setIsModalOpen] = useState(true);
-    //Obtener los parametros por supervisor su ID
-    let { id } = useParams()
 
     //Global state
     const [state, setState] = useContext(AppContext)
@@ -36,6 +34,10 @@ export default function GruRiesgoAux() {
     const [dataRiskSource, setRiskDataSource] = useState([]);
     //Data risk groups
     const [dataSourceRisk, setDataSourceRisk] = useState([]);
+    //Data Dates
+    const [dataSourceDates, setDataSourceDates] = useState([]);
+    //Data Dates Today
+    const [dataSourceDatesToday, setDataSourceDatesToday] = useState([]);
 
     //Obtención de asignaciones
     const getRisksAux = async () => {
@@ -53,6 +55,27 @@ export default function GruRiesgoAux() {
     const getSupervisor = async () => {
         const getConstdata = await getData("https://api.clubdeviajeros.tk/api/supervisor", state?.token)
         setDataSupervisor(getConstdata);
+    }
+
+    //Obtención de las fechas - agenda
+    const getDates = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/agenda/${state.user._id}`, state?.token)
+        console.log(getConstdata)
+        // Crear un objeto Date con la fecha y hora actuales
+        const fechaHoy = new Date();
+
+        // Obtener los componentes de la fecha
+        const dia = fechaHoy.getDate();
+        const mes = fechaHoy.getMonth() + 1; // Los meses se indexan desde 0, así que se suma 1
+        const year = fechaHoy.getFullYear();
+
+        // Mostrar la fecha de hoy en el formato deseado (por ejemplo, dd/mm/aaaa)
+        const fechaFormateada = `${year}-${mes < 10 ? '0' : ''}${mes}-${dia < 10 ? '0' : ''}${dia}`;
+
+        // filtro fecha hoy
+        const filtro = getConstdata.filter(data => data.fecha.slice(0, 10) === fechaFormateada);
+        setDataSourceDates(filtro);
+        console.log(filtro);
     }
 
     // filtro nombre supervisor
@@ -91,6 +114,7 @@ export default function GruRiesgoAux() {
     }
 
     useEffect(() => {
+        getDates()
         getRisks()
         getSupervisor()
         getRisksAux()
@@ -125,15 +149,15 @@ export default function GruRiesgoAux() {
 
     const showModal = () => {
         setIsModalOpen(true);
-      };
-    
-      const handleOk = () => {
+    };
+
+    const handleOk = () => {
         setIsModalOpen(false);
-      };
-    
-      const handleCancel = () => {
+    };
+
+    const handleCancel = () => {
         setIsModalOpen(false);
-      };
+    };
 
     return (
         <div>
@@ -158,14 +182,14 @@ export default function GruRiesgoAux() {
                     ))
                 }
             </Row>
-            <div style={{display: 'flex', justifyContent: 'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button type="primary" onClick={() => showModal()}>
                     Abrir Seguimientos del día
                 </Button>
             </div>
-            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Agenda Pacientes Hoy" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <div>
-                    <Table columns={columns} dataSource={dataSourceTable}/>  
+                    <Table columns={columns} dataSource={dataSourceTable} />
                 </div>
             </Modal>
         </div>

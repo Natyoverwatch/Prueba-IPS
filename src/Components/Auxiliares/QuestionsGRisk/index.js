@@ -23,6 +23,7 @@ export default function QuestionsGRisk() {
     const [formUpdateQuestions] = Form.useForm();
     const [formPersonal] = Form.useForm();
     const [formSeguimiento] = Form.useForm();
+    const [formDate] = Form.useForm();
 
     const navigate = useNavigate();
 
@@ -31,6 +32,8 @@ export default function QuestionsGRisk() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de las preguntas
     const [isEditing, setisEditing] = useState(false)
+    // Estado para guardar el id del grupo de riesgo
+    const [gRisk, setGRisk] = useState()
 
     //Global state
     const [state, setState] = useContext(AppContext)
@@ -56,6 +59,7 @@ export default function QuestionsGRisk() {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/name/${id}`, state?.token)
         setInitialVal(getConstdata[0].values)
         setIdRecord(getConstdata[0]._id)
+        setGRisk(getConstdata[0].id_riesgo)
         await getQuestions(getConstdata[0])
 
     }
@@ -126,6 +130,19 @@ export default function QuestionsGRisk() {
             formSeguimiento.resetFields()
         }
     }
+
+    //Creación de una nueva cita
+    const createNewDate = async (values) => {
+        formDate.resetFields()
+        const datos = {
+            id_auxiliar: state.user._id,
+            id_paciente: idRecord,
+            id_riesgo: gRisk,
+            fecha: values.fecha,
+            observacion: values.observaciones,
+        }
+        const data = await addData(datos, "https://api.clubdeviajeros.tk/api/agenda", state?.token)
+    };
 
     const items = [
         {
@@ -202,11 +219,11 @@ export default function QuestionsGRisk() {
                 </span>),
             children:
                 (
-                    <Form form={formSeguimiento} layout="vertical" onFinish={createNewQuestion} >
-                        <Form.Item label="Próximo seguimiento" name="next">
+                    <Form form={formDate} layout="vertical" onFinish={createNewDate} >
+                        <Form.Item label="Próximo seguimiento" name="fecha">
                             <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
                         </Form.Item>
-                        <Form.Item label="Observaciones" name="comments">
+                        <Form.Item label="Observaciones" name="observaciones">
                             <Input />
                         </Form.Item>
                         <Form.Item>
