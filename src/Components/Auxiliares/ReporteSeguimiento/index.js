@@ -39,11 +39,13 @@ export default function ReporteSeguimiento() {
     const [dataReportesSegimiento, setDataReportesSegimiento] = useState([]);
     //Data seguimiento
     const [dataSourcerReportes, setDataSourcerReportes] = useState([]);
+    const [initialVal, setInitialVal] = useState()
 
     //Obtención de los pacientes
     const getPaciente = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
         const filtro = getConstdata.filter(data => data.values.id_aux === state.user._id)
+        console.log(filtro)
         setDataSource(filtro)
     }
 
@@ -85,6 +87,15 @@ export default function ReporteSeguimiento() {
         setDataReportesSegimiento(filtro)
     }
 
+    //Ver datos del reporte
+    const verReporte = async (paciente) => {
+        setisEditing(true)
+        console.log(paciente)
+        const filtro = dataSource.filter(data => data.values.id_aux === record.values)
+        console.log(filtro)
+
+    }
+
     useEffect(() => {
         getPaciente()
         getSeguimiento()
@@ -119,7 +130,9 @@ export default function ReporteSeguimiento() {
             render: (_, record) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <FcReading />
+                        <FcReading onClick={() => {
+                            verReporte(record)
+                        }} />
                         <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deletePaciente(record._id)}>
                             <FiTrash2 />
                         </Popconfirm>
@@ -167,6 +180,30 @@ export default function ReporteSeguimiento() {
                     <Table columns={columns} dataSource={dataReportesSegimiento} rowKey="_id" />
                 </Col>
             </Row>
+            {/* Modal para visualizar datos */}
+            <Modal
+                title="Reporte"
+                open={isEditing}
+                onCancel={() => {
+                    setisEditing(false)
+                }}
+                footer={[
+                    <Button key="cancel" onClick={() => {
+                        setisEditing(false)
+                        /* form.resetFields() */
+                    }}>
+                        Cancelar
+                    </Button>,
+                    <Button key="create" type="primary" onClick={() => { formUpdateSupervisor.submit() }}>
+                        Crear
+                    </Button>,
+                ]}>
+                <Form /* form={formUpdateSupervisor} *//*  onFinish={updateSupervisor} */>
+                    <Form.Item name="name" label="Nombre del supervisor:">
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div >
     )
 }
