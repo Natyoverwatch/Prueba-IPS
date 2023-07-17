@@ -24,7 +24,7 @@ export default function ReporteSeguimiento() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
-    const [idPaciente, setIdPaciente] = useState("")
+    const [namePaciente, setNamePaciente] = useState("")
     //Global state
     const [state, setState] = useContext(AppContext)
 
@@ -37,13 +37,14 @@ export default function ReporteSeguimiento() {
     const [dataSource, setDataSource] = useState([]);
     //Data seguimiento
     const [dataReportesSegimiento, setDataReportesSegimiento] = useState([]);
+    //Data seguimiento
+    const [dataSourcerReportes, setDataSourcerReportes] = useState([]);
 
     //Obtención de los pacientes
     const getPaciente = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
         const filtro = getConstdata.filter(data => data.values.id_aux === state.user._id)
         setDataSource(filtro)
-        console.log(filtro)
     }
 
     //Obtención de las preguntas
@@ -53,11 +54,10 @@ export default function ReporteSeguimiento() {
         const getConstdata2 = await getData(`https://api.clubdeviajeros.tk/api/seguimiento`, state?.token)
         const filtro = getConstdata2.filter(data => data.values.id_aux === state.user._id)
         const getConstdataRisk = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
-        console.log(filtro)
+
 
         let array = []
         Object.entries(filtro).forEach((element) => {
-            console.log(element[1])
             const newObject = filtro2.filter((a) => a._id === element[1].id_paciente)
             const newObject2 = getConstdataRisk.filter((a) => a._id === newObject[0]?.id_riesgo)
 
@@ -69,50 +69,20 @@ export default function ReporteSeguimiento() {
                 fecha: element[1].createdAt,
             })
         })
+        setDataSourcerReportes(array)
         setDataReportesSegimiento(array)
-        console.log(array)
-        console.log(dataReportesSegimiento)
     }
 
-    const getNameQuestions = async (values, data) => {
-        let array = []
-        Object.entries(values.values).forEach(([key, val]) => {
-            const newObject = data.filter((a) => a._id === key)
-            if (newObject.length > 0 && newObject[0].pregunta) {
-                array.push({
-                    id: key,
-                    pregunta: newObject[0].pregunta,
-                    respuesta: val
-                })
-            }
-        })
-        setDataSource(array)
-    }
-
-    // Creacion de pacientes
-    const sendPersonal = async (values) => {
-        const sendData = await addData({ id_riesgo: id, values }, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
-        console.log(sendData)
-        if (sendData) getPaciente()
-        formPersonal.resetFields()
-    }
     //Borrar supervisor
     const deletePaciente = async (paciente) => {
         const data = await deleteData(`https://api.clubdeviajeros.tk/api/personal/${paciente}`, state?.token)
         if (data === 200) getPaciente()
     }
-    //Editar supervisor y actualizar
-    const editPaciente = (paciente) => {
-        setisEditing(true)
-        formUpdatePaciente.setFieldsValue(paciente.name);
-        setIdEdit(paciente._id)
 
-    }
-
-    const updatePaciente = async (values) => {
-        formPersonal.resetFields()
-        const data = await editData(values, `https://api.clubdeviajeros.tk/api/personal/${idEdit}`, state?.token)
-        if (data === "ok") { setisEditing(false); getPaciente() }
+    const filterSeguimiento = (nombre) => {
+        setDataReportesSegimiento(dataSourcerReportes)
+        const filtro = dataSourcerReportes.filter(data => data.nombre === nombre)
+        setDataReportesSegimiento(filtro)
     }
 
     useEffect(() => {
@@ -167,7 +137,7 @@ export default function ReporteSeguimiento() {
             </div>
             <Row className='styledRow'>
                 <Col
-                    className='styledColSupervisor'
+                    className='styledColDates'
                     xs={{ span: 20, offset: 2 }} md={{ span: 10, offset: 3 }} lg={{ span: 5, offset: 2 }}>
                     <Form
                         layout="vertical">
@@ -176,17 +146,18 @@ export default function ReporteSeguimiento() {
                         >
                             <Select
                                 style={{ width: '100%' }}
-                                onChange={(e) => setIdPaciente(e)}
+                                onChange={(e) => setNamePaciente(e)}
                             >
                                 {dataSource.map((read, index) => (
                                     <Option
                                         key={index}
-                                        value={read._id}>{read.values["name"]}
+                                        value={read.values['name']}>{read.values["name"]}
                                     </Option>))}
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type='primary' onClick={() => idPaciente.length > 0 ? navigate(`/questionsgrisk/${idPaciente}`) : ""}> Siguiente</Button>
+                            <Button style={{ marginInline: '10px' }} type='primary' onClick={() => { getSeguimiento() }}> Ver todos</Button>
+                            <Button type='primary' onClick={() => filterSeguimiento(namePaciente)}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>
@@ -196,100 +167,6 @@ export default function ReporteSeguimiento() {
                     <Table columns={columns} dataSource={dataReportesSegimiento} rowKey="_id" />
                 </Col>
             </Row>
-            {/*Modal creacion supervisor*/}
-            <Modal
-                title="Creación paciente"
-                open={isModalVisible}
-                onCancel={() => {
-                    setIsModalVisible(false)
-                    formPersonal.resetFields()
-                }}
-                footer={[
-                    <Button key="cancel" onClick={() => {
-                        setIsModalVisible(false)
-                        formPersonal.resetFields()
-                    }}>
-                        Cancelar
-                    </Button>,
-                    <Button key="create" type="primary" onClick={() => {
-                        setIsModalVisible(false)
-                        formPersonal.submit()
-                    }}>
-                        Crear
-                    </Button>,
-                ]}>
-                <Form form={formPersonal} layout="vertical" onFinish={sendPersonal} >
-                    <Form.Item
-                        name="name"
-                        label="Nombre completo del paciente"
-                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="id_paciente"
-                        label="Número de identificacione del paciente"
-                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    {dataSourcePersonales.map((read, index) => (
-                        <Form.Item
-                            key={index}
-                            name={read._id}
-                            label={read.pregunta}
-                            rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-                    ))}
-                </Form>
-            </Modal>
-            {/* Modal para editar o actualizar el supervisor */}
-            <Modal
-                title="Actualización del nombre del supervisor"
-                open={isEditing}
-                onCancel={() => {
-                    setisEditing(false)
-                    formPersonal.resetFields()
-                }}
-                footer={[
-                    <Button key="cancel" onClick={() => {
-                        setisEditing(false)
-                        formPersonal.resetFields()
-                    }}>
-                        Cancelar
-                    </Button>,
-                    <Button key="create" type="primary" onClick={() => { formUpdatePaciente.submit() }}>
-                        Crear
-                    </Button>,
-                ]}>
-                <Form form={formUpdatePaciente} layout="vertical" onFinish={updatePaciente} >
-                    <Form.Item
-                        name="name"
-                        label="Nombre completo del paciente"
-                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="id_paciente"
-                        label="Número de identificacione del paciente"
-                        rules={[{ required: true, message: 'Por favor ingresa un valor' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    {dataSourcePersonales.map((read, index) => (
-                        <Form.Item
-                            key={index}
-                            name={read._id}
-                            label={read.pregunta}
-                            rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
-                        >
-                            <Input />
-                        </Form.Item>))}
-                </Form>
-            </Modal>
         </div >
     )
 }
