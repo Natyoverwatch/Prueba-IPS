@@ -1,37 +1,25 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select, Table, Tabs, DatePicker } from 'antd';
-import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { Form, Button, Input, Row, Col, Tabs, DatePicker } from 'antd';
+import { addData, getData, editData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { FcReading, FcFinePrint, FcPrevious, FcAlarmClock } from "react-icons/fc";
-import { SearchOutlined, AndroidOutlined, AppleOutlined } from "@ant-design/icons"
 import { useParams, useNavigate } from 'react-router-dom';
 import { NavbarAux } from '../NavbarAux';
-import addImage from '../../../Images/agregar-usuario.png';
-import ppersonal from '../../../Images/preguntapersonal.png'
-import pseguimiento from '../../../Images/preguntaseguimiento.png'
 
 export default function QuestionsGRisk() {
     let { id } = useParams()
 
     //Id for updating specific questions
-    const [idEdit, setIdEdit] = useState(null)
     const [idRecord, setIdRecord] = useState()
 
     //Forms to control diferent modals
-    const [formUpdateQuestions] = Form.useForm();
     const [formPersonal] = Form.useForm();
     const [formSeguimiento] = Form.useForm();
     const [formDate] = Form.useForm();
 
     const navigate = useNavigate();
 
-    //Estados para el control de las modales
-    //Modal para creación de las preguntas
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    //Modal para la actualización de las preguntas
-    const [isEditing, setisEditing] = useState(false)
     // Estado para guardar el id del grupo de riesgo
     const [gRisk, setGRisk] = useState()
 
@@ -39,20 +27,10 @@ export default function QuestionsGRisk() {
     const [state, setState] = useContext(AppContext)
 
     //Data de las preguntas
-    const [dataSourcePersonales, setDataSourcePersonales] = useState([]);
     const [dataSourceSeguimiento, setDataSourceSeguimiento] = useState([]);
     //Data pacientes
     const [dataSource, setDataSource] = useState([]);
-    const [dataRisk, setDataRisk] = useState([]);
-    const [questions, setQuestions] = useState([])
     const [initialVal, setInitialVal] = useState()
-
-    //Editar las preguntas y actualizar
-    const editQuestions = (questions) => {
-        setisEditing(true)
-        formUpdateQuestions.setFieldsValue(questions);
-        setIdEdit(questions._id)
-    }
 
     //Obtención de los pacientes
     const getPaciente = async () => {
@@ -61,17 +39,12 @@ export default function QuestionsGRisk() {
         setIdRecord(getConstdata[0]._id)
         setGRisk(getConstdata[0].id_riesgo)
         await getQuestions(getConstdata[0])
-
     }
-
 
     //Obtención de las preguntas
     const getQuestions = async (data) => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${data.id_riesgo}`, state?.token)
-        setQuestions(getConstdata)
         await getNameQuestions(data, getConstdata)
-        const filteredDataPersonales = getConstdata.filter(item => item.tipo === "personal")
-        setDataSourcePersonales(filteredDataPersonales);
         const filteredDataSeguimiento = getConstdata.filter(item => item.tipo === "seguimiento")
         setDataSourceSeguimiento(filteredDataSeguimiento);
     }
@@ -99,12 +72,6 @@ export default function QuestionsGRisk() {
     useEffect(() => {
         formPersonal.setFieldsValue(initialVal)
     }, [initialVal])
-
-    //Borrar pregunta 
-    const deleteQuestions = async (questions) => {
-        const data = await deleteData(`https://api.clubdeviajeros.tk/api/questions/${questions}`, state?.token)
-        if (data === 200) getQuestions()
-    }
 
     const sendPersonalQuestions = async (values) => {
         const data = await editData({ values: values }, `https://api.clubdeviajeros.tk/api/personal/${idRecord}`, state?.token)

@@ -3,7 +3,7 @@ import "./style.scss"
 import { NavbarAdmin } from '../NavbarAdmin';
 import { useNavigate } from 'react-router-dom';
 import { Form, Modal, Button, Input, Row, Col, Popconfirm, Table, Select } from 'antd';
-import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { FcPrevious } from 'react-icons/fc'
@@ -20,8 +20,6 @@ export default function AdminAuxiliar() {
     const [form] = Form.useForm();
 
     //Estados para el control de las modales
-    //Modal para creación de los supervisores
-    const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
     const [idAuxiliar, setIdAuxiliar] = useState("")
@@ -74,7 +72,7 @@ export default function AdminAuxiliar() {
     ]
 
     //Borrar auxiliar
-    const deleteAuxiliar = async(auxiliar) => {
+    const deleteAuxiliar = async (auxiliar) => {
         const data = await deleteData(`https://api.clubdeviajeros.tk/api/users/${auxiliar}`, state?.token)
         if (data === 200) getUsers()
     }
@@ -95,7 +93,7 @@ export default function AdminAuxiliar() {
         <div>
             <NavbarAdmin />
             <div>
-                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow'/>
+                <FcPrevious size={35} onClick={() => navigate(-1)} className='backArrow' />
             </div>
             <Row className='styledRow'>
                 <Col

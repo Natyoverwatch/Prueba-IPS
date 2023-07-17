@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
 import { NavbarAdmin } from '../NavbarAdmin';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Modal, Button, Input, Row, Col, Popconfirm, Select } from 'antd';
+import { Form, Modal, Button, Row, Col, Popconfirm, Select } from 'antd';
 import { addData, getData, editData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -41,9 +41,6 @@ export default function AsignacionSupervisor() {
     //Global state
     const [state, setState] = useContext(AppContext)
 
-    //Navegación a la página acorde al grupo de riesgo
-    const navigate = useNavigate();
-
     //Data supervisor
     const [dataSupervisor, setDataSupervisor] = useState([]);
     //Data Aux risk groups
@@ -52,8 +49,6 @@ export default function AsignacionSupervisor() {
     const [dataRiskSource, setRiskDataSource] = useState([]);
     //Data risk groups
     const [dataSourceRisk, setDataSourceRisk] = useState([]);
-    //Data risk groups
-    const [valueForm, setValueForm] = useState([]);
 
     //Editar asignacion
     const editRiskAux = (value) => {
@@ -73,15 +68,12 @@ export default function AsignacionSupervisor() {
         form.resetFields()
         setIsAux(false)
         setIsModalVisible(false);
-        console.log(values)
         const datos = {
             id_auxiliar: idaux,
             id_supervisor: values.id_supervisor,
             id_riesgo: values.id_riesgo,
         }
-        console.log(datos)
         const data = await addData(datos, "https://api.clubdeviajeros.tk/api/asignaciones", state?.token)
-        console.log(data)
         if (data) { getRisksAux() }
     };
 
@@ -89,7 +81,6 @@ export default function AsignacionSupervisor() {
     const getRisksAux = async () => {
         setState({ ...state, id_auxiliar: idaux })
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/asignaciones/${idaux}`, state?.token)
-        console.log(getConstdata)
         setDataSource(getConstdata);
     }
 
@@ -116,7 +107,6 @@ export default function AsignacionSupervisor() {
         getRisks()
         getSupervisor()
         getRisksAux()
-        console.log(state)
         // eslint-disable-next-line
     }, [])
 

@@ -1,49 +1,35 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
-import { Form, Modal, Button, Input, Row, Col, Popconfirm, Table, Select } from 'antd';
-import { addData, getData, editData, deleteData } from "../../../controller/control"
+import { Form, Button, Row, Col, Popconfirm, Table, Select } from 'antd';
+import { getData, deleteData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { useParams, useNavigate } from 'react-router-dom';
-import { FcPrevious, FcReading } from 'react-icons/fc'
+import { FiTrash2 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import { FcPrevious } from 'react-icons/fc'
 import { NavbarAux } from '../NavbarAux';
 
 const { Option } = Select
 
 export default function Agenda() {
 
-    let { id } = useParams()
-
     //Id for updating specific supervisor 
-    const [idEdit, setIdEdit] = useState(null)
     const [isName, setIsName] = useState()
 
     //Forms to control diferent modals
-    const [formUpdatePaciente] = Form.useForm();
-    const [formPersonal] = Form.useForm();
 
     //Estados para el control de las modales
-    //Modal para creación de los supervisores
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    //Modal para la actualización de los supervisores
-    const [isEditing, setisEditing] = useState(false)
-    const [idPaciente, setIdPaciente] = useState("")
     //Global state
     const [state, setState] = useContext(AppContext)
 
     //Navegación a la página acorde a los supervisores
     const navigate = useNavigate();
 
-    // Data preguntas personales
-    const [dataSourcePersonales, setDataSourcePersonales] = useState([]);
     //Data pacientes
     const [dataSource, setDataSource] = useState([]);
     //Data Dates
     const [dataSourceDates, setDataSourceDates] = useState([]);
     //Data risk groups filter
     const [dataFilter, setDataFilter] = useState([]);
-    //Data risk groups
-    const [dataSourceRisk, setDataSourceRisk] = useState([]);
 
     //Obtención de los pacientes
     const getPaciente = async () => {
@@ -92,8 +78,6 @@ export default function Agenda() {
         })
         setDataSourceDates(array);
         setDataFilter(array);
-        console.log('array: ', array);
-        console.log(dataSourceDates);
     }
 
     useEffect(() => {
@@ -178,7 +162,6 @@ export default function Agenda() {
                     <Table columns={columns} dataSource={dataFilter} rowKey="_id" />
                 </Col>
             </Row>
-
         </div >
     )
 }

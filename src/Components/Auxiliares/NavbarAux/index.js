@@ -3,15 +3,12 @@ import './style.scss'
 import { BsPersonCircle } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
-import React, { useContext, useState } from 'react';
-import { AppContext } from '../../../Provider';
+import React, { useState } from 'react';
 
 export const NavbarAux = () => {
+
     const navigate = useNavigate();
-    const [state, setState] = useContext(AppContext)
-
     const [menuOpen, setMenuOpen] = useState(false);
-
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };

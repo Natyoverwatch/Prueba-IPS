@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import "./style.scss"
 import { NavbarAux } from '../NavbarAux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Row, Col, Modal, Button, Table } from 'antd';
 import { getData } from "../../../controller/control"
 import { AppContext } from '../../../Provider';
@@ -14,7 +14,6 @@ import desnutricionImage from '../../../Images/desnutricion.png';
 import edaImage from '../../../Images/diarrea.png';
 import iraImage from '../../../Images/neumonia.png';
 import mmeImage from '../../../Images/mme.png';
-import addImage from '../../../Images/agregar-usuario.png';
 import { FcPrevious } from "react-icons/fc";
 
 export default function GruRiesgoAux() {
@@ -34,8 +33,6 @@ export default function GruRiesgoAux() {
     const [dataPacientes, setDataPacientes] = useState([]);
     //Data risk groups
     const [dataSourceRisk, setDataSourceRisk] = useState([]);
-    //Data Dates
-    const [dataSourceDates, setDataSourceDates] = useState([]);
     //Data Dates Today
     const [dataSourceDatesToday, setDataSourceDatesToday] = useState([]);
 
@@ -70,7 +67,6 @@ export default function GruRiesgoAux() {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/agenda/${state.user._id}`, state?.token)
         const getConstdataRisk = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
         const getConstdataPaciente = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
-        // Crear un objeto Date con la fecha y hora actuales
         const fechaHoy = new Date();
 
         // Obtener los componentes de la fecha
@@ -78,7 +74,6 @@ export default function GruRiesgoAux() {
         const mes = fechaHoy.getMonth() + 1; // Los meses se indexan desde 0, así que se suma 1
         const year = fechaHoy.getFullYear();
 
-        // Mostrar la fecha de hoy en el formato deseado (por ejemplo, dd/mm/aaaa)
         const fechaFormateada = `${year}-${mes < 10 ? '0' : ''}${mes}-${dia < 10 ? '0' : ''}${dia}`;
 
         // filtro fecha hoy
@@ -95,9 +90,6 @@ export default function GruRiesgoAux() {
             })
         })
         setDataSourceDatesToday(array);
-        console.log('array: ', array);
-        console.log(dataSourceDatesToday);
-
     }
 
     // filtro nombre supervisor
@@ -141,7 +133,6 @@ export default function GruRiesgoAux() {
         getDates()
         getSupervisor()
         getRisksAux()
-        console.log(state)
         // eslint-disable-next-line
     }, [])
 
