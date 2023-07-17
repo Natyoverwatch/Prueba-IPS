@@ -24,7 +24,7 @@ export default function ReporteSeguimiento() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //Modal para la actualización de los supervisores
     const [isEditing, setisEditing] = useState(false)
-    const [namePaciente, setNamePaciente] = useState("")
+    const [idPaciente, setIdPaciente] = useState("")
     //Global state
     const [state, setState] = useContext(AppContext)
 
@@ -79,9 +79,9 @@ export default function ReporteSeguimiento() {
         if (data === 200) getPaciente()
     }
 
-    const filterSeguimiento = (nombre) => {
+    const filterSeguimiento = (idPaciente) => {
         setDataReportesSegimiento(dataSourcerReportes)
-        const filtro = dataSourcerReportes.filter(data => data.nombre === nombre)
+        const filtro = dataSourcerReportes.filter(data => data.identificacion === idPaciente)
         setDataReportesSegimiento(filtro)
     }
 
@@ -146,18 +146,18 @@ export default function ReporteSeguimiento() {
                         >
                             <Select
                                 style={{ width: '100%' }}
-                                onChange={(e) => setNamePaciente(e)}
+                                onChange={(e) => setIdPaciente(e)}
                             >
                                 {dataSource.map((read, index) => (
                                     <Option
                                         key={index}
-                                        value={read.values['name']}>{read.values["name"]}
+                                        value={read.values['id_paciente']}>{read.values['id_paciente']}
                                     </Option>))}
                             </Select>
                         </Form.Item>
                         <Form.Item>
                             <Button style={{ marginInline: '10px' }} type='primary' onClick={() => { getSeguimiento() }}> Ver todos</Button>
-                            <Button type='primary' onClick={() => filterSeguimiento(namePaciente)}> Siguiente</Button>
+                            <Button type='primary' onClick={() => filterSeguimiento(idPaciente)}> Siguiente</Button>
                         </Form.Item>
                     </Form>
                 </Col>
