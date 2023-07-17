@@ -30,24 +30,22 @@ export default function Agenda() {
     const [dataSourceDates, setDataSourceDates] = useState([]);
     //Data risk groups filter
     const [dataFilter, setDataFilter] = useState([]);
+    const [dataSourceRisk, setDataSourceRisk] = useState([]);
 
     //Obtención de los pacientes
     const getPaciente = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
         setDataSource(getConstdata)
-        console.log(getConstdata)
     }
 
     //Obtención de los grupos de riesgo
     const getRisks = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
         setDataSourceRisk(getConstdata);
-        console.log(getConstdata);
     }
 
     //Borrar pregunta 
     const deleteDate = async (date) => {
-        console.log(date);
         const data = await deleteData(`https://api.clubdeviajeros.tk/api/agenda/${date}`, state?.token)
         if (data === 200) getDates()
     }
@@ -63,7 +61,7 @@ export default function Agenda() {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/agenda/${state.user._id}`, state?.token)
         const getConstdataRisk = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
         const getConstdataPaciente = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
-        console.log(getConstdata)
+
         let array = []
         Object.entries(getConstdata).forEach((element) => {
             const newObject = getConstdataRisk.filter((a) => a._id === element[1].id_riesgo)
@@ -112,7 +110,6 @@ export default function Agenda() {
             dataIndex: 'actions',
             key: 'actions',
             render: (_, record) => {
-                console.log(record)
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Popconfirm title="Seguro deseas borrarlo?" onConfirm={() => deleteDate(record._id)}>
