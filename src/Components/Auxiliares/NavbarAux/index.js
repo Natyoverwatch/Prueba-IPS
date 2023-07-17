@@ -26,6 +26,9 @@ export const NavbarAux = () => {
                 <Link to='/agenda'>
                     <h2 className='styleh2Aux'>Agenda</h2>
                 </Link>
+                <Link to='/reporteseguimiento'>
+                    <h2 className='styleh2Aux'>Reportes</h2>
+                </Link>
             </div>
             <div style={{ display: 'flex', margin: '1em', alignSelf: 'flex-end', color: 'white' }}>
                 <BsPersonCircle size={30} onClick={() => navigate('/login')} className='icon' />

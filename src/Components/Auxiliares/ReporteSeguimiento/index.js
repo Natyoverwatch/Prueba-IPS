@@ -10,9 +10,7 @@ import { NavbarAux } from '../NavbarAux';
 
 const { Option } = Select
 
-export default function CreacionPaciente() {
-
-    let { id } = useParams()
+export default function ReporteSeguimiento() {
 
     //Id for updating specific supervisor 
     const [idEdit, setIdEdit] = useState(null)
@@ -35,27 +33,64 @@ export default function CreacionPaciente() {
 
     // Data preguntas personales
     const [dataSourcePersonales, setDataSourcePersonales] = useState([]);
-
     //Data pacientes
     const [dataSource, setDataSource] = useState([]);
-
-    //Obtención de las preguntas
-    const getQuestions = async () => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/questions/${id}`, state?.token)
-        const filteredDataPersonales = getConstdata.filter(item => item.tipo === "personal")
-        setDataSourcePersonales(filteredDataPersonales);
-    }
+    //Data seguimiento
+    const [dataReportesSegimiento, setDataReportesSegimiento] = useState([]);
 
     //Obtención de los pacientes
     const getPaciente = async () => {
-        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/${id}`, state?.token)
-        setDataSource(getConstdata)
-        console.log(getConstdata)
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
+        const filtro = getConstdata.filter(data => data.values.id_aux === state.user._id)
+        setDataSource(filtro)
+        console.log(filtro)
+    }
+
+    //Obtención de las preguntas
+    const getSeguimiento = async () => {
+        const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
+        const filtro2 = getConstdata.filter(data => data.values.id_aux === state.user._id)
+        const getConstdata2 = await getData(`https://api.clubdeviajeros.tk/api/seguimiento`, state?.token)
+        const filtro = getConstdata2.filter(data => data.values.id_aux === state.user._id)
+        const getConstdataRisk = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
+        console.log(filtro)
+
+        let array = []
+        Object.entries(filtro).forEach((element) => {
+            console.log(element[1])
+            const newObject = filtro2.filter((a) => a._id === element[1].id_paciente)
+            const newObject2 = getConstdataRisk.filter((a) => a._id === newObject[0]?.id_riesgo)
+
+            array.push({
+                _id: element[1]._id,
+                nombre: newObject[0]?.values.name,
+                identificacion: newObject[0]?.values.id_paciente,
+                grisk: newObject2[0]?.name,
+                fecha: element[1].createdAt,
+            })
+        })
+        setDataReportesSegimiento(array)
+        console.log(array)
+        console.log(dataReportesSegimiento)
+    }
+
+    const getNameQuestions = async (values, data) => {
+        let array = []
+        Object.entries(values.values).forEach(([key, val]) => {
+            const newObject = data.filter((a) => a._id === key)
+            if (newObject.length > 0 && newObject[0].pregunta) {
+                array.push({
+                    id: key,
+                    pregunta: newObject[0].pregunta,
+                    respuesta: val
+                })
+            }
+        })
+        setDataSource(array)
     }
 
     // Creacion de pacientes
     const sendPersonal = async (values) => {
-        values.id_aux = state.user._id;
         const sendData = await addData({ id_riesgo: id, values }, `https://api.clubdeviajeros.tk/api/personal`, state?.token)
         console.log(sendData)
         if (sendData) getPaciente()
@@ -82,16 +117,30 @@ export default function CreacionPaciente() {
 
     useEffect(() => {
         getPaciente()
-        getQuestions()
-        console.log(dataSource)
+        getSeguimiento()
+        //getQuestions()
     }, [0])
 
     const columns = [
         {
+            title: 'Identificacion del paciente',
+            dataIndex: 'identificacion',
+            key: 'id_paciente',
+        },
+        {
             title: 'Nombre del paciente',
-            dataIndex: 'values',
-            key: 'values',
-            render: (values) => values['name'],
+            dataIndex: 'nombre',
+            key: 'name'
+        },
+        {
+            title: 'Grupo de riesgo',
+            dataIndex: 'grisk',
+            key: 'grisk'
+        },
+        {
+            title: 'fecha',
+            dataIndex: 'fecha',
+            key: 'date'
         },
         {
             title: 'Acciones',
@@ -144,10 +193,7 @@ export default function CreacionPaciente() {
             </Row>
             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                 <Col>
-                    <Button style={{ float: 'right', marginBottom: '1rem' }} type="primary" onClick={() => { setIsModalVisible(true) }}>
-                        Agregar un paciente
-                    </Button>
-                    <Table columns={columns} dataSource={dataSource} rowKey="_id" />
+                    <Table columns={columns} dataSource={dataReportesSegimiento} rowKey="_id" />
                 </Col>
             </Row>
             {/*Modal creacion supervisor*/}

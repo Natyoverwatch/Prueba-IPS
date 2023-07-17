@@ -79,6 +79,7 @@ export default function QuestionsGRisk() {
     }
 
     const createNewQuestion = async (values) => {
+        values.id_aux = state.user._id;
         const data = await addData({ id_paciente: idRecord, values }, `https://api.clubdeviajeros.tk/api/seguimiento`, state?.token)
         if (data._id) {
             alert('Datos insertados correctamente')

@@ -35,7 +35,8 @@ export default function Agenda() {
     //Obtención de los pacientes
     const getPaciente = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal`, state?.token)
-        setDataSource(getConstdata)
+        const filtro = getConstdata.filter(data => data.values.id_aux === state.user._id)
+        setDataSource(filtro)
     }
 
     //Obtención de los grupos de riesgo

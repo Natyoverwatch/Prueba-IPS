@@ -15,6 +15,7 @@ import GruRiesgoAux from './Components/Auxiliares/GruposRiesgo';
 import QuestionsGRisk from './Components/Auxiliares/QuestionsGRisk';
 import AsignacionSupervisor from './Components/Administrador/AsignacionSupervisor';
 import Agenda from './Components/Auxiliares/Agenda';
+import ReporteSeguimiento from './Components/Auxiliares/ReporteSeguimiento';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/questionsgrisk/:id" element={<QuestionsGRisk />} />
           <Route path="/creacionpaciente/:id" element={<CreacionPaciente />} />
           <Route path="/agenda" element={<Agenda />} />
+          <Route path="/reporteseguimiento" element={<ReporteSeguimiento />} />
         </Routes>
       </BrowserRouter>
     </MyProvider>
