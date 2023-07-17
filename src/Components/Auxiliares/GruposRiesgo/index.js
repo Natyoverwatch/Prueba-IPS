@@ -46,14 +46,12 @@ export default function GruRiesgoAux() {
     const getRisks = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
         setDataSourceRisk(getConstdata);
-        console.log(getConstdata);
     }
 
     //Obtencion datos pacientes
     const getPaciente = async () => {
         const getConstdata = await getData(`https://api.clubdeviajeros.tk/api/personal/name`, state?.token)
         setDataPacientes(getConstdata)
-        console.log(dataPacientes)
     }
 
     //Obtención de los supervisores
@@ -83,6 +81,7 @@ export default function GruRiesgoAux() {
             const newObject = getConstdataRisk.filter((a) => a._id === element[1].id_riesgo)
             const newObject2 = getConstdataPaciente.filter((a) => a._id === element[1].id_paciente)
             array.push({
+                _id: element[1]._id,
                 nombre: newObject2[0]?.values.name,
                 griesgo: newObject[0]?.name,
                 hora: element[1].fecha.slice(11, 16),
