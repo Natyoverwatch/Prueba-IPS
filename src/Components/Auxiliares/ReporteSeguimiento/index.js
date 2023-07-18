@@ -57,6 +57,7 @@ export default function ReporteSeguimiento() {
         const filtro = getConstdata2.filter(data => data.values.id_aux === state.user._id)
         const getConstdataRisk = await getData(`https://api.clubdeviajeros.tk/api/risk`, state?.token)
 
+        console.log("Filtro get seguimiento:", filtro)
 
         let array = []
         Object.entries(filtro).forEach((element) => {
@@ -73,6 +74,8 @@ export default function ReporteSeguimiento() {
         })
         setDataSourcerReportes(array)
         setDataReportesSegimiento(array)
+        console.log(array)
+
     }
 
     //Borrar supervisor
@@ -87,13 +90,9 @@ export default function ReporteSeguimiento() {
         setDataReportesSegimiento(filtro)
     }
 
-    //Ver datos del reporte
+    // //Ver datos del reporte
     const verReporte = async (paciente) => {
-        setisEditing(true)
-        console.log(paciente)
-        const filtro = dataSource.filter(data => data.values.id_aux === record.values)
-        console.log(filtro)
-
+        navigate(`/patientreport/${paciente._id}/${paciente.grisk}`)
     }
 
     useEffect(() => {
@@ -180,30 +179,6 @@ export default function ReporteSeguimiento() {
                     <Table columns={columns} dataSource={dataReportesSegimiento} rowKey="_id" />
                 </Col>
             </Row>
-            {/* Modal para visualizar datos */}
-            <Modal
-                title="Reporte"
-                open={isEditing}
-                onCancel={() => {
-                    setisEditing(false)
-                }}
-                footer={[
-                    <Button key="cancel" onClick={() => {
-                        setisEditing(false)
-                        /* form.resetFields() */
-                    }}>
-                        Cancelar
-                    </Button>,
-                    <Button key="create" type="primary" onClick={() => { formUpdateSupervisor.submit() }}>
-                        Crear
-                    </Button>,
-                ]}>
-                <Form /* form={formUpdateSupervisor} *//*  onFinish={updateSupervisor} */>
-                    <Form.Item name="name" label="Nombre del supervisor:">
-                        <Input />
-                    </Form.Item>
-                </Form>
-            </Modal>
         </div >
     )
 }
