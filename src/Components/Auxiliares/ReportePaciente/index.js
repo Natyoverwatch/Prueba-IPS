@@ -60,7 +60,7 @@ export default function Patientreport() {
                                 label={read.pregunta}
                                 rules={[{ required: true, message: 'Por favor ingresa un nombre' }]}
                             >
-                                <Input />
+                                <Input disabled={true} />
                             </Form.Item>))}
                     </Form>
                 </Col>
