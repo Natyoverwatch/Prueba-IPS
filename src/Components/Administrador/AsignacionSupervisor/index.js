@@ -37,7 +37,6 @@ export default function AsignacionSupervisor() {
     const [isEditing, setisEditing] = useState(false)
     //Estado del auxiliar
     const [isAux, setIsAux] = useState(false)
-
     //Global state
     const [state, setState] = useContext(AppContext)
 
